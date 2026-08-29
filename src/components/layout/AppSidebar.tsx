@@ -16,13 +16,24 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+const employeeChildren = [
+  { title: "Directory", url: "/employees" },
+  { title: "Attendance", url: "/employees/attendance" },
+  { title: "Leave Management", url: "/employees/leave" },
+  { title: "Payroll", url: "/employees/payroll" },
+  { title: "Performance", url: "/employees/performance" },
+  { title: "Documents", url: "/employees/documents" },
+  { title: "Timesheets", url: "/employees/timesheets" },
+  { title: "Employee Settings", url: "/employees/settings" },
+] as const;
+
 const items = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
   { title: "Clients", url: "/clients", icon: Building2 },
   { title: "Leads", url: "/leads", icon: Target },
   { title: "Projects", url: "/projects", icon: FolderKanban },
   { title: "Tasks", url: "/tasks", icon: CheckSquare },
-  { title: "Employees", url: "/employees", icon: Users },
+  { title: "Employees", url: "/employees", icon: Users, children: employeeChildren },
   { title: "Finance", url: "/finance", icon: Wallet },
   { title: "Reports", url: "/reports", icon: BarChart3 },
   { title: "Inbox", url: "/inbox", icon: Inbox },
