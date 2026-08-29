@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Outlet } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/clients")({
   head: () => ({
@@ -9,18 +9,5 @@ export const Route = createFileRoute("/clients")({
       { property: "og:description", content: "Manage AgencyOS client relationships and accounts." },
     ],
   }),
-  component: ClientsPage,
+  component: () => <Outlet />,
 });
-
-function ClientsPage() {
-  return <ModulePage title="Clients" description="Your client workspace is ready for the next build phase." />;
-}
-
-function ModulePage({ title, description }: { title: string; description: string }) {
-  return (
-    <section className="mx-auto max-w-6xl">
-      <h1 className="text-2xl font-bold tracking-tight text-foreground">{title}</h1>
-      <p className="mt-2 text-sm text-muted-foreground">{description}</p>
-    </section>
-  );
-}

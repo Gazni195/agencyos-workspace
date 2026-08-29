@@ -16,13 +16,24 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+const employeeChildren = [
+  { title: "Directory", url: "/employees" },
+  { title: "Attendance", url: "/employees/attendance" },
+  { title: "Leave Management", url: "/employees/leave" },
+  { title: "Payroll", url: "/employees/payroll" },
+  { title: "Performance", url: "/employees/performance" },
+  { title: "Documents", url: "/employees/documents" },
+  { title: "Timesheets", url: "/employees/timesheets" },
+  { title: "Employee Settings", url: "/employees/settings" },
+] as const;
+
 const items = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
   { title: "Clients", url: "/clients", icon: Building2 },
   { title: "Leads", url: "/leads", icon: Target },
   { title: "Projects", url: "/projects", icon: FolderKanban },
   { title: "Tasks", url: "/tasks", icon: CheckSquare },
-  { title: "Employees", url: "/employees", icon: Users },
+  { title: "Employees", url: "/employees", icon: Users, children: employeeChildren },
   { title: "Finance", url: "/finance", icon: Wallet },
   { title: "Reports", url: "/reports", icon: BarChart3 },
   { title: "Inbox", url: "/inbox", icon: Inbox },
@@ -73,21 +84,43 @@ export function AppSidebar({ open, onClose }: { open: boolean; onClose: () => vo
             Workspace
           </p>
           {items.map((item) => (
-            <Link
-              key={item.url}
-              to={item.url}
-              onClick={onClose}
-              className={cn(
-                "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-sidebar-muted transition-colors",
-                isActive(item.url)
-                  ? "bg-sidebar-primary text-sidebar-primary-foreground shadow-[0_6px_18px_-6px_var(--sidebar-primary)]"
-                  : "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+            <div key={item.url}>
+              <Link
+                to={item.url}
+                onClick={onClose}
+                className={cn(
+                  "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-sidebar-muted transition-colors",
+                  isActive(item.url)
+                    ? "bg-sidebar-primary text-sidebar-primary-foreground shadow-[0_6px_18px_-6px_var(--sidebar-primary)]"
+                    : "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+                )}
+              >
+                <item.icon className="size-4 shrink-0" />
+                {item.title}
+              </Link>
+              {"children" in item && isActive(item.url) && (
+                <div className="my-1 ml-6 space-y-0.5 border-l border-sidebar-border pl-3">
+                  {item.children.map((child) => (
+                    <Link
+                      key={child.url}
+                      to={child.url}
+                      onClick={onClose}
+                      activeOptions={{ exact: true }}
+                      className={cn(
+                        "block rounded-md px-2.5 py-1.5 text-[13px] font-medium transition-colors",
+                        pathname === child.url
+                          ? "bg-sidebar-accent text-sidebar-accent-foreground"
+                          : "text-sidebar-muted hover:text-sidebar-accent-foreground",
+                      )}
+                    >
+                      {child.title}
+                    </Link>
+                  ))}
+                </div>
               )}
-            >
-              <item.icon className="size-4 shrink-0" />
-              {item.title}
-            </Link>
+            </div>
           ))}
+
         </nav>
 
         <div className="m-3 rounded-xl bg-sidebar-accent p-4">

@@ -20,6 +20,8 @@ import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as ReportsRouteImport } from './routes/reports'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as TasksRouteImport } from './routes/tasks'
+import { Route as EmployeesIndexRouteImport } from './routes/employees.index'
+import { Route as EmployeesEmployeeIdRouteImport } from './routes/employees.$employeeId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -76,12 +78,22 @@ const TasksRoute = TasksRouteImport.update({
   path: '/tasks',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EmployeesIndexRoute = EmployeesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => EmployeesRoute,
+} as any)
+const EmployeesEmployeeIdRoute = EmployeesEmployeeIdRouteImport.update({
+  id: '/$employeeId',
+  path: '/$employeeId',
+  getParentRoute: () => EmployeesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/assets': typeof AssetsRoute
   '/clients': typeof ClientsRoute
-  '/employees': typeof EmployeesRoute
+  '/employees': typeof EmployeesRouteWithChildren
   '/finance': typeof FinanceRoute
   '/inbox': typeof InboxRoute
   '/leads': typeof LeadsRoute
@@ -89,12 +101,13 @@ export interface FileRoutesByFullPath {
   '/reports': typeof ReportsRoute
   '/settings': typeof SettingsRoute
   '/tasks': typeof TasksRoute
+  '/employees/$employeeId': typeof EmployeesEmployeeIdRoute
+  '/employees/': typeof EmployeesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/assets': typeof AssetsRoute
   '/clients': typeof ClientsRoute
-  '/employees': typeof EmployeesRoute
   '/finance': typeof FinanceRoute
   '/inbox': typeof InboxRoute
   '/leads': typeof LeadsRoute
@@ -102,13 +115,15 @@ export interface FileRoutesByTo {
   '/reports': typeof ReportsRoute
   '/settings': typeof SettingsRoute
   '/tasks': typeof TasksRoute
+  '/employees/$employeeId': typeof EmployeesEmployeeIdRoute
+  '/employees': typeof EmployeesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/assets': typeof AssetsRoute
   '/clients': typeof ClientsRoute
-  '/employees': typeof EmployeesRoute
+  '/employees': typeof EmployeesRouteWithChildren
   '/finance': typeof FinanceRoute
   '/inbox': typeof InboxRoute
   '/leads': typeof LeadsRoute
@@ -116,6 +131,8 @@ export interface FileRoutesById {
   '/reports': typeof ReportsRoute
   '/settings': typeof SettingsRoute
   '/tasks': typeof TasksRoute
+  '/employees/$employeeId': typeof EmployeesEmployeeIdRoute
+  '/employees/': typeof EmployeesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -131,12 +148,13 @@ export interface FileRouteTypes {
     | '/reports'
     | '/settings'
     | '/tasks'
+    | '/employees/$employeeId'
+    | '/employees/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/assets'
     | '/clients'
-    | '/employees'
     | '/finance'
     | '/inbox'
     | '/leads'
@@ -144,6 +162,8 @@ export interface FileRouteTypes {
     | '/reports'
     | '/settings'
     | '/tasks'
+    | '/employees/$employeeId'
+    | '/employees'
   id:
     | '__root__'
     | '/'
@@ -157,13 +177,15 @@ export interface FileRouteTypes {
     | '/reports'
     | '/settings'
     | '/tasks'
+    | '/employees/$employeeId'
+    | '/employees/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AssetsRoute: typeof AssetsRoute
   ClientsRoute: typeof ClientsRoute
-  EmployeesRoute: typeof EmployeesRoute
+  EmployeesRoute: typeof EmployeesRouteWithChildren
   FinanceRoute: typeof FinanceRoute
   InboxRoute: typeof InboxRoute
   LeadsRoute: typeof LeadsRoute
@@ -252,14 +274,42 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TasksRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/employees/': {
+      id: '/employees/'
+      path: '/'
+      fullPath: '/employees/'
+      preLoaderRoute: typeof EmployeesIndexRouteImport
+      parentRoute: typeof EmployeesRoute
+    }
+    '/employees/$employeeId': {
+      id: '/employees/$employeeId'
+      path: '/$employeeId'
+      fullPath: '/employees/$employeeId'
+      preLoaderRoute: typeof EmployeesEmployeeIdRouteImport
+      parentRoute: typeof EmployeesRoute
+    }
   }
 }
+
+interface EmployeesRouteChildren {
+  EmployeesEmployeeIdRoute: typeof EmployeesEmployeeIdRoute
+  EmployeesIndexRoute: typeof EmployeesIndexRoute
+}
+
+const EmployeesRouteChildren: EmployeesRouteChildren = {
+  EmployeesEmployeeIdRoute: EmployeesEmployeeIdRoute,
+  EmployeesIndexRoute: EmployeesIndexRoute,
+}
+
+const EmployeesRouteWithChildren = EmployeesRoute._addFileChildren(
+  EmployeesRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AssetsRoute: AssetsRoute,
   ClientsRoute: ClientsRoute,
-  EmployeesRoute: EmployeesRoute,
+  EmployeesRoute: EmployeesRouteWithChildren,
   FinanceRoute: FinanceRoute,
   InboxRoute: InboxRoute,
   LeadsRoute: LeadsRoute,
