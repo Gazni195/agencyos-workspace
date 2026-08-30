@@ -20,8 +20,17 @@ import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as ReportsRouteImport } from './routes/reports'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as TasksRouteImport } from './routes/tasks'
+import { Route as ClientsClientIdRouteImport } from './routes/clients.$clientId'
 import { Route as EmployeesIndexRouteImport } from './routes/employees.index'
 import { Route as EmployeesEmployeeIdRouteImport } from './routes/employees.$employeeId'
+import { Route as EmployeesAttendanceRouteImport } from './routes/employees.attendance'
+import { Route as EmployeesDocumentsRouteImport } from './routes/employees.documents'
+import { Route as EmployeesLeaveRouteImport } from './routes/employees.leave'
+import { Route as EmployeesPayrollRouteImport } from './routes/employees.payroll'
+import { Route as EmployeesPerformanceRouteImport } from './routes/employees.performance'
+import { Route as EmployeesSettingsRouteImport } from './routes/employees.settings'
+import { Route as EmployeesTimesheetsRouteImport } from './routes/employees.timesheets'
+import { Route as ProjectsProjectIdRouteImport } from './routes/projects.$projectId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -78,6 +87,11 @@ const TasksRoute = TasksRouteImport.update({
   path: '/tasks',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ClientsClientIdRoute = ClientsClientIdRouteImport.update({
+  id: '/$clientId',
+  path: '/$clientId',
+  getParentRoute: () => ClientsRoute,
+} as any)
 const EmployeesIndexRoute = EmployeesIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -88,50 +102,117 @@ const EmployeesEmployeeIdRoute = EmployeesEmployeeIdRouteImport.update({
   path: '/$employeeId',
   getParentRoute: () => EmployeesRoute,
 } as any)
+const EmployeesAttendanceRoute = EmployeesAttendanceRouteImport.update({
+  id: '/attendance',
+  path: '/attendance',
+  getParentRoute: () => EmployeesRoute,
+} as any)
+const EmployeesDocumentsRoute = EmployeesDocumentsRouteImport.update({
+  id: '/documents',
+  path: '/documents',
+  getParentRoute: () => EmployeesRoute,
+} as any)
+const EmployeesLeaveRoute = EmployeesLeaveRouteImport.update({
+  id: '/leave',
+  path: '/leave',
+  getParentRoute: () => EmployeesRoute,
+} as any)
+const EmployeesPayrollRoute = EmployeesPayrollRouteImport.update({
+  id: '/payroll',
+  path: '/payroll',
+  getParentRoute: () => EmployeesRoute,
+} as any)
+const EmployeesPerformanceRoute = EmployeesPerformanceRouteImport.update({
+  id: '/performance',
+  path: '/performance',
+  getParentRoute: () => EmployeesRoute,
+} as any)
+const EmployeesSettingsRoute = EmployeesSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => EmployeesRoute,
+} as any)
+const EmployeesTimesheetsRoute = EmployeesTimesheetsRouteImport.update({
+  id: '/timesheets',
+  path: '/timesheets',
+  getParentRoute: () => EmployeesRoute,
+} as any)
+const ProjectsProjectIdRoute = ProjectsProjectIdRouteImport.update({
+  id: '/$projectId',
+  path: '/$projectId',
+  getParentRoute: () => ProjectsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/assets': typeof AssetsRoute
-  '/clients': typeof ClientsRoute
+  '/clients': typeof ClientsRouteWithChildren
   '/employees': typeof EmployeesRouteWithChildren
   '/finance': typeof FinanceRoute
   '/inbox': typeof InboxRoute
   '/leads': typeof LeadsRoute
-  '/projects': typeof ProjectsRoute
+  '/projects': typeof ProjectsRouteWithChildren
   '/reports': typeof ReportsRoute
   '/settings': typeof SettingsRoute
   '/tasks': typeof TasksRoute
+  '/clients/$clientId': typeof ClientsClientIdRoute
   '/employees/$employeeId': typeof EmployeesEmployeeIdRoute
+  '/employees/attendance': typeof EmployeesAttendanceRoute
+  '/employees/documents': typeof EmployeesDocumentsRoute
+  '/employees/leave': typeof EmployeesLeaveRoute
+  '/employees/payroll': typeof EmployeesPayrollRoute
+  '/employees/performance': typeof EmployeesPerformanceRoute
+  '/employees/settings': typeof EmployeesSettingsRoute
+  '/employees/timesheets': typeof EmployeesTimesheetsRoute
+  '/projects/$projectId': typeof ProjectsProjectIdRoute
   '/employees/': typeof EmployeesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/assets': typeof AssetsRoute
-  '/clients': typeof ClientsRoute
+  '/clients': typeof ClientsRouteWithChildren
   '/finance': typeof FinanceRoute
   '/inbox': typeof InboxRoute
   '/leads': typeof LeadsRoute
-  '/projects': typeof ProjectsRoute
+  '/projects': typeof ProjectsRouteWithChildren
   '/reports': typeof ReportsRoute
   '/settings': typeof SettingsRoute
   '/tasks': typeof TasksRoute
+  '/clients/$clientId': typeof ClientsClientIdRoute
   '/employees/$employeeId': typeof EmployeesEmployeeIdRoute
+  '/employees/attendance': typeof EmployeesAttendanceRoute
+  '/employees/documents': typeof EmployeesDocumentsRoute
+  '/employees/leave': typeof EmployeesLeaveRoute
+  '/employees/payroll': typeof EmployeesPayrollRoute
+  '/employees/performance': typeof EmployeesPerformanceRoute
+  '/employees/settings': typeof EmployeesSettingsRoute
+  '/employees/timesheets': typeof EmployeesTimesheetsRoute
+  '/projects/$projectId': typeof ProjectsProjectIdRoute
   '/employees': typeof EmployeesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/assets': typeof AssetsRoute
-  '/clients': typeof ClientsRoute
+  '/clients': typeof ClientsRouteWithChildren
   '/employees': typeof EmployeesRouteWithChildren
   '/finance': typeof FinanceRoute
   '/inbox': typeof InboxRoute
   '/leads': typeof LeadsRoute
-  '/projects': typeof ProjectsRoute
+  '/projects': typeof ProjectsRouteWithChildren
   '/reports': typeof ReportsRoute
   '/settings': typeof SettingsRoute
   '/tasks': typeof TasksRoute
+  '/clients/$clientId': typeof ClientsClientIdRoute
   '/employees/$employeeId': typeof EmployeesEmployeeIdRoute
+  '/employees/attendance': typeof EmployeesAttendanceRoute
+  '/employees/documents': typeof EmployeesDocumentsRoute
+  '/employees/leave': typeof EmployeesLeaveRoute
+  '/employees/payroll': typeof EmployeesPayrollRoute
+  '/employees/performance': typeof EmployeesPerformanceRoute
+  '/employees/settings': typeof EmployeesSettingsRoute
+  '/employees/timesheets': typeof EmployeesTimesheetsRoute
+  '/projects/$projectId': typeof ProjectsProjectIdRoute
   '/employees/': typeof EmployeesIndexRoute
 }
 export interface FileRouteTypes {
@@ -148,7 +229,16 @@ export interface FileRouteTypes {
     | '/reports'
     | '/settings'
     | '/tasks'
+    | '/clients/$clientId'
     | '/employees/$employeeId'
+    | '/employees/attendance'
+    | '/employees/documents'
+    | '/employees/leave'
+    | '/employees/payroll'
+    | '/employees/performance'
+    | '/employees/settings'
+    | '/employees/timesheets'
+    | '/projects/$projectId'
     | '/employees/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -162,7 +252,16 @@ export interface FileRouteTypes {
     | '/reports'
     | '/settings'
     | '/tasks'
+    | '/clients/$clientId'
     | '/employees/$employeeId'
+    | '/employees/attendance'
+    | '/employees/documents'
+    | '/employees/leave'
+    | '/employees/payroll'
+    | '/employees/performance'
+    | '/employees/settings'
+    | '/employees/timesheets'
+    | '/projects/$projectId'
     | '/employees'
   id:
     | '__root__'
@@ -177,19 +276,28 @@ export interface FileRouteTypes {
     | '/reports'
     | '/settings'
     | '/tasks'
+    | '/clients/$clientId'
     | '/employees/$employeeId'
+    | '/employees/attendance'
+    | '/employees/documents'
+    | '/employees/leave'
+    | '/employees/payroll'
+    | '/employees/performance'
+    | '/employees/settings'
+    | '/employees/timesheets'
+    | '/projects/$projectId'
     | '/employees/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AssetsRoute: typeof AssetsRoute
-  ClientsRoute: typeof ClientsRoute
+  ClientsRoute: typeof ClientsRouteWithChildren
   EmployeesRoute: typeof EmployeesRouteWithChildren
   FinanceRoute: typeof FinanceRoute
   InboxRoute: typeof InboxRoute
   LeadsRoute: typeof LeadsRoute
-  ProjectsRoute: typeof ProjectsRoute
+  ProjectsRoute: typeof ProjectsRouteWithChildren
   ReportsRoute: typeof ReportsRoute
   SettingsRoute: typeof SettingsRoute
   TasksRoute: typeof TasksRoute
@@ -274,6 +382,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TasksRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/clients/$clientId': {
+      id: '/clients/$clientId'
+      path: '/$clientId'
+      fullPath: '/clients/$clientId'
+      preLoaderRoute: typeof ClientsClientIdRouteImport
+      parentRoute: typeof ClientsRoute
+    }
     '/employees/': {
       id: '/employees/'
       path: '/'
@@ -288,16 +403,97 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmployeesEmployeeIdRouteImport
       parentRoute: typeof EmployeesRoute
     }
+    '/employees/attendance': {
+      id: '/employees/attendance'
+      path: '/attendance'
+      fullPath: '/employees/attendance'
+      preLoaderRoute: typeof EmployeesAttendanceRouteImport
+      parentRoute: typeof EmployeesRoute
+    }
+    '/employees/documents': {
+      id: '/employees/documents'
+      path: '/documents'
+      fullPath: '/employees/documents'
+      preLoaderRoute: typeof EmployeesDocumentsRouteImport
+      parentRoute: typeof EmployeesRoute
+    }
+    '/employees/leave': {
+      id: '/employees/leave'
+      path: '/leave'
+      fullPath: '/employees/leave'
+      preLoaderRoute: typeof EmployeesLeaveRouteImport
+      parentRoute: typeof EmployeesRoute
+    }
+    '/employees/payroll': {
+      id: '/employees/payroll'
+      path: '/payroll'
+      fullPath: '/employees/payroll'
+      preLoaderRoute: typeof EmployeesPayrollRouteImport
+      parentRoute: typeof EmployeesRoute
+    }
+    '/employees/performance': {
+      id: '/employees/performance'
+      path: '/performance'
+      fullPath: '/employees/performance'
+      preLoaderRoute: typeof EmployeesPerformanceRouteImport
+      parentRoute: typeof EmployeesRoute
+    }
+    '/employees/settings': {
+      id: '/employees/settings'
+      path: '/settings'
+      fullPath: '/employees/settings'
+      preLoaderRoute: typeof EmployeesSettingsRouteImport
+      parentRoute: typeof EmployeesRoute
+    }
+    '/employees/timesheets': {
+      id: '/employees/timesheets'
+      path: '/timesheets'
+      fullPath: '/employees/timesheets'
+      preLoaderRoute: typeof EmployeesTimesheetsRouteImport
+      parentRoute: typeof EmployeesRoute
+    }
+    '/projects/$projectId': {
+      id: '/projects/$projectId'
+      path: '/$projectId'
+      fullPath: '/projects/$projectId'
+      preLoaderRoute: typeof ProjectsProjectIdRouteImport
+      parentRoute: typeof ProjectsRoute
+    }
   }
 }
 
+interface ClientsRouteChildren {
+  ClientsClientIdRoute: typeof ClientsClientIdRoute
+}
+
+const ClientsRouteChildren: ClientsRouteChildren = {
+  ClientsClientIdRoute: ClientsClientIdRoute,
+}
+
+const ClientsRouteWithChildren =
+  ClientsRoute._addFileChildren(ClientsRouteChildren)
+
 interface EmployeesRouteChildren {
   EmployeesEmployeeIdRoute: typeof EmployeesEmployeeIdRoute
+  EmployeesAttendanceRoute: typeof EmployeesAttendanceRoute
+  EmployeesDocumentsRoute: typeof EmployeesDocumentsRoute
+  EmployeesLeaveRoute: typeof EmployeesLeaveRoute
+  EmployeesPayrollRoute: typeof EmployeesPayrollRoute
+  EmployeesPerformanceRoute: typeof EmployeesPerformanceRoute
+  EmployeesSettingsRoute: typeof EmployeesSettingsRoute
+  EmployeesTimesheetsRoute: typeof EmployeesTimesheetsRoute
   EmployeesIndexRoute: typeof EmployeesIndexRoute
 }
 
 const EmployeesRouteChildren: EmployeesRouteChildren = {
   EmployeesEmployeeIdRoute: EmployeesEmployeeIdRoute,
+  EmployeesAttendanceRoute: EmployeesAttendanceRoute,
+  EmployeesDocumentsRoute: EmployeesDocumentsRoute,
+  EmployeesLeaveRoute: EmployeesLeaveRoute,
+  EmployeesPayrollRoute: EmployeesPayrollRoute,
+  EmployeesPerformanceRoute: EmployeesPerformanceRoute,
+  EmployeesSettingsRoute: EmployeesSettingsRoute,
+  EmployeesTimesheetsRoute: EmployeesTimesheetsRoute,
   EmployeesIndexRoute: EmployeesIndexRoute,
 }
 
@@ -305,15 +501,27 @@ const EmployeesRouteWithChildren = EmployeesRoute._addFileChildren(
   EmployeesRouteChildren,
 )
 
+interface ProjectsRouteChildren {
+  ProjectsProjectIdRoute: typeof ProjectsProjectIdRoute
+}
+
+const ProjectsRouteChildren: ProjectsRouteChildren = {
+  ProjectsProjectIdRoute: ProjectsProjectIdRoute,
+}
+
+const ProjectsRouteWithChildren = ProjectsRoute._addFileChildren(
+  ProjectsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AssetsRoute: AssetsRoute,
-  ClientsRoute: ClientsRoute,
+  ClientsRoute: ClientsRouteWithChildren,
   EmployeesRoute: EmployeesRouteWithChildren,
   FinanceRoute: FinanceRoute,
   InboxRoute: InboxRoute,
   LeadsRoute: LeadsRoute,
-  ProjectsRoute: ProjectsRoute,
+  ProjectsRoute: ProjectsRouteWithChildren,
   ReportsRoute: ReportsRoute,
   SettingsRoute: SettingsRoute,
   TasksRoute: TasksRoute,
