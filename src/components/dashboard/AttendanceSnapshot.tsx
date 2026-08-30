@@ -8,10 +8,10 @@ export function AttendanceSnapshot() {
   for (const a of attendance) today[a.status] = (today[a.status] ?? 0) + 1;
 
   const stats = [
-    { label: "Present", value: today.present, tone: "text-success" },
-    { label: "Remote", value: today.remote, tone: "text-info" },
-    { label: "Late", value: today.late, tone: "text-warning" },
-    { label: "Absent", value: today.absent, tone: "text-destructive" },
+    { label: "Present", value: today["present"], tone: "text-success" },
+    { label: "Remote", value: today["remote"], tone: "text-info" },
+    { label: "Late", value: today["late"], tone: "text-warning" },
+    { label: "Absent", value: today["absent"], tone: "text-destructive" },
   ];
 
   return (

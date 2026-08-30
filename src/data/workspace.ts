@@ -230,12 +230,12 @@ export type PermissionMatrix = Record<string, Record<(typeof permissionModules)[
 export function defaultPermissionMatrix(): PermissionMatrix {
   const matrix: PermissionMatrix = {};
   for (const role of rolesSeed) {
-    matrix[role.id] = {} as PermissionMatrix[string];
+    const roleMatrix = (matrix[role.id] = {} as PermissionMatrix[string]);
     for (const mod of permissionModules) {
       const isAdmin = role.id === "role-admin";
       const isManager = role.id === "role-manager";
       const isClient = role.id === "role-client";
-      matrix[role.id][mod] = {
+      roleMatrix[mod] = {
         view: isAdmin || isManager || (!isClient) || mod === "Projects",
         edit: isAdmin || (isManager && mod !== "Settings"),
         delete: isAdmin,
