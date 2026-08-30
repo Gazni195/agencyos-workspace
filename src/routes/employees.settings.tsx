@@ -9,5 +9,5 @@ export const Route = createFileRoute("/employees/settings")({
 });
 
 function EmployeeSettingsPage() {
-  return <section className="mx-auto max-w-7xl"><PageHeader title="Employee settings" description="Configure HR policies, approval workflows and notifications." /><div className="grid gap-4 sm:grid-cols-3"><KpiCard title="Attendance policies" value="4" icon={CalendarCog} /><KpiCard title="Approval workflows" value="4" icon={ShieldCheck} /><KpiCard title="Notification rules" value="8" icon={BellRing} /></div><div className="surface-card mt-5 p-5"><p className="font-semibold">HR workspace settings</p><p className="mt-2 text-sm text-muted-foreground">Policies and workflows are ready for configuration.</p></div></section>;
+  return <section className="mx-auto max-w-7xl"><PageHeader title="Employee settings" description="Configure HR policies, approval workflows and notifications." /><div className="grid gap-4 sm:grid-cols-3"><KpiCard label="Attendance policies" value="4" icon={CalendarCog} /><KpiCard label="Approval workflows" value="4" icon={ShieldCheck} /><KpiCard label="Notification rules" value="8" icon={BellRing} /></div><div className="surface-card mt-5 p-5"><p className="font-semibold">HR workspace settings</p><p className="mt-2 text-sm text-muted-foreground">Policies and workflows are ready for configuration.</p></div></section>;
 }
