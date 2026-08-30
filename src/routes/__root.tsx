@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -127,18 +128,25 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+const AUTH_ROUTES = ["/login", "/forgot-password", "/reset-password", "/verify-email"];
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const pathname = useRouterState({ select: (r) => r.location.pathname });
+  const isAuthRoute = AUTH_ROUTES.includes(pathname);
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AppShell>
-        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+      {isAuthRoute ? (
+        // Auth pages render standalone, without the app sidebar/header chrome.
         <Outlet />
-      </AppShell>
+      ) : (
+        <AppShell>
+          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+          <Outlet />
+        </AppShell>
+      )}
       <Toaster />
-
     </QueryClientProvider>
   );
 }
-

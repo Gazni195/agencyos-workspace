@@ -11,7 +11,7 @@ export function KpiCard({
 }: {
   label: string;
   value: string;
-  delta?: number;
+  delta?: number | undefined;
   hint?: string;
   icon: LucideIcon;
 }) {
