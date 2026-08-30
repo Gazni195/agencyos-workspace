@@ -1,12 +1,26 @@
 import { useState, type ReactNode } from "react";
-import { Bell, Menu, Search } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+import { Bell, LogOut, Menu, Search, Settings, User } from "lucide-react";
 import { AppSidebar } from "./AppSidebar";
-import { Input } from "@/components/ui/input";
+import { GlobalSearch } from "./GlobalSearch";
+import { ThemeToggle } from "./ThemeToggle";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { currentUser, headerNotifications } from "@/mock";
 
 export function AppShell({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
+  const [notes, setNotes] = useState(headerNotifications);
+  const unread = notes.filter((n) => n.unread).length;
 
   return (
     <div className="min-h-screen bg-background">
@@ -22,27 +36,98 @@ export function AppShell({ children }: { children: ReactNode }) {
           >
             <Menu className="size-5" />
           </Button>
-          <div className="relative hidden max-w-md flex-1 sm:block">
-            <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              placeholder="Search clients, people, projects…"
-              className="h-10 rounded-xl bg-muted/60 pl-9"
-            />
+          <div className="hidden max-w-md flex-1 sm:block">
+            <GlobalSearch />
           </div>
-          <div className="ml-auto flex items-center gap-3">
-            <Button variant="ghost" size="icon" aria-label="Notifications" className="relative">
-              <Bell className="size-5" />
-              <span className="absolute right-2 top-2 size-2 rounded-full bg-primary" />
-            </Button>
-            <div className="flex items-center gap-2">
-              <Avatar className="size-9">
-                <AvatarFallback className="bg-primary-soft text-accent-foreground">DR</AvatarFallback>
-              </Avatar>
-              <div className="hidden leading-tight md:block">
-                <p className="text-sm font-semibold">Daniel Reyes</p>
-                <p className="text-xs text-muted-foreground">Owner</p>
-              </div>
-            </div>
+          <Button variant="ghost" size="icon" className="sm:hidden" aria-label="Search">
+            <Search className="size-5" />
+          </Button>
+          <div className="ml-auto flex items-center gap-1 sm:gap-2">
+            <ThemeToggle />
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="ghost" size="icon" aria-label="Notifications" className="relative">
+                  <Bell className="size-5" />
+                  {unread > 0 && (
+                    <span className="absolute right-1.5 top-1.5 flex size-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
+                      {unread}
+                    </span>
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent align="end" className="w-80 p-0">
+                <div className="flex items-center justify-between border-b border-border px-4 py-3">
+                  <p className="text-sm font-semibold">Notifications</p>
+                  <button
+                    type="button"
+                    onClick={() => setNotes((prev) => prev.map((n) => ({ ...n, unread: false })))}
+                    className="text-xs font-medium text-primary hover:underline"
+                  >
+                    Mark all read
+                  </button>
+                </div>
+                <ul className="max-h-80 overflow-y-auto">
+                  {notes.map((n) => (
+                    <li
+                      key={n.id}
+                      className="flex gap-3 border-b border-border/60 px-4 py-3 last:border-0"
+                    >
+                      <span
+                        className={`mt-1.5 size-2 shrink-0 rounded-full ${n.unread ? "bg-primary" : "bg-muted-foreground/30"}`}
+                      />
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium">{n.title}</p>
+                        <p className="text-xs text-muted-foreground">{n.body}</p>
+                        <p className="mt-1 text-[11px] text-muted-foreground">{n.when}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+                <div className="border-t border-border px-4 py-2.5">
+                  <Link to="/inbox" className="text-xs font-medium text-primary hover:underline">
+                    Open inbox
+                  </Link>
+                </div>
+              </PopoverContent>
+            </Popover>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="flex items-center gap-2 rounded-xl px-1 py-1 transition-colors hover:bg-muted">
+                  <Avatar className="size-9">
+                    <AvatarFallback className="bg-primary-soft text-accent-foreground">
+                      {currentUser.initials}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="hidden leading-tight md:block">
+                    <p className="text-sm font-semibold">{currentUser.name}</p>
+                    <p className="text-xs text-muted-foreground">{currentUser.role}</p>
+                  </div>
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuLabel>
+                  <p className="text-sm font-semibold">{currentUser.name}</p>
+                  <p className="text-xs font-normal text-muted-foreground">{currentUser.email}</p>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link to="/employees">
+                    <User className="mr-2 size-4" /> My profile
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/settings">
+                    <Settings className="mr-2 size-4" /> Workspace settings
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link to="/login">
+                    <LogOut className="mr-2 size-4" /> Sign out
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </header>
         <main className="p-4 md:p-6">{children}</main>
