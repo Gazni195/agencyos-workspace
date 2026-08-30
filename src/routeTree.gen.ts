@@ -14,12 +14,16 @@ import { Route as AssetsRouteImport } from './routes/assets'
 import { Route as ClientsRouteImport } from './routes/clients'
 import { Route as EmployeesRouteImport } from './routes/employees'
 import { Route as FinanceRouteImport } from './routes/finance'
+import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as InboxRouteImport } from './routes/inbox'
 import { Route as LeadsRouteImport } from './routes/leads'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as ReportsRouteImport } from './routes/reports'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as TasksRouteImport } from './routes/tasks'
+import { Route as VerifyEmailRouteImport } from './routes/verify-email'
 import { Route as ClientsClientIdRouteImport } from './routes/clients.$clientId'
 import { Route as EmployeesIndexRouteImport } from './routes/employees.index'
 import { Route as EmployeesEmployeeIdRouteImport } from './routes/employees.$employeeId'
@@ -57,6 +61,11 @@ const FinanceRoute = FinanceRouteImport.update({
   path: '/finance',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const InboxRoute = InboxRouteImport.update({
   id: '/inbox',
   path: '/inbox',
@@ -65,6 +74,11 @@ const InboxRoute = InboxRouteImport.update({
 const LeadsRoute = LeadsRouteImport.update({
   id: '/leads',
   path: '/leads',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProjectsRoute = ProjectsRouteImport.update({
@@ -77,6 +91,11 @@ const ReportsRoute = ReportsRouteImport.update({
   path: '/reports',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
@@ -85,6 +104,11 @@ const SettingsRoute = SettingsRouteImport.update({
 const TasksRoute = TasksRouteImport.update({
   id: '/tasks',
   path: '/tasks',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VerifyEmailRoute = VerifyEmailRouteImport.update({
+  id: '/verify-email',
+  path: '/verify-email',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ClientsClientIdRoute = ClientsClientIdRouteImport.update({
@@ -149,12 +173,16 @@ export interface FileRoutesByFullPath {
   '/clients': typeof ClientsRouteWithChildren
   '/employees': typeof EmployeesRouteWithChildren
   '/finance': typeof FinanceRoute
+  '/forgot-password': typeof ForgotPasswordRoute
   '/inbox': typeof InboxRoute
   '/leads': typeof LeadsRoute
+  '/login': typeof LoginRoute
   '/projects': typeof ProjectsRouteWithChildren
   '/reports': typeof ReportsRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/settings': typeof SettingsRoute
   '/tasks': typeof TasksRoute
+  '/verify-email': typeof VerifyEmailRoute
   '/clients/$clientId': typeof ClientsClientIdRoute
   '/employees/$employeeId': typeof EmployeesEmployeeIdRoute
   '/employees/attendance': typeof EmployeesAttendanceRoute
@@ -172,12 +200,16 @@ export interface FileRoutesByTo {
   '/assets': typeof AssetsRoute
   '/clients': typeof ClientsRouteWithChildren
   '/finance': typeof FinanceRoute
+  '/forgot-password': typeof ForgotPasswordRoute
   '/inbox': typeof InboxRoute
   '/leads': typeof LeadsRoute
+  '/login': typeof LoginRoute
   '/projects': typeof ProjectsRouteWithChildren
   '/reports': typeof ReportsRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/settings': typeof SettingsRoute
   '/tasks': typeof TasksRoute
+  '/verify-email': typeof VerifyEmailRoute
   '/clients/$clientId': typeof ClientsClientIdRoute
   '/employees/$employeeId': typeof EmployeesEmployeeIdRoute
   '/employees/attendance': typeof EmployeesAttendanceRoute
@@ -197,12 +229,16 @@ export interface FileRoutesById {
   '/clients': typeof ClientsRouteWithChildren
   '/employees': typeof EmployeesRouteWithChildren
   '/finance': typeof FinanceRoute
+  '/forgot-password': typeof ForgotPasswordRoute
   '/inbox': typeof InboxRoute
   '/leads': typeof LeadsRoute
+  '/login': typeof LoginRoute
   '/projects': typeof ProjectsRouteWithChildren
   '/reports': typeof ReportsRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/settings': typeof SettingsRoute
   '/tasks': typeof TasksRoute
+  '/verify-email': typeof VerifyEmailRoute
   '/clients/$clientId': typeof ClientsClientIdRoute
   '/employees/$employeeId': typeof EmployeesEmployeeIdRoute
   '/employees/attendance': typeof EmployeesAttendanceRoute
@@ -223,12 +259,16 @@ export interface FileRouteTypes {
     | '/clients'
     | '/employees'
     | '/finance'
+    | '/forgot-password'
     | '/inbox'
     | '/leads'
+    | '/login'
     | '/projects'
     | '/reports'
+    | '/reset-password'
     | '/settings'
     | '/tasks'
+    | '/verify-email'
     | '/clients/$clientId'
     | '/employees/$employeeId'
     | '/employees/attendance'
@@ -246,12 +286,16 @@ export interface FileRouteTypes {
     | '/assets'
     | '/clients'
     | '/finance'
+    | '/forgot-password'
     | '/inbox'
     | '/leads'
+    | '/login'
     | '/projects'
     | '/reports'
+    | '/reset-password'
     | '/settings'
     | '/tasks'
+    | '/verify-email'
     | '/clients/$clientId'
     | '/employees/$employeeId'
     | '/employees/attendance'
@@ -270,12 +314,16 @@ export interface FileRouteTypes {
     | '/clients'
     | '/employees'
     | '/finance'
+    | '/forgot-password'
     | '/inbox'
     | '/leads'
+    | '/login'
     | '/projects'
     | '/reports'
+    | '/reset-password'
     | '/settings'
     | '/tasks'
+    | '/verify-email'
     | '/clients/$clientId'
     | '/employees/$employeeId'
     | '/employees/attendance'
@@ -295,12 +343,16 @@ export interface RootRouteChildren {
   ClientsRoute: typeof ClientsRouteWithChildren
   EmployeesRoute: typeof EmployeesRouteWithChildren
   FinanceRoute: typeof FinanceRoute
+  ForgotPasswordRoute: typeof ForgotPasswordRoute
   InboxRoute: typeof InboxRoute
   LeadsRoute: typeof LeadsRoute
+  LoginRoute: typeof LoginRoute
   ProjectsRoute: typeof ProjectsRouteWithChildren
   ReportsRoute: typeof ReportsRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   SettingsRoute: typeof SettingsRoute
   TasksRoute: typeof TasksRoute
+  VerifyEmailRoute: typeof VerifyEmailRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -340,6 +392,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FinanceRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/inbox': {
       id: '/inbox'
       path: '/inbox'
@@ -352,6 +411,13 @@ declare module '@tanstack/react-router' {
       path: '/leads'
       fullPath: '/leads'
       preLoaderRoute: typeof LeadsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/projects': {
@@ -368,6 +434,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReportsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/settings': {
       id: '/settings'
       path: '/settings'
@@ -380,6 +453,13 @@ declare module '@tanstack/react-router' {
       path: '/tasks'
       fullPath: '/tasks'
       preLoaderRoute: typeof TasksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/verify-email': {
+      id: '/verify-email'
+      path: '/verify-email'
+      fullPath: '/verify-email'
+      preLoaderRoute: typeof VerifyEmailRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/clients/$clientId': {
@@ -519,12 +599,16 @@ const rootRouteChildren: RootRouteChildren = {
   ClientsRoute: ClientsRouteWithChildren,
   EmployeesRoute: EmployeesRouteWithChildren,
   FinanceRoute: FinanceRoute,
+  ForgotPasswordRoute: ForgotPasswordRoute,
   InboxRoute: InboxRoute,
   LeadsRoute: LeadsRoute,
+  LoginRoute: LoginRoute,
   ProjectsRoute: ProjectsRouteWithChildren,
   ReportsRoute: ReportsRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   SettingsRoute: SettingsRoute,
   TasksRoute: TasksRoute,
+  VerifyEmailRoute: VerifyEmailRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
