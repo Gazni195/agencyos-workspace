@@ -13,7 +13,13 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import type { ExpenseCategory } from "@/data/finance";
 
 const categories: ExpenseCategory[] = [
@@ -26,7 +32,11 @@ const categories: ExpenseCategory[] = [
   "Professional Services",
 ];
 
-export function ExpenseFormDialog({ onCreate }: { onCreate?: (vendor: string, amount: number) => void }) {
+export function ExpenseFormDialog({
+  onCreate,
+}: {
+  onCreate?: (vendor: string, amount: number) => void;
+}) {
   const [open, setOpen] = useState(false);
   const [vendor, setVendor] = useState("");
   const [category, setCategory] = useState<string>("");
@@ -59,7 +69,11 @@ export function ExpenseFormDialog({ onCreate }: { onCreate?: (vendor: string, am
         <div className="space-y-4">
           <div className="grid gap-2">
             <Label>Vendor</Label>
-            <Input value={vendor} onChange={(e) => setVendor(e.target.value)} placeholder="e.g. Adobe" />
+            <Input
+              value={vendor}
+              onChange={(e) => setVendor(e.target.value)}
+              placeholder="e.g. Adobe"
+            />
           </div>
           <div className="grid gap-2">
             <Label>Category</Label>
@@ -78,7 +92,13 @@ export function ExpenseFormDialog({ onCreate }: { onCreate?: (vendor: string, am
           </div>
           <div className="grid gap-2">
             <Label>Amount</Label>
-            <Input type="number" min={0} value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="0.00" />
+            <Input
+              type="number"
+              min={0}
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              placeholder="0.00"
+            />
           </div>
         </div>
         <DialogFooter>

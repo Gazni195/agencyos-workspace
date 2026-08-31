@@ -29,7 +29,11 @@ export function ClientTable({ clients }: { clients: Client[] }) {
           {clients.map((c) => (
             <TableRow key={c.id}>
               <TableCell>
-                <Link to="/clients/$clientId" params={{ clientId: c.id }} className="flex items-center gap-3 font-medium hover:text-primary">
+                <Link
+                  to="/clients/$clientId"
+                  params={{ clientId: c.id }}
+                  className="flex items-center gap-3 font-medium hover:text-primary"
+                >
                   <span className="flex size-8 items-center justify-center rounded-lg bg-primary-soft text-xs font-semibold text-accent-foreground">
                     {c.logo}
                   </span>

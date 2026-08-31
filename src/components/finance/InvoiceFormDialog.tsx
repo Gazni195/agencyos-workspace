@@ -13,23 +13,39 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { money } from "@/data/agency";
 import { clients } from "@/data/agency";
 
 type DraftLine = { id: string; description: string; quantity: number; rate: number };
 
-export function InvoiceFormDialog({ onCreate }: { onCreate?: (client: string, total: number) => void }) {
+export function InvoiceFormDialog({
+  onCreate,
+}: {
+  onCreate?: (client: string, total: number) => void;
+}) {
   const [open, setOpen] = useState(false);
   const [client, setClient] = useState("");
-  const [lines, setLines] = useState<DraftLine[]>([{ id: "l-1", description: "", quantity: 1, rate: 0 }]);
+  const [lines, setLines] = useState<DraftLine[]>([
+    { id: "l-1", description: "", quantity: 1, rate: 0 },
+  ]);
 
   const subtotal = lines.reduce((sum, l) => sum + l.quantity * l.rate, 0);
 
   const addLine = () =>
-    setLines((prev) => [...prev, { id: `l-${prev.length + 1}-${Date.now()}`, description: "", quantity: 1, rate: 0 }]);
-  const removeLine = (id: string) => setLines((prev) => (prev.length > 1 ? prev.filter((l) => l.id !== id) : prev));
+    setLines((prev) => [
+      ...prev,
+      { id: `l-${prev.length + 1}-${Date.now()}`, description: "", quantity: 1, rate: 0 },
+    ]);
+  const removeLine = (id: string) =>
+    setLines((prev) => (prev.length > 1 ? prev.filter((l) => l.id !== id) : prev));
   const updateLine = (id: string, patch: Partial<DraftLine>) =>
     setLines((prev) => prev.map((l) => (l.id === id ? { ...l, ...patch } : l)));
 
@@ -77,7 +93,10 @@ export function InvoiceFormDialog({ onCreate }: { onCreate?: (client: string, to
             <Label>Line items</Label>
             <div className="space-y-2">
               {lines.map((line) => (
-                <div key={line.id} className="flex flex-wrap items-center gap-2 rounded-lg border border-border p-2">
+                <div
+                  key={line.id}
+                  className="flex flex-wrap items-center gap-2 rounded-lg border border-border p-2"
+                >
                   <Input
                     className="min-w-40 flex-1"
                     placeholder="Description"

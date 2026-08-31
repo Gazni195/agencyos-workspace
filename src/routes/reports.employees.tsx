@@ -34,18 +34,24 @@ export const Route = createFileRoute("/reports/employees")({
 });
 
 function EmployeesReportPage() {
-  const avgAttendance = Math.round(
-    departmentAttendance.reduce((s, d) => s + d.attendanceRate, 0) / departmentAttendance.length,
-  );
-  const avgHours =
-    Math.round(
-      (departmentAttendance.reduce((s, d) => s + d.avgHours, 0) / departmentAttendance.length) * 10,
-    ) / 10;
+  const avgAttendance = departmentAttendance.length
+    ? Math.round(
+        departmentAttendance.reduce((s, d) => s + d.attendanceRate, 0) /
+          departmentAttendance.length,
+      )
+    : 0;
+  const avgHours = departmentAttendance.length
+    ? Math.round(
+        (departmentAttendance.reduce((s, d) => s + d.avgHours, 0) / departmentAttendance.length) *
+          10,
+      ) / 10
+    : 0;
   const totalLate = departmentAttendance.reduce((s, d) => s + d.lateArrivals, 0);
-  const avgScore =
-    Math.round(
-      (performanceByDept.reduce((s, d) => s + d.score, 0) / performanceByDept.length) * 10,
-    ) / 10;
+  const avgScore = performanceByDept.length
+    ? Math.round(
+        (performanceByDept.reduce((s, d) => s + d.score, 0) / performanceByDept.length) * 10,
+      ) / 10
+    : 0;
 
   return (
     <div>

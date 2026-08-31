@@ -19,7 +19,13 @@ export function PipelineChart() {
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={pipeline} margin={{ left: 8, right: 8 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
-            <XAxis dataKey="stage" stroke="var(--color-muted-foreground)" fontSize={11} tickLine={false} axisLine={false} />
+            <XAxis
+              dataKey="stage"
+              stroke="var(--color-muted-foreground)"
+              fontSize={11}
+              tickLine={false}
+              axisLine={false}
+            />
             <YAxis
               stroke="var(--color-muted-foreground)"
               fontSize={11}

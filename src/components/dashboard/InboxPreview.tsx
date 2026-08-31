@@ -17,7 +17,9 @@ export function InboxPreview() {
         </Link>
       </CardHeader>
       <CardContent className="space-y-1">
-        {unread.length === 0 && <p className="text-sm text-muted-foreground">You're all caught up.</p>}
+        {unread.length === 0 && (
+          <p className="text-sm text-muted-foreground">You're all caught up.</p>
+        )}
         {unread.map((m) => (
           <Link
             key={m.id}

@@ -7,8 +7,21 @@ import { DataToolbar } from "@/components/common/DataToolbar";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Dialog,
   DialogContent,
@@ -19,7 +32,12 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { employees as seedEmployees, departments, type Employee, type EmployeeStatus } from "@/data/agency.ts";
+import {
+  employees as seedEmployees,
+  departments,
+  type Employee,
+  type EmployeeStatus,
+} from "@/data/agency.ts";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/employees/")({
@@ -105,7 +123,14 @@ function DirectoryPage() {
     };
     setEmployeeList((prev) => [newEmployee, ...prev]);
     setOpen(false);
-    setForm({ name: "", role: "", department: "Creative", email: "", manager: "", employmentType: "Full-time" });
+    setForm({
+      name: "",
+      role: "",
+      department: "Creative",
+      email: "",
+      manager: "",
+      employmentType: "Full-time",
+    });
     toast.success(`${newEmployee.name} added to the directory`);
   }
 
@@ -114,22 +139,38 @@ function DirectoryPage() {
       <div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <KpiCard label="Headcount" value={String(headcount)} icon={Users} hint="Total employees" />
         <KpiCard label="Active" value={String(active)} icon={UserCheck} hint="Currently working" />
-        <KpiCard label="On Leave" value={String(onLeave)} icon={CalendarClock} hint="Away right now" />
-        <KpiCard label="Avg. Utilization" value={`${avgUtilization}%`} icon={Gauge} hint="Across team" />
+        <KpiCard
+          label="On Leave"
+          value={String(onLeave)}
+          icon={CalendarClock}
+          hint="Away right now"
+        />
+        <KpiCard
+          label="Avg. Utilization"
+          value={`${avgUtilization}%`}
+          icon={Gauge}
+          hint="Across team"
+        />
       </div>
 
       <DataToolbar query={query} onQueryChange={setQuery} placeholder="Search name, role or email…">
         <Select value={department} onValueChange={setDepartment}>
-          <SelectTrigger className="h-10 w-40 rounded-xl bg-card"><SelectValue placeholder="Department" /></SelectTrigger>
+          <SelectTrigger className="h-10 w-40 rounded-xl bg-card">
+            <SelectValue placeholder="Department" />
+          </SelectTrigger>
           <SelectContent>
             <SelectItem value={ALL}>All departments</SelectItem>
             {departments.map((d) => (
-              <SelectItem key={d} value={d}>{d}</SelectItem>
+              <SelectItem key={d} value={d}>
+                {d}
+              </SelectItem>
             ))}
           </SelectContent>
         </Select>
         <Select value={status} onValueChange={setStatus}>
-          <SelectTrigger className="h-10 w-36 rounded-xl bg-card"><SelectValue placeholder="Status" /></SelectTrigger>
+          <SelectTrigger className="h-10 w-36 rounded-xl bg-card">
+            <SelectValue placeholder="Status" />
+          </SelectTrigger>
           <SelectContent>
             <SelectItem value={ALL}>All statuses</SelectItem>
             <SelectItem value="active">Active</SelectItem>
@@ -139,7 +180,9 @@ function DirectoryPage() {
           </SelectContent>
         </Select>
         <Select value={employmentType} onValueChange={setEmploymentType}>
-          <SelectTrigger className="h-10 w-40 rounded-xl bg-card"><SelectValue placeholder="Employment type" /></SelectTrigger>
+          <SelectTrigger className="h-10 w-40 rounded-xl bg-card">
+            <SelectValue placeholder="Employment type" />
+          </SelectTrigger>
           <SelectContent>
             <SelectItem value={ALL}>All types</SelectItem>
             <SelectItem value="Full-time">Full-time</SelectItem>
@@ -161,28 +204,50 @@ function DirectoryPage() {
             <div className="grid gap-3">
               <div className="grid gap-1.5">
                 <Label htmlFor="emp-name">Full name</Label>
-                <Input id="emp-name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Jordan Wells" />
+                <Input
+                  id="emp-name"
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  placeholder="Jordan Wells"
+                />
               </div>
               <div className="grid gap-1.5">
                 <Label htmlFor="emp-role">Role</Label>
-                <Input id="emp-role" value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })} placeholder="Brand Designer" />
+                <Input
+                  id="emp-role"
+                  value={form.role}
+                  onChange={(e) => setForm({ ...form, role: e.target.value })}
+                  placeholder="Brand Designer"
+                />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div className="grid gap-1.5">
                   <Label htmlFor="emp-dept">Department</Label>
-                  <Select value={form.department} onValueChange={(v) => setForm({ ...form, department: v })}>
-                    <SelectTrigger id="emp-dept"><SelectValue /></SelectTrigger>
+                  <Select
+                    value={form.department}
+                    onValueChange={(v) => setForm({ ...form, department: v })}
+                  >
+                    <SelectTrigger id="emp-dept">
+                      <SelectValue />
+                    </SelectTrigger>
                     <SelectContent>
                       {departments.map((d) => (
-                        <SelectItem key={d} value={d}>{d}</SelectItem>
+                        <SelectItem key={d} value={d}>
+                          {d}
+                        </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="grid gap-1.5">
                   <Label htmlFor="emp-type">Employment type</Label>
-                  <Select value={form.employmentType} onValueChange={(v) => setForm({ ...form, employmentType: v })}>
-                    <SelectTrigger id="emp-type"><SelectValue /></SelectTrigger>
+                  <Select
+                    value={form.employmentType}
+                    onValueChange={(v) => setForm({ ...form, employmentType: v })}
+                  >
+                    <SelectTrigger id="emp-type">
+                      <SelectValue />
+                    </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="Full-time">Full-time</SelectItem>
                       <SelectItem value="Part-time">Part-time</SelectItem>
@@ -193,15 +258,28 @@ function DirectoryPage() {
               </div>
               <div className="grid gap-1.5">
                 <Label htmlFor="emp-email">Email</Label>
-                <Input id="emp-email" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="jordan.wells@agencyos.co" />
+                <Input
+                  id="emp-email"
+                  type="email"
+                  value={form.email}
+                  onChange={(e) => setForm({ ...form, email: e.target.value })}
+                  placeholder="jordan.wells@agencyos.co"
+                />
               </div>
               <div className="grid gap-1.5">
                 <Label htmlFor="emp-manager">Manager</Label>
-                <Input id="emp-manager" value={form.manager} onChange={(e) => setForm({ ...form, manager: e.target.value })} placeholder="Daniel Reyes" />
+                <Input
+                  id="emp-manager"
+                  value={form.manager}
+                  onChange={(e) => setForm({ ...form, manager: e.target.value })}
+                  placeholder="Daniel Reyes"
+                />
               </div>
             </div>
             <DialogFooter>
-              <Button variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
+              <Button variant="outline" onClick={() => setOpen(false)}>
+                Cancel
+              </Button>
               <Button onClick={handleAdd}>Add employee</Button>
             </DialogFooter>
           </DialogContent>
@@ -224,7 +302,11 @@ function DirectoryPage() {
             {filtered.map((e) => (
               <TableRow key={e.id} className="cursor-pointer">
                 <TableCell>
-                  <Link to="/employees/$employeeId" params={{ employeeId: e.id }} className="flex items-center gap-3">
+                  <Link
+                    to="/employees/$employeeId"
+                    params={{ employeeId: e.id }}
+                    className="flex items-center gap-3"
+                  >
                     <Avatar className="size-9">
                       <AvatarFallback className="bg-primary-soft text-xs font-semibold text-accent-foreground">
                         {e.initials}
@@ -238,7 +320,9 @@ function DirectoryPage() {
                 </TableCell>
                 <TableCell className="text-muted-foreground">{e.department}</TableCell>
                 <TableCell className="text-muted-foreground">{e.email}</TableCell>
-                <TableCell><StatusBadge status={e.status} /></TableCell>
+                <TableCell>
+                  <StatusBadge status={e.status} />
+                </TableCell>
                 <TableCell>
                   <div className="flex items-center gap-2">
                     <Progress value={e.utilization} className="h-1.5 w-20" />

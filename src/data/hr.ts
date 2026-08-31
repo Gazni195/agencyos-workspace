@@ -5,18 +5,7 @@ export function employeeById(id: string): Employee | undefined {
   return employees.find((e) => e.id === id);
 }
 
-export const designations = [
-  "Creative Director",
-  "Senior Media Buyer",
-  "Account Strategist",
-  "Frontend Engineer",
-  "Backend Engineer",
-  "Head of Media",
-  "Motion Designer",
-  "Operations Manager",
-  "New Business Lead",
-  "Content Strategist",
-];
+export const designations: string[] = [];
 
 export type LeaveType = {
   name: string;
@@ -41,10 +30,30 @@ export const workingHours = {
 };
 
 export const attendancePolicies = [
-  { id: "pol-1", label: "Auto-flag late check-in after grace period", description: "Marks an employee late if they check in more than 15 minutes after start time.", enabled: true },
-  { id: "pol-2", label: "Allow remote check-in", description: "Employees can clock in from outside office geofence.", enabled: true },
-  { id: "pol-3", label: "Require manager approval for overtime", description: "Any day over 9 hours needs manager sign-off.", enabled: false },
-  { id: "pol-4", label: "Auto clock-out after 12 hours", description: "Prevents forgotten sessions from running indefinitely.", enabled: true },
+  {
+    id: "pol-1",
+    label: "Auto-flag late check-in after grace period",
+    description: "Marks an employee late if they check in more than 15 minutes after start time.",
+    enabled: true,
+  },
+  {
+    id: "pol-2",
+    label: "Allow remote check-in",
+    description: "Employees can clock in from outside office geofence.",
+    enabled: true,
+  },
+  {
+    id: "pol-3",
+    label: "Require manager approval for overtime",
+    description: "Any day over 9 hours needs manager sign-off.",
+    enabled: false,
+  },
+  {
+    id: "pol-4",
+    label: "Auto clock-out after 12 hours",
+    description: "Prevents forgotten sessions from running indefinitely.",
+    enabled: true,
+  },
 ];
 
 export const approvalWorkflows = [
@@ -62,14 +71,7 @@ export type EmployeeGoal = {
   dueDate: string;
 };
 
-export const employeeGoals: EmployeeGoal[] = [
-  { id: "gl-1", employeeId: "emp-1001", title: "Launch refreshed brand guideline system", progress: 90, dueDate: "2026-09-15" },
-  { id: "gl-2", employeeId: "emp-1001", title: "Mentor two junior art directors", progress: 60, dueDate: "2026-11-01" },
-  { id: "gl-3", employeeId: "emp-1002", title: "Improve paid social ROAS by 15%", progress: 72, dueDate: "2026-10-01" },
-  { id: "gl-4", employeeId: "emp-1004", title: "Ship component library v2", progress: 45, dueDate: "2026-10-20" },
-  { id: "gl-5", employeeId: "emp-1006", title: "Complete motion design certification", progress: 30, dueDate: "2026-12-01" },
-  { id: "gl-6", employeeId: "emp-1007", title: "Reduce resourcing conflicts by 20%", progress: 80, dueDate: "2026-09-30" },
-];
+export const employeeGoals: EmployeeGoal[] = [];
 
 // Attendance status calendar for the current month, keyed by day number, for a subset of employees.
 export type DayStatus = "present" | "late" | "remote" | "absent" | "weekend" | "leave" | "none";
@@ -94,11 +96,13 @@ export function generateMonthCalendar(seed: number, daysInMonth = 30): DayStatus
 
 export const monthLabel = "August 2026";
 
-export const departmentOptions = ["Creative", "Media", "Strategy", "Engineering", "Operations", "Sales"] as const;
+export const departmentOptions = [
+  "Creative",
+  "Media",
+  "Strategy",
+  "Engineering",
+  "Operations",
+  "Sales",
+] as const;
 
-export const timesheetWeeklyHours = [
-  { week: "W1", billable: 156, nonBillable: 42 },
-  { week: "W2", billable: 168, nonBillable: 38 },
-  { week: "W3", billable: 149, nonBillable: 51 },
-  { week: "W4", billable: 172, nonBillable: 33 },
-];
+export const timesheetWeeklyHours: { week: string; billable: number; nonBillable: number }[] = [];

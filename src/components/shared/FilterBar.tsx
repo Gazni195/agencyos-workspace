@@ -38,7 +38,10 @@ export function FilterBar({
       </span>
       {filters.map((filter) => (
         <Select key={filter.id} value={filter.value} onValueChange={filter.onChange}>
-          <SelectTrigger className="h-10 w-auto min-w-36 rounded-xl bg-card" aria-label={filter.label}>
+          <SelectTrigger
+            className="h-10 w-auto min-w-36 rounded-xl bg-card"
+            aria-label={filter.label}
+          >
             <SelectValue placeholder={filter.label} />
           </SelectTrigger>
           <SelectContent>

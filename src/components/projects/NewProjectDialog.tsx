@@ -13,7 +13,13 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { clients, employees } from "@/data/agency";
 import type { DeliveryProject, ProjectStatus } from "@/data/delivery";
 
@@ -78,7 +84,12 @@ export function NewProjectDialog({ onCreate }: { onCreate: (project: DeliveryPro
         <div className="grid gap-4 py-2">
           <div className="grid gap-1.5">
             <Label htmlFor="np-name">Project name</Label>
-            <Input id="np-name" value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. Holiday Campaign" />
+            <Input
+              id="np-name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="e.g. Holiday Campaign"
+            />
           </div>
           <div className="grid gap-1.5">
             <Label>Client</Label>
@@ -113,7 +124,14 @@ export function NewProjectDialog({ onCreate }: { onCreate: (project: DeliveryPro
           <div className="grid grid-cols-2 gap-3">
             <div className="grid gap-1.5">
               <Label htmlFor="np-budget">Budget (USD)</Label>
-              <Input id="np-budget" type="number" min="0" value={budget} onChange={(e) => setBudget(e.target.value)} placeholder="50000" />
+              <Input
+                id="np-budget"
+                type="number"
+                min="0"
+                value={budget}
+                onChange={(e) => setBudget(e.target.value)}
+                placeholder="50000"
+              />
             </div>
             <div className="grid gap-1.5">
               <Label htmlFor="np-due">Due date</Label>

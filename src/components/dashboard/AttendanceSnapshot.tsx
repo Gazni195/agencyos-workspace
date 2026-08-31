@@ -28,7 +28,10 @@ export function AttendanceSnapshot() {
       <CardContent>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           {stats.map((s) => (
-            <div key={s.label} className="rounded-lg border border-border bg-muted/40 p-3 text-center">
+            <div
+              key={s.label}
+              className="rounded-lg border border-border bg-muted/40 p-3 text-center"
+            >
               <p className={`text-xl font-bold ${s.tone}`}>{s.value}</p>
               <p className="mt-0.5 text-xs text-muted-foreground">{s.label}</p>
             </div>
@@ -37,7 +40,13 @@ export function AttendanceSnapshot() {
         <div className="mt-4 h-32">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={attendanceTrend}>
-              <XAxis dataKey="day" stroke="var(--color-muted-foreground)" fontSize={11} tickLine={false} axisLine={false} />
+              <XAxis
+                dataKey="day"
+                stroke="var(--color-muted-foreground)"
+                fontSize={11}
+                tickLine={false}
+                axisLine={false}
+              />
               <Tooltip
                 contentStyle={{
                   background: "var(--color-card)",
@@ -46,9 +55,21 @@ export function AttendanceSnapshot() {
                   fontSize: 12,
                 }}
               />
-              <Bar dataKey="present" name="Present" stackId="a" fill="var(--color-chart-1)" radius={[4, 4, 0, 0]} />
+              <Bar
+                dataKey="present"
+                name="Present"
+                stackId="a"
+                fill="var(--color-chart-1)"
+                radius={[4, 4, 0, 0]}
+              />
               <Bar dataKey="remote" name="Remote" stackId="a" fill="var(--color-chart-2)" />
-              <Bar dataKey="absent" name="Absent" stackId="a" fill="var(--color-chart-4)" radius={[0, 0, 4, 4]} />
+              <Bar
+                dataKey="absent"
+                name="Absent"
+                stackId="a"
+                fill="var(--color-chart-4)"
+                radius={[0, 0, 4, 4]}
+              />
             </BarChart>
           </ResponsiveContainer>
         </div>

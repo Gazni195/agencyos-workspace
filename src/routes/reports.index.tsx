@@ -52,9 +52,10 @@ const HEALTH_COLORS: Record<string, string> = {
 
 function RevenueReportPage() {
   const totalRevenue = financialTrend.reduce((s, r) => s + r.revenue, 0);
-  const avgMargin =
-    Math.round((financialTrend.reduce((s, r) => s + r.margin, 0) / financialTrend.length) * 10) /
-    10;
+  const avgMargin = financialTrend.length
+    ? Math.round((financialTrend.reduce((s, r) => s + r.margin, 0) / financialTrend.length) * 10) /
+      10
+    : 0;
   const latestReceivables = receivablesTrend[receivablesTrend.length - 1]?.receivables ?? 0;
   const atRiskClients = clientHealthDistribution.find((h) => h.health !== "Healthy")?.value ?? 0;
 
