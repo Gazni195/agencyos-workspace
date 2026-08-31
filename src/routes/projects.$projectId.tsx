@@ -44,6 +44,7 @@ import {
   projectActivity,
   projectAllocations,
   projectFilesByProject,
+  taskStatuses,
   type ProjectStatus,
   type TaskStatus,
 } from "@/data/delivery";
@@ -74,7 +75,7 @@ const statusOptions: { value: ProjectStatus; label: string }[] = [
   { value: "delayed", label: "Delayed" },
   { value: "completed", label: "Completed" },
 ];
-const taskStatusOptions: TaskStatus[] = ["todo", "in-progress", "review", "done"];
+const taskStatusOptions: TaskStatus[] = taskStatuses;
 
 function ProjectDetailPage() {
   const { projectId } = Route.useParams();

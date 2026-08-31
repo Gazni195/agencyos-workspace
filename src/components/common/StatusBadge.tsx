@@ -8,6 +8,7 @@ const toneMap: Record<string, Tone> = {
   approved: "success",
   paid: "success",
   completed: "success",
+  done: "success",
   valid: "success",
   healthy: "success",
   "on-track": "success",

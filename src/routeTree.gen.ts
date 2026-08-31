@@ -39,6 +39,10 @@ import { Route as LeadsIndexRouteImport } from './routes/leads.index'
 import { Route as LeadsLeadIdRouteImport } from './routes/leads.$leadId'
 import { Route as ProjectsIndexRouteImport } from './routes/projects.index'
 import { Route as ProjectsProjectIdRouteImport } from './routes/projects.$projectId'
+import { Route as TasksIndexRouteImport } from './routes/tasks.index'
+import { Route as TasksBoardRouteImport } from './routes/tasks.board'
+import { Route as TasksCalendarRouteImport } from './routes/tasks.calendar'
+import { Route as TasksListRouteImport } from './routes/tasks.list'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -190,6 +194,26 @@ const ProjectsProjectIdRoute = ProjectsProjectIdRouteImport.update({
   path: '/$projectId',
   getParentRoute: () => ProjectsRoute,
 } as any)
+const TasksIndexRoute = TasksIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => TasksRoute,
+} as any)
+const TasksBoardRoute = TasksBoardRouteImport.update({
+  id: '/board',
+  path: '/board',
+  getParentRoute: () => TasksRoute,
+} as any)
+const TasksCalendarRoute = TasksCalendarRouteImport.update({
+  id: '/calendar',
+  path: '/calendar',
+  getParentRoute: () => TasksRoute,
+} as any)
+const TasksListRoute = TasksListRouteImport.update({
+  id: '/list',
+  path: '/list',
+  getParentRoute: () => TasksRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -205,7 +229,7 @@ export interface FileRoutesByFullPath {
   '/reports': typeof ReportsRoute
   '/reset-password': typeof ResetPasswordRoute
   '/settings': typeof SettingsRoute
-  '/tasks': typeof TasksRoute
+  '/tasks': typeof TasksRouteWithChildren
   '/verify-email': typeof VerifyEmailRoute
   '/clients/$clientId': typeof ClientsClientIdRoute
   '/employees/$employeeId': typeof EmployeesEmployeeIdRoute
@@ -218,10 +242,14 @@ export interface FileRoutesByFullPath {
   '/employees/timesheets': typeof EmployeesTimesheetsRoute
   '/leads/$leadId': typeof LeadsLeadIdRoute
   '/projects/$projectId': typeof ProjectsProjectIdRoute
+  '/tasks/board': typeof TasksBoardRoute
+  '/tasks/calendar': typeof TasksCalendarRoute
+  '/tasks/list': typeof TasksListRoute
   '/clients/': typeof ClientsIndexRoute
   '/employees/': typeof EmployeesIndexRoute
   '/leads/': typeof LeadsIndexRoute
   '/projects/': typeof ProjectsIndexRoute
+  '/tasks/': typeof TasksIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -233,7 +261,6 @@ export interface FileRoutesByTo {
   '/reports': typeof ReportsRoute
   '/reset-password': typeof ResetPasswordRoute
   '/settings': typeof SettingsRoute
-  '/tasks': typeof TasksRoute
   '/verify-email': typeof VerifyEmailRoute
   '/clients/$clientId': typeof ClientsClientIdRoute
   '/employees/$employeeId': typeof EmployeesEmployeeIdRoute
@@ -246,10 +273,14 @@ export interface FileRoutesByTo {
   '/employees/timesheets': typeof EmployeesTimesheetsRoute
   '/leads/$leadId': typeof LeadsLeadIdRoute
   '/projects/$projectId': typeof ProjectsProjectIdRoute
+  '/tasks/board': typeof TasksBoardRoute
+  '/tasks/calendar': typeof TasksCalendarRoute
+  '/tasks/list': typeof TasksListRoute
   '/clients': typeof ClientsIndexRoute
   '/employees': typeof EmployeesIndexRoute
   '/leads': typeof LeadsIndexRoute
   '/projects': typeof ProjectsIndexRoute
+  '/tasks': typeof TasksIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -266,7 +297,7 @@ export interface FileRoutesById {
   '/reports': typeof ReportsRoute
   '/reset-password': typeof ResetPasswordRoute
   '/settings': typeof SettingsRoute
-  '/tasks': typeof TasksRoute
+  '/tasks': typeof TasksRouteWithChildren
   '/verify-email': typeof VerifyEmailRoute
   '/clients/$clientId': typeof ClientsClientIdRoute
   '/employees/$employeeId': typeof EmployeesEmployeeIdRoute
@@ -279,10 +310,14 @@ export interface FileRoutesById {
   '/employees/timesheets': typeof EmployeesTimesheetsRoute
   '/leads/$leadId': typeof LeadsLeadIdRoute
   '/projects/$projectId': typeof ProjectsProjectIdRoute
+  '/tasks/board': typeof TasksBoardRoute
+  '/tasks/calendar': typeof TasksCalendarRoute
+  '/tasks/list': typeof TasksListRoute
   '/clients/': typeof ClientsIndexRoute
   '/employees/': typeof EmployeesIndexRoute
   '/leads/': typeof LeadsIndexRoute
   '/projects/': typeof ProjectsIndexRoute
+  '/tasks/': typeof TasksIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -313,10 +348,14 @@ export interface FileRouteTypes {
     | '/employees/timesheets'
     | '/leads/$leadId'
     | '/projects/$projectId'
+    | '/tasks/board'
+    | '/tasks/calendar'
+    | '/tasks/list'
     | '/clients/'
     | '/employees/'
     | '/leads/'
     | '/projects/'
+    | '/tasks/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -328,7 +367,6 @@ export interface FileRouteTypes {
     | '/reports'
     | '/reset-password'
     | '/settings'
-    | '/tasks'
     | '/verify-email'
     | '/clients/$clientId'
     | '/employees/$employeeId'
@@ -341,10 +379,14 @@ export interface FileRouteTypes {
     | '/employees/timesheets'
     | '/leads/$leadId'
     | '/projects/$projectId'
+    | '/tasks/board'
+    | '/tasks/calendar'
+    | '/tasks/list'
     | '/clients'
     | '/employees'
     | '/leads'
     | '/projects'
+    | '/tasks'
   id:
     | '__root__'
     | '/'
@@ -373,10 +415,14 @@ export interface FileRouteTypes {
     | '/employees/timesheets'
     | '/leads/$leadId'
     | '/projects/$projectId'
+    | '/tasks/board'
+    | '/tasks/calendar'
+    | '/tasks/list'
     | '/clients/'
     | '/employees/'
     | '/leads/'
     | '/projects/'
+    | '/tasks/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -393,7 +439,7 @@ export interface RootRouteChildren {
   ReportsRoute: typeof ReportsRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SettingsRoute: typeof SettingsRoute
-  TasksRoute: typeof TasksRoute
+  TasksRoute: typeof TasksRouteWithChildren
   VerifyEmailRoute: typeof VerifyEmailRoute
 }
 
@@ -609,6 +655,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsProjectIdRouteImport
       parentRoute: typeof ProjectsRoute
     }
+    '/tasks/': {
+      id: '/tasks/'
+      path: '/'
+      fullPath: '/tasks/'
+      preLoaderRoute: typeof TasksIndexRouteImport
+      parentRoute: typeof TasksRoute
+    }
+    '/tasks/board': {
+      id: '/tasks/board'
+      path: '/board'
+      fullPath: '/tasks/board'
+      preLoaderRoute: typeof TasksBoardRouteImport
+      parentRoute: typeof TasksRoute
+    }
+    '/tasks/calendar': {
+      id: '/tasks/calendar'
+      path: '/calendar'
+      fullPath: '/tasks/calendar'
+      preLoaderRoute: typeof TasksCalendarRouteImport
+      parentRoute: typeof TasksRoute
+    }
+    '/tasks/list': {
+      id: '/tasks/list'
+      path: '/list'
+      fullPath: '/tasks/list'
+      preLoaderRoute: typeof TasksListRouteImport
+      parentRoute: typeof TasksRoute
+    }
   }
 }
 
@@ -679,6 +753,22 @@ const ProjectsRouteWithChildren = ProjectsRoute._addFileChildren(
   ProjectsRouteChildren,
 )
 
+interface TasksRouteChildren {
+  TasksBoardRoute: typeof TasksBoardRoute
+  TasksCalendarRoute: typeof TasksCalendarRoute
+  TasksListRoute: typeof TasksListRoute
+  TasksIndexRoute: typeof TasksIndexRoute
+}
+
+const TasksRouteChildren: TasksRouteChildren = {
+  TasksBoardRoute: TasksBoardRoute,
+  TasksCalendarRoute: TasksCalendarRoute,
+  TasksListRoute: TasksListRoute,
+  TasksIndexRoute: TasksIndexRoute,
+}
+
+const TasksRouteWithChildren = TasksRoute._addFileChildren(TasksRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AssetsRoute: AssetsRoute,
@@ -693,7 +783,7 @@ const rootRouteChildren: RootRouteChildren = {
   ReportsRoute: ReportsRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SettingsRoute: SettingsRoute,
-  TasksRoute: TasksRoute,
+  TasksRoute: TasksRouteWithChildren,
   VerifyEmailRoute: VerifyEmailRoute,
 }
 export const routeTree = rootRouteImport

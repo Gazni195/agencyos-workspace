@@ -1,9 +1,14 @@
-// Client-side Tasks state. Seeded from src/data/delivery.ts. Kept minimal
-// for the Projects module's "Tasks" tab (Phase 3); the full Task Board/List/
-// Calendar module (Phase 4) builds its Kanban and other views on this same
-// store rather than introducing a second source of truth.
+// Client-side Tasks state. Seeded from src/data/delivery.ts. Backs both the
+// Projects module's "Tasks" tab (Phase 3) and the standalone Task Board/
+// List/Calendar module (Phase 4) — one source of truth, not two.
 import { create } from "zustand";
-import { deliveryTasks, type DeliveryTask, type TaskStatus } from "@/data/delivery";
+import {
+  deliveryTasks,
+  type ChecklistItem,
+  type DeliveryTask,
+  type TaskComment,
+  type TaskStatus,
+} from "@/data/delivery";
 
 type TasksState = {
   tasks: DeliveryTask[];
@@ -11,6 +16,8 @@ type TasksState = {
   updateTask: (id: string, patch: Partial<DeliveryTask>) => void;
   setStatus: (id: string, status: TaskStatus) => void;
   toggleChecklistItem: (taskId: string, itemId: string) => void;
+  addChecklistItem: (taskId: string, item: ChecklistItem) => void;
+  addComment: (taskId: string, comment: TaskComment) => void;
 };
 
 export const useTasksStore = create<TasksState>((set) => ({
@@ -29,6 +36,18 @@ export const useTasksStore = create<TasksState>((set) => ({
               checklist: t.checklist.map((c) => (c.id === itemId ? { ...c, done: !c.done } : c)),
             }
           : t,
+      ),
+    })),
+  addChecklistItem: (taskId, item) =>
+    set((s) => ({
+      tasks: s.tasks.map((t) =>
+        t.id === taskId ? { ...t, checklist: [...t.checklist, item] } : t,
+      ),
+    })),
+  addComment: (taskId, comment) =>
+    set((s) => ({
+      tasks: s.tasks.map((t) =>
+        t.id === taskId ? { ...t, comments: [...t.comments, comment] } : t,
       ),
     })),
 }));

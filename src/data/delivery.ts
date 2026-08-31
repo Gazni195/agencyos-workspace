@@ -518,7 +518,7 @@ export const projectFiles: ProjectFile[] = [
 export const projectFilesByProject = (projectId: string) =>
   projectFiles.filter((f) => f.projectId === projectId);
 
-export type TaskStatus = "todo" | "in-progress" | "review" | "done";
+export type TaskStatus = "todo" | "in-progress" | "review" | "done" | "blocked";
 export type TaskPriority = "low" | "medium" | "high" | "urgent";
 
 export type ChecklistItem = { id: string; label: string; done: boolean };
@@ -592,7 +592,7 @@ export const deliveryTasks: DeliveryTask[] = [
     assigneeId: "emp-1004",
     due: "2026-09-02",
     priority: "medium",
-    status: "in-progress",
+    status: "blocked",
     tags: ["engineering"],
     dependencies: ["tk-9"],
     checklist: [
@@ -846,11 +846,12 @@ export const deliveryTasks: DeliveryTask[] = [
   },
 ];
 
-export const taskStatuses: TaskStatus[] = ["todo", "in-progress", "review", "done"];
+export const taskStatuses: TaskStatus[] = ["todo", "in-progress", "review", "blocked", "done"];
 export const taskStatusLabels: Record<TaskStatus, string> = {
   todo: "To Do",
   "in-progress": "In Progress",
   review: "Review",
+  blocked: "Blocked",
   done: "Done",
 };
 
