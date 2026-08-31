@@ -1,5 +1,6 @@
 // Mock data layer for Inbox, Assets and Settings modules.
 // Local-state only — mirrors future backend shapes.
+import type { PackageType } from "@/data/crm";
 
 export type Message = {
   id: string;
@@ -72,12 +73,74 @@ export const assetFolders: AssetFolder[] = [
 export const assetFiles: AssetFile[] = [];
 
 // ---------------- Settings module ----------------
+//
+// Everything below is admin-configurable vocabulary — Departments,
+// Designations, Client Packages, Roles, Leave Types, Attendance Policies —
+// rather than fixed application code. It's exposed through useSettingsStore
+// (mutable) and read live by every form that used to hardcode these lists
+// (Employee create/edit, Client create/edit, Leave filters, etc).
 
-export type Department = { id: string; name: string; head: string; headcount: number };
+export type Department = { id: string; name: string; head: string };
 export const departmentsSeed: Department[] = [];
 
 export type Designation = { id: string; title: string; department: string; level: string };
 export const designationsSeed: Designation[] = [];
+
+export type ClientPackage = {
+  id: string;
+  name: string;
+  type: PackageType;
+  defaultPrice: number;
+};
+export const clientPackagesSeed: ClientPackage[] = [];
+
+export type LeaveType = {
+  id: string;
+  name: string;
+  annualAllowance: number;
+  carryOver: boolean;
+  color: string;
+};
+export const leaveTypesSeed: LeaveType[] = [
+  { id: "lt-annual", name: "Annual", annualAllowance: 20, carryOver: true, color: "chart-1" },
+  { id: "lt-sick", name: "Sick", annualAllowance: 10, carryOver: false, color: "chart-2" },
+  { id: "lt-parental", name: "Parental", annualAllowance: 90, carryOver: false, color: "chart-3" },
+  { id: "lt-unpaid", name: "Unpaid", annualAllowance: 0, carryOver: false, color: "chart-4" },
+  { id: "lt-study", name: "Study", annualAllowance: 5, carryOver: false, color: "chart-5" },
+];
+
+export type AttendancePolicy = {
+  id: string;
+  label: string;
+  description: string;
+  enabled: boolean;
+};
+export const attendancePoliciesSeed: AttendancePolicy[] = [
+  {
+    id: "pol-1",
+    label: "Auto-flag late check-in after grace period",
+    description: "Marks an employee late if they check in more than 15 minutes after start time.",
+    enabled: true,
+  },
+  {
+    id: "pol-2",
+    label: "Allow remote check-in",
+    description: "Employees can clock in from outside office geofence.",
+    enabled: true,
+  },
+  {
+    id: "pol-3",
+    label: "Require manager approval for overtime",
+    description: "Any day over 9 hours needs manager sign-off.",
+    enabled: false,
+  },
+  {
+    id: "pol-4",
+    label: "Auto clock-out after 12 hours",
+    description: "Prevents forgotten sessions from running indefinitely.",
+    enabled: true,
+  },
+];
 
 // Role catalog stays defined (it's the app's fixed vocabulary of access
 // levels, needed for the permission matrix to have rows to render) — only

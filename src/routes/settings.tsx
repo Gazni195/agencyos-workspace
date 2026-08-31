@@ -17,6 +17,7 @@ export const Route = createFileRoute("/settings")({
 const tabs = [
   { label: "Organization", to: "/settings" },
   { label: "Roles & Permissions", to: "/settings/roles" },
+  { label: "Client Packages", to: "/settings/client-packages" },
   { label: "Integrations", to: "/settings/integrations" },
   { label: "Workflows", to: "/settings/workflows" },
   { label: "Notifications", to: "/settings/notifications" },

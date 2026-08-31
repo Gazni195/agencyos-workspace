@@ -1,11 +1,16 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { BellRing, CalendarCog, ShieldCheck } from "lucide-react";
+import { toast } from "sonner";
+import { BellRing, CalendarCog, ShieldCheck, Trash2 } from "lucide-react";
 import { KpiCard } from "@/components/common/KpiCard";
 import { PageHeader } from "@/components/common/PageHeader";
+import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { attendancePolicies, approvalWorkflows } from "@/data/hr";
-import { notificationEvents } from "@/data/workspace";
+import { DeleteConfirmDialog } from "@/components/shared/DeleteConfirmDialog";
+import { EditIconButton } from "@/components/settings/OrganizationDialogs";
+import { NewLeaveTypeDialog, EditLeaveTypeDialog } from "@/components/settings/LeaveTypeDialogs";
+import { useSettingsStore } from "@/store/settingsStore";
+import { notificationEvents, workflowEvents } from "@/data/workspace";
 
 export const Route = createFileRoute("/employees/settings")({
   head: () => ({
@@ -26,12 +31,23 @@ export const Route = createFileRoute("/employees/settings")({
 });
 
 function EmployeeSettingsPage() {
-  const [policies, setPolicies] = useState(attendancePolicies);
-  const [notifications, setNotifications] = useState(
-    () => new Set(notificationEvents.filter((_, i) => i % 3 !== 2)),
-  );
+  const policies = useSettingsStore((s) => s.attendancePolicies);
+  const toggleAttendancePolicy = useSettingsStore((s) => s.toggleAttendancePolicy);
+  const workflowApprovers = useSettingsStore((s) => s.workflowApprovers);
+  const notificationPrefs = useSettingsStore((s) => s.notificationPrefs);
+  const toggleNotificationPref = useSettingsStore((s) => s.toggleNotificationPref);
+  const leaveTypes = useSettingsStore((s) => s.leaveTypes);
+  const addLeaveType = useSettingsStore((s) => s.addLeaveType);
+  const updateLeaveType = useSettingsStore((s) => s.updateLeaveType);
+  const removeLeaveType = useSettingsStore((s) => s.removeLeaveType);
+
+  const [editLeaveTypeId, setEditLeaveTypeId] = useState<string | null>(null);
+  const [deleteLeaveTypeId, setDeleteLeaveTypeId] = useState<string | null>(null);
+  const editingLeaveType = leaveTypes.find((t) => t.id === editLeaveTypeId) ?? null;
+  const deletingLeaveType = leaveTypes.find((t) => t.id === deleteLeaveTypeId) ?? null;
 
   const enabledCount = policies.filter((p) => p.enabled).length;
+  const enabledNotifications = notificationEvents.filter((e) => notificationPrefs[e]).length;
 
   return (
     <section className="mx-auto max-w-7xl">
@@ -46,14 +62,10 @@ function EmployeeSettingsPage() {
           value={`${enabledCount}/${policies.length}`}
           icon={CalendarCog}
         />
-        <KpiCard
-          label="Approval workflows"
-          value={String(approvalWorkflows.length)}
-          icon={ShieldCheck}
-        />
+        <KpiCard label="Leave types" value={String(leaveTypes.length)} icon={ShieldCheck} />
         <KpiCard
           label="Notification rules"
-          value={`${notifications.size}/${notificationEvents.length}`}
+          value={`${enabledNotifications}/${notificationEvents.length}`}
           icon={BellRing}
         />
       </div>
@@ -70,11 +82,7 @@ function EmployeeSettingsPage() {
                 </div>
                 <Switch
                   checked={policy.enabled}
-                  onCheckedChange={(checked) =>
-                    setPolicies((prev) =>
-                      prev.map((p) => (p.id === policy.id ? { ...p, enabled: checked } : p)),
-                    )
-                  }
+                  onCheckedChange={() => toggleAttendancePolicy(policy.id)}
                   aria-label={policy.label}
                 />
               </div>
@@ -84,17 +92,59 @@ function EmployeeSettingsPage() {
 
         <div className="surface-card p-5">
           <p className="mb-4 font-semibold">Approval workflows</p>
+          <p className="mb-3 text-xs text-muted-foreground">
+            Shared with Settings → Workflows — change the approver there.
+          </p>
           <div className="space-y-3">
-            {approvalWorkflows.map((wf) => (
+            {workflowEvents.map((event) => (
               <div
-                key={wf.id}
+                key={event}
                 className="flex items-center justify-between rounded-lg border border-border p-3"
               >
-                <p className="text-sm font-medium">{wf.label}</p>
-                <p className="text-xs text-muted-foreground">Approver: {wf.approver}</p>
+                <p className="text-sm font-medium">{event}</p>
+                <p className="text-xs text-muted-foreground">
+                  Approver: {workflowApprovers[event]}
+                </p>
               </div>
             ))}
           </div>
+        </div>
+      </div>
+
+      <div className="surface-card mt-4 overflow-hidden">
+        <div className="flex items-center justify-between gap-3 border-b border-border p-5">
+          <div>
+            <p className="font-semibold">Leave types</p>
+            <p className="text-xs text-muted-foreground">
+              The catalog offered when filtering or requesting leave.
+            </p>
+          </div>
+          <NewLeaveTypeDialog existingCount={leaveTypes.length} onCreate={addLeaveType} />
+        </div>
+        <div className="divide-y divide-border">
+          {leaveTypes.map((t) => (
+            <div key={t.id} className="flex items-center justify-between gap-4 p-4">
+              <div>
+                <p className="text-sm font-medium">{t.name}</p>
+                <p className="text-xs text-muted-foreground">
+                  {t.annualAllowance} days/year
+                  {t.carryOver ? " · carries over" : ""}
+                </p>
+              </div>
+              <div className="flex items-center gap-1">
+                <EditIconButton onClick={() => setEditLeaveTypeId(t.id)} />
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="size-7 text-destructive hover:bg-destructive/12 hover:text-destructive"
+                  aria-label={`Delete ${t.name}`}
+                  onClick={() => setDeleteLeaveTypeId(t.id)}
+                >
+                  <Trash2 className="size-3.5" />
+                </Button>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -108,21 +158,35 @@ function EmployeeSettingsPage() {
             >
               <p className="text-sm">{event}</p>
               <Switch
-                checked={notifications.has(event)}
-                onCheckedChange={(checked) =>
-                  setNotifications((prev) => {
-                    const next = new Set(prev);
-                    if (checked) next.add(event);
-                    else next.delete(event);
-                    return next;
-                  })
-                }
+                checked={notificationPrefs[event] ?? false}
+                onCheckedChange={() => toggleNotificationPref(event)}
                 aria-label={event}
               />
             </div>
           ))}
         </div>
       </div>
+
+      {editingLeaveType && (
+        <EditLeaveTypeDialog
+          leaveType={editingLeaveType}
+          open={!!editLeaveTypeId}
+          onOpenChange={(open) => !open && setEditLeaveTypeId(null)}
+          onSave={(patch) => updateLeaveType(editingLeaveType.id, patch)}
+        />
+      )}
+      <DeleteConfirmDialog
+        open={!!deletingLeaveType}
+        onOpenChange={(open) => !open && setDeleteLeaveTypeId(null)}
+        title={`Delete ${deletingLeaveType?.name}?`}
+        description="This removes it from the leave type catalog. Existing leave requests keep their recorded type."
+        onConfirm={() => {
+          if (!deletingLeaveType) return;
+          removeLeaveType(deletingLeaveType.id);
+          toast.success(`${deletingLeaveType.name} deleted`);
+          setDeleteLeaveTypeId(null);
+        }}
+      />
     </section>
   );
 }

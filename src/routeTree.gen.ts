@@ -56,6 +56,7 @@ import { Route as ReportsFinanceRouteImport } from './routes/reports.finance'
 import { Route as ReportsLeadsRouteImport } from './routes/reports.leads'
 import { Route as ReportsProjectsRouteImport } from './routes/reports.projects'
 import { Route as SettingsIndexRouteImport } from './routes/settings.index'
+import { Route as SettingsClientPackagesRouteImport } from './routes/settings.client-packages'
 import { Route as SettingsIntegrationsRouteImport } from './routes/settings.integrations'
 import { Route as SettingsNotificationsRouteImport } from './routes/settings.notifications'
 import { Route as SettingsRolesRouteImport } from './routes/settings.roles'
@@ -300,6 +301,11 @@ const SettingsIndexRoute = SettingsIndexRouteImport.update({
   path: '/',
   getParentRoute: () => SettingsRoute,
 } as any)
+const SettingsClientPackagesRoute = SettingsClientPackagesRouteImport.update({
+  id: '/client-packages',
+  path: '/client-packages',
+  getParentRoute: () => SettingsRoute,
+} as any)
 const SettingsIntegrationsRoute = SettingsIntegrationsRouteImport.update({
   id: '/integrations',
   path: '/integrations',
@@ -380,6 +386,7 @@ export interface FileRoutesByFullPath {
   '/reports/finance': typeof ReportsFinanceRoute
   '/reports/leads': typeof ReportsLeadsRoute
   '/reports/projects': typeof ReportsProjectsRoute
+  '/settings/client-packages': typeof SettingsClientPackagesRoute
   '/settings/integrations': typeof SettingsIntegrationsRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
   '/settings/roles': typeof SettingsRolesRoute
@@ -427,6 +434,7 @@ export interface FileRoutesByTo {
   '/reports/finance': typeof ReportsFinanceRoute
   '/reports/leads': typeof ReportsLeadsRoute
   '/reports/projects': typeof ReportsProjectsRoute
+  '/settings/client-packages': typeof SettingsClientPackagesRoute
   '/settings/integrations': typeof SettingsIntegrationsRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
   '/settings/roles': typeof SettingsRolesRoute
@@ -485,6 +493,7 @@ export interface FileRoutesById {
   '/reports/finance': typeof ReportsFinanceRoute
   '/reports/leads': typeof ReportsLeadsRoute
   '/reports/projects': typeof ReportsProjectsRoute
+  '/settings/client-packages': typeof SettingsClientPackagesRoute
   '/settings/integrations': typeof SettingsIntegrationsRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
   '/settings/roles': typeof SettingsRolesRoute
@@ -544,6 +553,7 @@ export interface FileRouteTypes {
     | '/reports/finance'
     | '/reports/leads'
     | '/reports/projects'
+    | '/settings/client-packages'
     | '/settings/integrations'
     | '/settings/notifications'
     | '/settings/roles'
@@ -591,6 +601,7 @@ export interface FileRouteTypes {
     | '/reports/finance'
     | '/reports/leads'
     | '/reports/projects'
+    | '/settings/client-packages'
     | '/settings/integrations'
     | '/settings/notifications'
     | '/settings/roles'
@@ -648,6 +659,7 @@ export interface FileRouteTypes {
     | '/reports/finance'
     | '/reports/leads'
     | '/reports/projects'
+    | '/settings/client-packages'
     | '/settings/integrations'
     | '/settings/notifications'
     | '/settings/roles'
@@ -1017,6 +1029,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsIndexRouteImport
       parentRoute: typeof SettingsRoute
     }
+    '/settings/client-packages': {
+      id: '/settings/client-packages'
+      path: '/client-packages'
+      fullPath: '/settings/client-packages'
+      preLoaderRoute: typeof SettingsClientPackagesRouteImport
+      parentRoute: typeof SettingsRoute
+    }
     '/settings/integrations': {
       id: '/settings/integrations'
       path: '/integrations'
@@ -1210,6 +1229,7 @@ const ReportsRouteWithChildren =
   ReportsRoute._addFileChildren(ReportsRouteChildren)
 
 interface SettingsRouteChildren {
+  SettingsClientPackagesRoute: typeof SettingsClientPackagesRoute
   SettingsIntegrationsRoute: typeof SettingsIntegrationsRoute
   SettingsNotificationsRoute: typeof SettingsNotificationsRoute
   SettingsRolesRoute: typeof SettingsRolesRoute
@@ -1218,6 +1238,7 @@ interface SettingsRouteChildren {
 }
 
 const SettingsRouteChildren: SettingsRouteChildren = {
+  SettingsClientPackagesRoute: SettingsClientPackagesRoute,
   SettingsIntegrationsRoute: SettingsIntegrationsRoute,
   SettingsNotificationsRoute: SettingsNotificationsRoute,
   SettingsRolesRoute: SettingsRolesRoute,

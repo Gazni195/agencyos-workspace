@@ -32,8 +32,9 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { departments, type Employee, type EmployeeStatus } from "@/data/agency.ts";
+import { type Employee, type EmployeeStatus } from "@/data/agency.ts";
 import { useEmployeesStore } from "@/store/employeesStore";
+import { useSettingsStore } from "@/store/settingsStore";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/employees/")({
@@ -53,6 +54,8 @@ const ALL = "all";
 function DirectoryPage() {
   const employeeList = useEmployeesStore((s) => s.employees);
   const addEmployee = useEmployeesStore((s) => s.addEmployee);
+  const departments = useSettingsStore((s) => s.departments);
+  const designations = useSettingsStore((s) => s.designations);
   const [query, setQuery] = useState("");
   const [department, setDepartment] = useState<string>(ALL);
   const [status, setStatus] = useState<string>(ALL);
@@ -62,7 +65,7 @@ function DirectoryPage() {
   const [form, setForm] = useState({
     name: "",
     role: "",
-    department: "Creative",
+    department: "",
     email: "",
     manager: "",
     employmentType: "Full-time",
@@ -90,8 +93,8 @@ function DirectoryPage() {
   );
 
   function handleAdd() {
-    if (!form.name.trim() || !form.role.trim() || !form.email.trim()) {
-      toast.error("Please fill name, role and email.");
+    if (!form.name.trim() || !form.role.trim() || !form.department || !form.email.trim()) {
+      toast.error("Please fill name, role, department and email.");
       return;
     }
     const initials = form.name
@@ -105,7 +108,7 @@ function DirectoryPage() {
       name: form.name,
       initials,
       role: form.role,
-      department: form.department as Employee["department"],
+      department: form.department,
       email: form.email,
       phone: "—",
       location: "—",
@@ -123,7 +126,7 @@ function DirectoryPage() {
     setForm({
       name: "",
       role: "",
-      department: "Creative",
+      department: "",
       email: "",
       manager: "",
       employmentType: "Full-time",
@@ -158,8 +161,8 @@ function DirectoryPage() {
           <SelectContent>
             <SelectItem value={ALL}>All departments</SelectItem>
             {departments.map((d) => (
-              <SelectItem key={d} value={d}>
-                {d}
+              <SelectItem key={d.id} value={d.name}>
+                {d.name}
               </SelectItem>
             ))}
           </SelectContent>
@@ -212,10 +215,21 @@ function DirectoryPage() {
                 <Label htmlFor="emp-role">Role</Label>
                 <Input
                   id="emp-role"
+                  list="emp-role-suggestions"
                   value={form.role}
                   onChange={(e) => setForm({ ...form, role: e.target.value })}
                   placeholder="Brand Designer"
                 />
+                <datalist id="emp-role-suggestions">
+                  {designations.map((d) => (
+                    <option key={d.id} value={d.title} />
+                  ))}
+                </datalist>
+                {designations.length === 0 && (
+                  <p className="text-xs text-muted-foreground">
+                    Add designations in Settings → Organization for suggestions here.
+                  </p>
+                )}
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div className="grid gap-1.5">
@@ -223,14 +237,19 @@ function DirectoryPage() {
                   <Select
                     value={form.department}
                     onValueChange={(v) => setForm({ ...form, department: v })}
+                    disabled={departments.length === 0}
                   >
                     <SelectTrigger id="emp-dept">
-                      <SelectValue />
+                      <SelectValue
+                        placeholder={
+                          departments.length === 0 ? "Add one in Settings" : "Select department"
+                        }
+                      />
                     </SelectTrigger>
                     <SelectContent>
                       {departments.map((d) => (
-                        <SelectItem key={d} value={d}>
-                          {d}
+                        <SelectItem key={d.id} value={d.name}>
+                          {d.name}
                         </SelectItem>
                       ))}
                     </SelectContent>
