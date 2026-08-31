@@ -22,7 +22,7 @@ export function DrawerPanel({
   open: boolean;
   onOpenChange: (open: boolean) => void;
   title: string;
-  description?: string;
+  description?: string | undefined;
   side?: "right" | "left" | "top" | "bottom";
   children?: ReactNode;
   footer?: ReactNode;

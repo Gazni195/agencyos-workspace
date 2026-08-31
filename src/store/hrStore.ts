@@ -1,0 +1,28 @@
+// Client-side HRMS state. Seeded from src/data/agency.ts. Mutations live
+// only in memory for this session — swap for API calls later without
+// touching the UI layer.
+import { create } from "zustand";
+import {
+  leaveRequests as seedLeaveRequests,
+  payroll as seedPayroll,
+  type LeaveRequest,
+  type PayrollRun,
+} from "@/data/agency";
+
+type HrState = {
+  leaveRequests: LeaveRequest[];
+  setLeaveStatus: (id: string, status: LeaveRequest["status"]) => void;
+  payroll: PayrollRun[];
+  setPayrollStatus: (id: string, status: PayrollRun["status"]) => void;
+};
+
+export const useHrStore = create<HrState>((set) => ({
+  leaveRequests: seedLeaveRequests,
+  setLeaveStatus: (id, status) =>
+    set((s) => ({
+      leaveRequests: s.leaveRequests.map((l) => (l.id === id ? { ...l, status } : l)),
+    })),
+  payroll: seedPayroll,
+  setPayrollStatus: (id, status) =>
+    set((s) => ({ payroll: s.payroll.map((p) => (p.id === id ? { ...p, status } : p)) })),
+}));
