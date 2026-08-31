@@ -12,15 +12,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  employees,
-  attendance,
-  leaveRequests,
-  timesheets,
-  documents,
-  performance,
-} from "@/data/agency.ts";
+import { attendance, leaveRequests, documents, performance } from "@/data/agency.ts";
 import { employeeGoals } from "@/data/hr.ts";
+import { useEmployeesStore } from "@/store/employeesStore";
+import { useHrStore } from "@/store/hrStore";
+import { useProjectsStore } from "@/store/projectsStore";
 
 export const Route = createFileRoute("/employees/$employeeId")({
   head: ({ params }) => ({
@@ -36,7 +32,10 @@ export const Route = createFileRoute("/employees/$employeeId")({
 
 function EmployeeProfilePage() {
   const { employeeId } = Route.useParams();
+  const employees = useEmployeesStore((s) => s.employees);
   const employee = employees.find((e) => e.id === employeeId);
+  const timesheets = useHrStore((s) => s.timesheets);
+  const projects = useProjectsStore((s) => s.projects);
 
   if (!employee) {
     return (
@@ -294,7 +293,9 @@ function EmployeeProfilePage() {
                 {empTimesheets.map((t) => (
                   <TableRow key={t.id}>
                     <TableCell>{t.date}</TableCell>
-                    <TableCell className="text-muted-foreground">{t.project}</TableCell>
+                    <TableCell className="text-muted-foreground">
+                      {projects.find((p) => p.id === t.projectId)?.name ?? "—"}
+                    </TableCell>
                     <TableCell>{t.hours}h</TableCell>
                     <TableCell>
                       <StatusBadge status={t.status} />

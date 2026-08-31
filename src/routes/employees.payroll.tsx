@@ -29,8 +29,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { employeeById, money, payrollTrend, type PayrollRun } from "@/data/agency";
+import { money, payrollTrend, type PayrollRun } from "@/data/agency";
 import { useHrStore } from "@/store/hrStore";
+import { useEmployeesStore } from "@/store/employeesStore";
 
 export const Route = createFileRoute("/employees/payroll")({
   head: () => ({
@@ -55,6 +56,8 @@ const statuses: PayrollRun["status"][] = ["paid", "processing", "on-hold"];
 function PayrollPage() {
   const payroll = useHrStore((s) => s.payroll);
   const setPayrollStatus = useHrStore((s) => s.setPayrollStatus);
+  const employees = useEmployeesStore((s) => s.employees);
+  const employeeById = (id: string) => employees.find((e) => e.id === id);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const selected = payroll.find((p) => p.id === selectedId) ?? null;
 

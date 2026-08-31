@@ -9,7 +9,8 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { departments, employees } from "@/data/agency";
+import { departments } from "@/data/agency";
+import { useEmployeesStore } from "@/store/employeesStore";
 
 const barColor = (utilization: number) => {
   if (utilization >= 80) return "var(--color-chart-1)";
@@ -18,6 +19,7 @@ const barColor = (utilization: number) => {
 };
 
 export function TeamUtilizationChart() {
+  const employees = useEmployeesStore((s) => s.employees);
   const data = departments.map((department) => {
     const members = employees.filter((e) => e.department === department);
     const utilization = members.length

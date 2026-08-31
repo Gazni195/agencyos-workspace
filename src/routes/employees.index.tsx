@@ -32,12 +32,8 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  employees as seedEmployees,
-  departments,
-  type Employee,
-  type EmployeeStatus,
-} from "@/data/agency.ts";
+import { departments, type Employee, type EmployeeStatus } from "@/data/agency.ts";
+import { useEmployeesStore } from "@/store/employeesStore";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/employees/")({
@@ -55,7 +51,8 @@ export const Route = createFileRoute("/employees/")({
 const ALL = "all";
 
 function DirectoryPage() {
-  const [employeeList, setEmployeeList] = useState<Employee[]>(seedEmployees);
+  const employeeList = useEmployeesStore((s) => s.employees);
+  const addEmployee = useEmployeesStore((s) => s.addEmployee);
   const [query, setQuery] = useState("");
   const [department, setDepartment] = useState<string>(ALL);
   const [status, setStatus] = useState<string>(ALL);
@@ -121,7 +118,7 @@ function DirectoryPage() {
       leaveBalance: 0,
       skills: [],
     };
-    setEmployeeList((prev) => [newEmployee, ...prev]);
+    addEmployee(newEmployee);
     setOpen(false);
     setForm({
       name: "",

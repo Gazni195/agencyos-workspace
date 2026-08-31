@@ -12,7 +12,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ExportCsvButton } from "@/components/reports/ExportCsvButton";
-import { leadStages, leads, money, owners, sources } from "@/data/crm";
+import { leadStages, leads, money, sources } from "@/data/crm";
 
 export const Route = createFileRoute("/reports/leads")({
   head: () => ({
@@ -65,7 +65,7 @@ function LeadsReportPage() {
 
   const byOwner = useMemo(
     () =>
-      owners
+      Array.from(new Set(leads.map((l) => l.owner)))
         .map((owner) => {
           const ownerLeads = leads.filter((l) => l.owner === owner);
           const ownerWon = ownerLeads.filter((l) => l.stage === "Won");

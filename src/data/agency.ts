@@ -125,9 +125,9 @@ export const documents: EmployeeDocument[] = [];
 export type TimesheetEntry = {
   id: string;
   employeeId: string;
-  client: string;
-  project: string;
-  task: string;
+  projectId: string;
+  taskId?: string;
+  deliverableId?: string;
   date: string;
   hours: number;
   billable: boolean;

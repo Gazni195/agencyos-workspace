@@ -13,7 +13,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { documents, employeeById, type EmployeeDocument } from "@/data/agency";
+import { documents, type EmployeeDocument } from "@/data/agency";
+import { useEmployeesStore } from "@/store/employeesStore";
 
 export const Route = createFileRoute("/employees/documents")({
   head: () => ({
@@ -33,6 +34,8 @@ export const Route = createFileRoute("/employees/documents")({
 const categories = Array.from(new Set(documents.map((d) => d.category)));
 
 function DocumentsPage() {
+  const employees = useEmployeesStore((s) => s.employees);
+  const employeeById = (id: string) => employees.find((e) => e.id === id);
   const [category, setCategory] = useState("all");
   const needsAttention = documents.filter(
     (d) => d.status === "expiring" || d.status === "expired",

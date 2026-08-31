@@ -15,9 +15,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { employeeById } from "@/data/agency";
 import { leaveTypes } from "@/data/hr";
 import { useHrStore } from "@/store/hrStore";
+import { useEmployeesStore } from "@/store/employeesStore";
 
 export const Route = createFileRoute("/employees/leave")({
   head: () => ({
@@ -39,6 +39,8 @@ const today = new Date().toISOString().slice(0, 10);
 function LeavePage() {
   const leaveRequests = useHrStore((s) => s.leaveRequests);
   const setLeaveStatus = useHrStore((s) => s.setLeaveStatus);
+  const employees = useEmployeesStore((s) => s.employees);
+  const employeeById = (id: string) => employees.find((e) => e.id === id);
   const [type, setType] = useState("all");
   const [status, setStatus] = useState("all");
 

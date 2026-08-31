@@ -11,6 +11,7 @@ import { ClientRowActions } from "@/components/clients/ClientRowActions";
 import { NewClientDialog } from "@/components/clients/NewClientDialog";
 import { Button } from "@/components/ui/button";
 import { useClientsStore } from "@/store/clientsStore";
+import { useProjectsStore } from "@/store/projectsStore";
 import { money, type Client } from "@/data/crm";
 import { cn } from "@/lib/utils";
 
@@ -33,6 +34,8 @@ function ClientsIndexPage() {
   const navigate = useNavigate();
   const clients = useClientsStore((s) => s.clients);
   const addClient = useClientsStore((s) => s.addClient);
+  const projects = useProjectsStore((s) => s.projects);
+  const projectCount = (clientId: string) => projects.filter((p) => p.clientId === clientId).length;
 
   const [query, setQuery] = useState("");
   const [industry, setIndustry] = useState("all");
@@ -116,8 +119,8 @@ function ClientsIndexPage() {
     {
       key: "projects",
       header: "Projects",
-      sortValue: (c) => c.projects,
-      render: (c) => c.projects,
+      sortValue: (c) => projectCount(c.id),
+      render: (c) => projectCount(c.id),
     },
     {
       key: "actions",

@@ -1,16 +1,14 @@
 import { useMemo, useState } from "react";
-import {
-  deliveryProjects,
-  taskStatuses,
-  taskStatusLabels,
-  type DeliveryTask,
-} from "@/data/delivery";
-import { employees } from "@/data/agency";
+import { taskStatuses, taskStatusLabels, type DeliveryTask } from "@/data/delivery";
+import { useEmployeesStore } from "@/store/employeesStore";
+import { useProjectsStore } from "@/store/projectsStore";
 import type { FilterDef } from "@/components/shared/FilterBar";
 
 // Shared search/filter state for the three Task views (Board, List,
 // Calendar) so all three stay consistent without triplicating the logic.
 export function useTaskFilters(tasks: DeliveryTask[]) {
+  const employees = useEmployeesStore((s) => s.employees);
+  const deliveryProjects = useProjectsStore((s) => s.projects);
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState("all");
   const [project, setProject] = useState("all");

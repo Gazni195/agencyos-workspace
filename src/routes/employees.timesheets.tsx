@@ -23,7 +23,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { timesheetWeeklyHours } from "@/data/hr";
-import { employeeById, timesheets } from "@/data/agency";
+import { useEmployeesStore } from "@/store/employeesStore";
+import { useHrStore } from "@/store/hrStore";
+import { useProjectsStore } from "@/store/projectsStore";
+import { useTasksStore } from "@/store/tasksStore";
+import { useClientsStore } from "@/store/clientsStore";
+import { TimesheetFormDialog } from "@/components/employees/TimesheetFormDialog";
 
 export const Route = createFileRoute("/employees/timesheets")({
   head: () => ({
@@ -38,6 +43,18 @@ export const Route = createFileRoute("/employees/timesheets")({
 });
 
 function TimesheetsPage() {
+  const employees = useEmployeesStore((s) => s.employees);
+  const employeeById = (id: string) => employees.find((e) => e.id === id);
+  const timesheets = useHrStore((s) => s.timesheets);
+  const addTimesheet = useHrStore((s) => s.addTimesheet);
+  const projects = useProjectsStore((s) => s.projects);
+  const tasks = useTasksStore((s) => s.tasks);
+  const clients = useClientsStore((s) => s.clients);
+  const projectById = (id: string) => projects.find((p) => p.id === id);
+  const taskById = (id: string) => tasks.find((t) => t.id === id);
+  const clientName = (clientId: string) =>
+    clients.find((c) => c.id === clientId)?.name ?? "Unknown client";
+
   const totalHours = timesheets.reduce((sum, t) => sum + t.hours, 0);
   const billableHours = timesheets.filter((t) => t.billable).reduce((sum, t) => sum + t.hours, 0);
   const billablePct = totalHours ? Math.round((billableHours / totalHours) * 100) : 0;
@@ -48,6 +65,7 @@ function TimesheetsPage() {
       <PageHeader
         title="Timesheets"
         description="Review logged hours, billability and approvals."
+        actions={<TimesheetFormDialog onCreate={addTimesheet} />}
       />
 
       <div className="grid gap-4 sm:grid-cols-3">
@@ -124,12 +142,16 @@ function TimesheetsPage() {
             <TableBody>
               {timesheets.map((t) => {
                 const emp = employeeById(t.employeeId);
+                const project = projectById(t.projectId);
+                const task = t.taskId ? taskById(t.taskId) : undefined;
                 return (
                   <TableRow key={t.id}>
                     <TableCell className="font-medium">{emp?.name ?? "Unknown"}</TableCell>
-                    <TableCell className="text-muted-foreground">{t.client}</TableCell>
-                    <TableCell className="text-muted-foreground">{t.project}</TableCell>
-                    <TableCell className="text-muted-foreground">{t.task}</TableCell>
+                    <TableCell className="text-muted-foreground">
+                      {project ? clientName(project.clientId) : "—"}
+                    </TableCell>
+                    <TableCell className="text-muted-foreground">{project?.name ?? "—"}</TableCell>
+                    <TableCell className="text-muted-foreground">{task?.title ?? "—"}</TableCell>
                     <TableCell className="text-muted-foreground">{t.date}</TableCell>
                     <TableCell className="font-medium">{t.hours}h</TableCell>
                     <TableCell>

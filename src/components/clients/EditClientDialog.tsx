@@ -19,7 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { Client, ClientHealth, PackageType } from "@/data/crm";
-import { owners } from "@/data/crm";
+import { useEmployeesStore } from "@/store/employeesStore";
 
 export function EditClientDialog({
   client,
@@ -34,6 +34,8 @@ export function EditClientDialog({
   onSave: (patch: Partial<Client>) => void;
   trigger?: ReactNode;
 }) {
+  const employees = useEmployeesStore((s) => s.employees);
+  const owners = employees.map((e) => e.name);
   const [name, setName] = useState(client.name);
   const [industry, setIndustry] = useState(client.industry);
   const [owner, setOwner] = useState(client.owner);

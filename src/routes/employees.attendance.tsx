@@ -14,8 +14,9 @@ import {
 } from "@/components/ui/table";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { attendance, attendanceTrend, employeeById, employees } from "@/data/agency";
+import { attendance, attendanceTrend } from "@/data/agency";
 import { generateMonthCalendar, monthLabel, type DayStatus } from "@/data/hr";
+import { useEmployeesStore } from "@/store/employeesStore";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/employees/attendance")({
@@ -41,6 +42,8 @@ const dayClass: Record<DayStatus, string> = {
 };
 
 function AttendancePage() {
+  const employees = useEmployeesStore((s) => s.employees);
+  const employeeById = (id: string) => employees.find((e) => e.id === id);
   const present = attendance.filter((record) => record.status === "present").length;
   const remote = attendance.filter((record) => record.status === "remote").length;
   const late = attendance.filter((record) => record.status === "late").length;

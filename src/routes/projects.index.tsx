@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { LayoutGrid, List as ListIcon } from "lucide-react";
 import { PageHeader } from "@/components/common/PageHeader";
@@ -9,6 +9,7 @@ import { ProjectCard } from "@/components/projects/ProjectCard";
 import { NewProjectDialog } from "@/components/projects/NewProjectDialog";
 import { Button } from "@/components/ui/button";
 import { useProjectsStore } from "@/store/projectsStore";
+import { useClientsStore } from "@/store/clientsStore";
 import { money } from "@/data/agency";
 import { cn } from "@/lib/utils";
 
@@ -30,6 +31,11 @@ export const Route = createFileRoute("/projects/")({
 function ProjectsIndexPage() {
   const projects = useProjectsStore((s) => s.projects);
   const addProject = useProjectsStore((s) => s.addProject);
+  const clients = useClientsStore((s) => s.clients);
+  const clientName = useCallback(
+    (clientId: string) => clients.find((c) => c.id === clientId)?.name ?? "Unknown client",
+    [clients],
+  );
 
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState("all");
@@ -38,7 +44,7 @@ function ProjectsIndexPage() {
   const [view, setView] = useState<"grid" | "list">("grid");
 
   const clientsList = useMemo(
-    () => Array.from(new Set(projects.map((p) => p.client))).sort(),
+    () => Array.from(new Set(projects.map((p) => p.clientId))).sort(),
     [projects],
   );
   const leadsList = useMemo(
@@ -49,13 +55,14 @@ function ProjectsIndexPage() {
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     return projects.filter((p) => {
-      if (q && !`${p.name} ${p.client} ${p.lead}`.toLowerCase().includes(q)) return false;
+      if (q && !`${p.name} ${clientName(p.clientId)} ${p.lead}`.toLowerCase().includes(q))
+        return false;
       if (status !== "all" && p.status !== status) return false;
-      if (client !== "all" && p.client !== client) return false;
+      if (client !== "all" && p.clientId !== client) return false;
       if (lead !== "all" && p.lead !== lead) return false;
       return true;
     });
-  }, [projects, query, status, client, lead]);
+  }, [projects, clientName, query, status, client, lead]);
 
   const filters: FilterDef[] = [
     {
@@ -75,7 +82,7 @@ function ProjectsIndexPage() {
       label: "Client",
       value: client,
       onChange: setClient,
-      options: clientsList.map((c) => ({ label: c, value: c })),
+      options: clientsList.map((c) => ({ label: clientName(c), value: c })),
     },
     {
       id: "lead",

@@ -5,7 +5,7 @@ export type ProjectStatus = "on-track" | "at-risk" | "delayed" | "completed";
 export type DeliveryProject = {
   id: string;
   name: string;
-  client: string;
+  clientId: string;
   lead: string;
   leadInitials: string;
   team: string[];
@@ -104,3 +104,41 @@ export const taskStatusLabels: Record<TaskStatus, string> = {
 };
 
 export const taskById = (id: string) => deliveryTasks.find((t) => t.id === id);
+
+// A Deliverable is the actual client-facing output a project produces (an
+// edited video, a photo set, a design file, a written report) — distinct
+// from a Task, which is internal work that may or may not produce one.
+// Tracking it separately is what lets Operations show a real
+// pending-approval queue instead of overloading task status for it.
+export type DeliverableStatus =
+  "in-progress" | "internal-review" | "client-review" | "changes-requested" | "approved";
+
+export type Deliverable = {
+  id: string;
+  projectId: string;
+  taskId?: string;
+  title: string;
+  type: string;
+  assigneeId: string;
+  status: DeliverableStatus;
+  dueDate: string;
+  notes?: string;
+};
+
+export const deliverables: Deliverable[] = [];
+
+export const deliverableStatuses: DeliverableStatus[] = [
+  "in-progress",
+  "internal-review",
+  "client-review",
+  "changes-requested",
+  "approved",
+];
+
+export const deliverableStatusLabels: Record<DeliverableStatus, string> = {
+  "in-progress": "In Progress",
+  "internal-review": "Internal Review",
+  "client-review": "Client Review",
+  "changes-requested": "Changes Requested",
+  approved: "Approved",
+};
