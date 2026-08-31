@@ -50,6 +50,11 @@ import { Route as ReportsEmployeesRouteImport } from './routes/reports.employees
 import { Route as ReportsFinanceRouteImport } from './routes/reports.finance'
 import { Route as ReportsLeadsRouteImport } from './routes/reports.leads'
 import { Route as ReportsProjectsRouteImport } from './routes/reports.projects'
+import { Route as SettingsIndexRouteImport } from './routes/settings.index'
+import { Route as SettingsIntegrationsRouteImport } from './routes/settings.integrations'
+import { Route as SettingsNotificationsRouteImport } from './routes/settings.notifications'
+import { Route as SettingsRolesRouteImport } from './routes/settings.roles'
+import { Route as SettingsWorkflowsRouteImport } from './routes/settings.workflows'
 import { Route as TasksIndexRouteImport } from './routes/tasks.index'
 import { Route as TasksBoardRouteImport } from './routes/tasks.board'
 import { Route as TasksCalendarRouteImport } from './routes/tasks.calendar'
@@ -260,6 +265,31 @@ const ReportsProjectsRoute = ReportsProjectsRouteImport.update({
   path: '/projects',
   getParentRoute: () => ReportsRoute,
 } as any)
+const SettingsIndexRoute = SettingsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SettingsRoute,
+} as any)
+const SettingsIntegrationsRoute = SettingsIntegrationsRouteImport.update({
+  id: '/integrations',
+  path: '/integrations',
+  getParentRoute: () => SettingsRoute,
+} as any)
+const SettingsNotificationsRoute = SettingsNotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => SettingsRoute,
+} as any)
+const SettingsRolesRoute = SettingsRolesRouteImport.update({
+  id: '/roles',
+  path: '/roles',
+  getParentRoute: () => SettingsRoute,
+} as any)
+const SettingsWorkflowsRoute = SettingsWorkflowsRouteImport.update({
+  id: '/workflows',
+  path: '/workflows',
+  getParentRoute: () => SettingsRoute,
+} as any)
 const TasksIndexRoute = TasksIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -294,7 +324,7 @@ export interface FileRoutesByFullPath {
   '/projects': typeof ProjectsRouteWithChildren
   '/reports': typeof ReportsRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
-  '/settings': typeof SettingsRoute
+  '/settings': typeof SettingsRouteWithChildren
   '/tasks': typeof TasksRouteWithChildren
   '/verify-email': typeof VerifyEmailRoute
   '/clients/$clientId': typeof ClientsClientIdRoute
@@ -316,6 +346,10 @@ export interface FileRoutesByFullPath {
   '/reports/finance': typeof ReportsFinanceRoute
   '/reports/leads': typeof ReportsLeadsRoute
   '/reports/projects': typeof ReportsProjectsRoute
+  '/settings/integrations': typeof SettingsIntegrationsRoute
+  '/settings/notifications': typeof SettingsNotificationsRoute
+  '/settings/roles': typeof SettingsRolesRoute
+  '/settings/workflows': typeof SettingsWorkflowsRoute
   '/tasks/board': typeof TasksBoardRoute
   '/tasks/calendar': typeof TasksCalendarRoute
   '/tasks/list': typeof TasksListRoute
@@ -326,6 +360,7 @@ export interface FileRoutesByFullPath {
   '/leads/': typeof LeadsIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/reports/': typeof ReportsIndexRoute
+  '/settings/': typeof SettingsIndexRoute
   '/tasks/': typeof TasksIndexRoute
 }
 export interface FileRoutesByTo {
@@ -334,7 +369,6 @@ export interface FileRoutesByTo {
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/settings': typeof SettingsRoute
   '/verify-email': typeof VerifyEmailRoute
   '/clients/$clientId': typeof ClientsClientIdRoute
   '/employees/$employeeId': typeof EmployeesEmployeeIdRoute
@@ -355,6 +389,10 @@ export interface FileRoutesByTo {
   '/reports/finance': typeof ReportsFinanceRoute
   '/reports/leads': typeof ReportsLeadsRoute
   '/reports/projects': typeof ReportsProjectsRoute
+  '/settings/integrations': typeof SettingsIntegrationsRoute
+  '/settings/notifications': typeof SettingsNotificationsRoute
+  '/settings/roles': typeof SettingsRolesRoute
+  '/settings/workflows': typeof SettingsWorkflowsRoute
   '/tasks/board': typeof TasksBoardRoute
   '/tasks/calendar': typeof TasksCalendarRoute
   '/tasks/list': typeof TasksListRoute
@@ -365,6 +403,7 @@ export interface FileRoutesByTo {
   '/leads': typeof LeadsIndexRoute
   '/projects': typeof ProjectsIndexRoute
   '/reports': typeof ReportsIndexRoute
+  '/settings': typeof SettingsIndexRoute
   '/tasks': typeof TasksIndexRoute
 }
 export interface FileRoutesById {
@@ -381,7 +420,7 @@ export interface FileRoutesById {
   '/projects': typeof ProjectsRouteWithChildren
   '/reports': typeof ReportsRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
-  '/settings': typeof SettingsRoute
+  '/settings': typeof SettingsRouteWithChildren
   '/tasks': typeof TasksRouteWithChildren
   '/verify-email': typeof VerifyEmailRoute
   '/clients/$clientId': typeof ClientsClientIdRoute
@@ -403,6 +442,10 @@ export interface FileRoutesById {
   '/reports/finance': typeof ReportsFinanceRoute
   '/reports/leads': typeof ReportsLeadsRoute
   '/reports/projects': typeof ReportsProjectsRoute
+  '/settings/integrations': typeof SettingsIntegrationsRoute
+  '/settings/notifications': typeof SettingsNotificationsRoute
+  '/settings/roles': typeof SettingsRolesRoute
+  '/settings/workflows': typeof SettingsWorkflowsRoute
   '/tasks/board': typeof TasksBoardRoute
   '/tasks/calendar': typeof TasksCalendarRoute
   '/tasks/list': typeof TasksListRoute
@@ -413,6 +456,7 @@ export interface FileRoutesById {
   '/leads/': typeof LeadsIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/reports/': typeof ReportsIndexRoute
+  '/settings/': typeof SettingsIndexRoute
   '/tasks/': typeof TasksIndexRoute
 }
 export interface FileRouteTypes {
@@ -452,6 +496,10 @@ export interface FileRouteTypes {
     | '/reports/finance'
     | '/reports/leads'
     | '/reports/projects'
+    | '/settings/integrations'
+    | '/settings/notifications'
+    | '/settings/roles'
+    | '/settings/workflows'
     | '/tasks/board'
     | '/tasks/calendar'
     | '/tasks/list'
@@ -462,6 +510,7 @@ export interface FileRouteTypes {
     | '/leads/'
     | '/projects/'
     | '/reports/'
+    | '/settings/'
     | '/tasks/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -470,7 +519,6 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/login'
     | '/reset-password'
-    | '/settings'
     | '/verify-email'
     | '/clients/$clientId'
     | '/employees/$employeeId'
@@ -491,6 +539,10 @@ export interface FileRouteTypes {
     | '/reports/finance'
     | '/reports/leads'
     | '/reports/projects'
+    | '/settings/integrations'
+    | '/settings/notifications'
+    | '/settings/roles'
+    | '/settings/workflows'
     | '/tasks/board'
     | '/tasks/calendar'
     | '/tasks/list'
@@ -501,6 +553,7 @@ export interface FileRouteTypes {
     | '/leads'
     | '/projects'
     | '/reports'
+    | '/settings'
     | '/tasks'
   id:
     | '__root__'
@@ -538,6 +591,10 @@ export interface FileRouteTypes {
     | '/reports/finance'
     | '/reports/leads'
     | '/reports/projects'
+    | '/settings/integrations'
+    | '/settings/notifications'
+    | '/settings/roles'
+    | '/settings/workflows'
     | '/tasks/board'
     | '/tasks/calendar'
     | '/tasks/list'
@@ -548,6 +605,7 @@ export interface FileRouteTypes {
     | '/leads/'
     | '/projects/'
     | '/reports/'
+    | '/settings/'
     | '/tasks/'
   fileRoutesById: FileRoutesById
 }
@@ -564,7 +622,7 @@ export interface RootRouteChildren {
   ProjectsRoute: typeof ProjectsRouteWithChildren
   ReportsRoute: typeof ReportsRouteWithChildren
   ResetPasswordRoute: typeof ResetPasswordRoute
-  SettingsRoute: typeof SettingsRoute
+  SettingsRoute: typeof SettingsRouteWithChildren
   TasksRoute: typeof TasksRouteWithChildren
   VerifyEmailRoute: typeof VerifyEmailRoute
 }
@@ -858,6 +916,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReportsProjectsRouteImport
       parentRoute: typeof ReportsRoute
     }
+    '/settings/': {
+      id: '/settings/'
+      path: '/'
+      fullPath: '/settings/'
+      preLoaderRoute: typeof SettingsIndexRouteImport
+      parentRoute: typeof SettingsRoute
+    }
+    '/settings/integrations': {
+      id: '/settings/integrations'
+      path: '/integrations'
+      fullPath: '/settings/integrations'
+      preLoaderRoute: typeof SettingsIntegrationsRouteImport
+      parentRoute: typeof SettingsRoute
+    }
+    '/settings/notifications': {
+      id: '/settings/notifications'
+      path: '/notifications'
+      fullPath: '/settings/notifications'
+      preLoaderRoute: typeof SettingsNotificationsRouteImport
+      parentRoute: typeof SettingsRoute
+    }
+    '/settings/roles': {
+      id: '/settings/roles'
+      path: '/roles'
+      fullPath: '/settings/roles'
+      preLoaderRoute: typeof SettingsRolesRouteImport
+      parentRoute: typeof SettingsRoute
+    }
+    '/settings/workflows': {
+      id: '/settings/workflows'
+      path: '/workflows'
+      fullPath: '/settings/workflows'
+      preLoaderRoute: typeof SettingsWorkflowsRouteImport
+      parentRoute: typeof SettingsRoute
+    }
     '/tasks/': {
       id: '/tasks/'
       path: '/'
@@ -1004,6 +1097,26 @@ const ReportsRouteChildren: ReportsRouteChildren = {
 const ReportsRouteWithChildren =
   ReportsRoute._addFileChildren(ReportsRouteChildren)
 
+interface SettingsRouteChildren {
+  SettingsIntegrationsRoute: typeof SettingsIntegrationsRoute
+  SettingsNotificationsRoute: typeof SettingsNotificationsRoute
+  SettingsRolesRoute: typeof SettingsRolesRoute
+  SettingsWorkflowsRoute: typeof SettingsWorkflowsRoute
+  SettingsIndexRoute: typeof SettingsIndexRoute
+}
+
+const SettingsRouteChildren: SettingsRouteChildren = {
+  SettingsIntegrationsRoute: SettingsIntegrationsRoute,
+  SettingsNotificationsRoute: SettingsNotificationsRoute,
+  SettingsRolesRoute: SettingsRolesRoute,
+  SettingsWorkflowsRoute: SettingsWorkflowsRoute,
+  SettingsIndexRoute: SettingsIndexRoute,
+}
+
+const SettingsRouteWithChildren = SettingsRoute._addFileChildren(
+  SettingsRouteChildren,
+)
+
 interface TasksRouteChildren {
   TasksBoardRoute: typeof TasksBoardRoute
   TasksCalendarRoute: typeof TasksCalendarRoute
@@ -1033,7 +1146,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProjectsRoute: ProjectsRouteWithChildren,
   ReportsRoute: ReportsRouteWithChildren,
   ResetPasswordRoute: ResetPasswordRoute,
-  SettingsRoute: SettingsRoute,
+  SettingsRoute: SettingsRouteWithChildren,
   TasksRoute: TasksRouteWithChildren,
   VerifyEmailRoute: VerifyEmailRoute,
 }
