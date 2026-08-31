@@ -54,7 +54,6 @@ export const useLeadsStore = create<LeadsState>((set, get) => ({
       owner: lead.owner,
       mrr: details.packageType === "monthly" ? details.packagePrice : 0,
       health: "healthy",
-      projects: 0,
       logo: initialsOf(lead.company),
       since: new Date().toISOString().slice(0, 10),
       address: "—",

@@ -30,6 +30,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useClientsStore } from "@/store/clientsStore";
+import { useProjectsStore } from "@/store/projectsStore";
+import { useDeliverablesStore } from "@/store/deliverablesStore";
 import { clientContacts, clientActivity, clientDocuments, money } from "@/data/crm";
 import { toast } from "sonner";
 
@@ -65,6 +67,8 @@ function ClientDetailPage() {
   const client = useClientsStore((s) => s.clients.find((c) => c.id === clientId));
   const updateClient = useClientsStore((s) => s.updateClient);
   const removeClient = useClientsStore((s) => s.removeClient);
+  const projects = useProjectsStore((s) => s.projects);
+  const allDeliverables = useDeliverablesStore((s) => s.deliverables);
 
   const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
@@ -91,6 +95,10 @@ function ClientDetailPage() {
     b.when.localeCompare(a.when),
   );
   const documents = clientDocuments.filter((d) => d.clientId === client.id);
+  const clientProjects = projects.filter((p) => p.clientId === client.id);
+  const activeProjectCount = clientProjects.filter((p) => p.status !== "completed").length;
+  const clientProjectIds = new Set(clientProjects.map((p) => p.id));
+  const deliverables = allDeliverables.filter((d) => clientProjectIds.has(d.projectId));
 
   return (
     <section className="mx-auto max-w-7xl">
@@ -130,6 +138,7 @@ function ClientDetailPage() {
         <TabsList>
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="contacts">Contacts ({contacts.length})</TabsTrigger>
+          <TabsTrigger value="deliverables">Deliverables ({deliverables.length})</TabsTrigger>
           <TabsTrigger value="timeline">Timeline ({activity.length})</TabsTrigger>
           <TabsTrigger value="documents">Documents ({documents.length})</TabsTrigger>
         </TabsList>
@@ -152,7 +161,7 @@ function ClientDetailPage() {
                   label={client.packageType === "monthly" ? "Monthly price" : "Project price"}
                   value={money(client.packagePrice)}
                 />
-                <Metric label="Active projects" value={String(client.projects)} />
+                <Metric label="Active projects" value={String(activeProjectCount)} />
                 <Metric label="Account owner" value={client.owner} />
               </div>
             </div>
@@ -214,6 +223,59 @@ function ClientDetailPage() {
                       </TableCell>
                     </TableRow>
                   ))}
+                </TableBody>
+              </Table>
+            </div>
+          )}
+        </TabsContent>
+
+        <TabsContent value="deliverables" className="mt-5">
+          {deliverables.length === 0 ? (
+            <div className="surface-card p-6">
+              <EmptyState
+                title="No deliverables yet"
+                description="Client-facing outputs across this client's projects will show up here."
+              />
+            </div>
+          ) : (
+            <div className="surface-card overflow-hidden">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Deliverable</TableHead>
+                    <TableHead>Project</TableHead>
+                    <TableHead>Type</TableHead>
+                    <TableHead>Due</TableHead>
+                    <TableHead>Status</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {deliverables.map((d) => {
+                    const project = clientProjects.find((p) => p.id === d.projectId);
+                    return (
+                      <TableRow key={d.id}>
+                        <TableCell className="font-medium">{d.title}</TableCell>
+                        <TableCell className="text-muted-foreground">
+                          {project ? (
+                            <Link
+                              to="/projects/$projectId"
+                              params={{ projectId: project.id }}
+                              className="hover:underline"
+                            >
+                              {project.name}
+                            </Link>
+                          ) : (
+                            "—"
+                          )}
+                        </TableCell>
+                        <TableCell className="text-muted-foreground">{d.type}</TableCell>
+                        <TableCell className="text-muted-foreground">{d.dueDate}</TableCell>
+                        <TableCell>
+                          <StatusBadge status={d.status} />
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
             </div>

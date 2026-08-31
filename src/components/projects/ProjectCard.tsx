@@ -5,6 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import type { DeliveryProject } from "@/data/delivery";
 import { money } from "@/data/agency";
+import { useClientsStore } from "@/store/clientsStore";
 
 export function ProjectCard({
   project,
@@ -13,6 +14,10 @@ export function ProjectCard({
   project: DeliveryProject;
   view?: "grid" | "list";
 }) {
+  const clientName = useClientsStore(
+    (s) => s.clients.find((c) => c.id === project.clientId)?.name ?? "Unknown client",
+  );
+
   if (view === "list") {
     return (
       <Link
@@ -22,7 +27,7 @@ export function ProjectCard({
       >
         <div className="min-w-40 flex-1">
           <p className="font-semibold text-foreground">{project.name}</p>
-          <p className="text-xs text-muted-foreground">{project.client}</p>
+          <p className="text-xs text-muted-foreground">{clientName}</p>
         </div>
         <Avatar className="size-8">
           <AvatarFallback className="text-xs">{project.leadInitials}</AvatarFallback>
@@ -47,7 +52,7 @@ export function ProjectCard({
       <div className="flex items-start justify-between gap-2">
         <div>
           <p className="font-semibold text-foreground">{project.name}</p>
-          <p className="text-xs text-muted-foreground">{project.client}</p>
+          <p className="text-xs text-muted-foreground">{clientName}</p>
         </div>
         <StatusBadge status={project.status} />
       </div>

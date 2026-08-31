@@ -40,17 +40,23 @@ import { useProjectsStore } from "@/store/projectsStore";
 import { useTasksStore } from "@/store/tasksStore";
 import {
   budgetBurn,
+  deliverableStatuses,
+  deliverableStatusLabels,
   milestones,
   projectActivity,
   projectAllocations,
   projectFilesByProject,
   taskStatuses,
+  type DeliverableStatus,
   type ProjectStatus,
   type TaskStatus,
 } from "@/data/delivery";
 import { money } from "@/data/agency";
 import { taskStatusLabels } from "@/data/delivery";
 import { useEmployeesStore } from "@/store/employeesStore";
+import { useClientsStore } from "@/store/clientsStore";
+import { useDeliverablesStore } from "@/store/deliverablesStore";
+import { NewDeliverableDialog } from "@/components/projects/NewDeliverableDialog";
 
 export const Route = createFileRoute("/projects/$projectId")({
   head: () => ({
@@ -89,6 +95,11 @@ function ProjectDetailPage() {
   const tasks = allTasks.filter((t) => t.projectId === projectId);
   const setTaskStatus = useTasksStore((s) => s.setStatus);
   const employees = useEmployeesStore((s) => s.employees);
+  const clients = useClientsStore((s) => s.clients);
+  const allDeliverables = useDeliverablesStore((s) => s.deliverables);
+  const addDeliverable = useDeliverablesStore((s) => s.addDeliverable);
+  const setDeliverableStatus = useDeliverablesStore((s) => s.setStatus);
+  const deliverables = allDeliverables.filter((d) => d.projectId === projectId);
 
   const [progressDraft, setProgressDraft] = useState<number | null>(null);
 
@@ -121,6 +132,7 @@ function ProjectDetailPage() {
   const files = projectFilesByProject(project.id);
   const remaining = project.budget - project.spend;
   const progress = progressDraft ?? project.progress;
+  const clientName = clients.find((c) => c.id === project.clientId)?.name ?? "Unknown client";
 
   return (
     <section className="mx-auto max-w-7xl">
@@ -132,7 +144,7 @@ function ProjectDetailPage() {
       </Link>
       <PageHeader
         title={project.name}
-        description={`${project.client} · Led by ${project.lead}`}
+        description={`${clientName} · Led by ${project.lead}`}
         actions={
           <Select
             value={project.status}
@@ -162,6 +174,7 @@ function ProjectDetailPage() {
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="team">Team ({team.length})</TabsTrigger>
           <TabsTrigger value="tasks">Tasks ({tasks.length})</TabsTrigger>
+          <TabsTrigger value="deliverables">Deliverables ({deliverables.length})</TabsTrigger>
           <TabsTrigger value="timeline">Timeline ({projectMilestones.length})</TabsTrigger>
           <TabsTrigger value="budget">Budget</TabsTrigger>
           <TabsTrigger value="files">Files ({files.length})</TabsTrigger>
@@ -306,6 +319,72 @@ function ProjectDetailPage() {
                               {taskStatusOptions.map((s) => (
                                 <SelectItem key={s} value={s}>
                                   {taskStatusLabels[s]}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </div>
+          )}
+        </TabsContent>
+
+        <TabsContent value="deliverables" className="mt-5">
+          <div className="mb-3 flex justify-end">
+            <NewDeliverableDialog projectId={project.id} onCreate={addDeliverable} />
+          </div>
+          {deliverables.length === 0 ? (
+            <div className="surface-card p-6">
+              <EmptyState
+                icon={FileText}
+                title="No deliverables yet"
+                description="Client-facing outputs for this project — videos, designs, reports — will show up here."
+              />
+            </div>
+          ) : (
+            <div className="surface-card overflow-hidden">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Deliverable</TableHead>
+                    <TableHead>Type</TableHead>
+                    <TableHead>Assignee</TableHead>
+                    <TableHead>Due</TableHead>
+                    <TableHead>Status</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {deliverables.map((d) => {
+                    const assignee = employees.find((e) => e.id === d.assigneeId);
+                    return (
+                      <TableRow key={d.id}>
+                        <TableCell className="font-medium">{d.title}</TableCell>
+                        <TableCell className="text-muted-foreground">{d.type}</TableCell>
+                        <TableCell className="text-muted-foreground">
+                          {assignee?.name ?? "Unassigned"}
+                        </TableCell>
+                        <TableCell className="text-muted-foreground">{d.dueDate}</TableCell>
+                        <TableCell>
+                          <Select
+                            value={d.status}
+                            onValueChange={(v) =>
+                              setDeliverableStatus(d.id, v as DeliverableStatus)
+                            }
+                          >
+                            <SelectTrigger
+                              className="h-8 w-44"
+                              aria-label={`Status for ${d.title}`}
+                            >
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {deliverableStatuses.map((s) => (
+                                <SelectItem key={s} value={s}>
+                                  {deliverableStatusLabels[s]}
                                 </SelectItem>
                               ))}
                             </SelectContent>

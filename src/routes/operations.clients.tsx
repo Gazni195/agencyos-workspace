@@ -5,6 +5,7 @@ import { DataTable, type Column } from "@/components/shared/DataTable";
 import { useClientsStore } from "@/store/clientsStore";
 import { useProjectsStore } from "@/store/projectsStore";
 import { useTasksStore } from "@/store/tasksStore";
+import { useDeliverablesStore } from "@/store/deliverablesStore";
 import type { Client } from "@/data/crm";
 
 export const Route = createFileRoute("/operations/clients")({
@@ -26,7 +27,7 @@ type ClientRow = {
   client: Client;
   activeProjects: number;
   delayedProjects: number;
-  awaitingReview: number;
+  pendingDeliverables: number;
   overdueTasks: number;
 };
 
@@ -34,30 +35,34 @@ function OperationsClientsPage() {
   const clients = useClientsStore((s) => s.clients);
   const projects = useProjectsStore((s) => s.projects);
   const tasks = useTasksStore((s) => s.tasks);
+  const deliverables = useDeliverablesStore((s) => s.deliverables);
 
   const rows = useMemo<ClientRow[]>(
     () =>
       clients
         .map((client) => {
-          const clientProjects = projects.filter((p) => p.client === client.name);
+          const clientProjects = projects.filter((p) => p.clientId === client.id);
           const projectIds = new Set(clientProjects.map((p) => p.id));
           const clientTasks = tasks.filter((t) => projectIds.has(t.projectId));
+          const clientDeliverables = deliverables.filter((d) => projectIds.has(d.projectId));
           return {
             client,
             activeProjects: clientProjects.filter((p) => p.status !== "completed").length,
             delayedProjects: clientProjects.filter((p) => p.status === "delayed").length,
-            awaitingReview: clientTasks.filter((t) => t.status === "review").length,
+            pendingDeliverables: clientDeliverables.filter(
+              (d) => d.status === "internal-review" || d.status === "client-review",
+            ).length,
             overdueTasks: clientTasks.filter((t) => t.status !== "done" && isOverdue(t.due)).length,
           };
         })
         .sort(
           (a, b) =>
             b.delayedProjects +
-            b.awaitingReview +
+            b.pendingDeliverables +
             b.overdueTasks -
-            (a.delayedProjects + a.awaitingReview + a.overdueTasks),
+            (a.delayedProjects + a.pendingDeliverables + a.overdueTasks),
         ),
-    [clients, projects, tasks],
+    [clients, projects, tasks, deliverables],
   );
 
   const columns: Column<ClientRow>[] = [
@@ -95,11 +100,11 @@ function OperationsClientsPage() {
         ),
     },
     {
-      key: "awaitingReview",
-      header: "Awaiting review",
+      key: "pendingDeliverables",
+      header: "Deliverables pending",
       align: "right",
-      sortValue: (r) => r.awaitingReview,
-      render: (r) => r.awaitingReview,
+      sortValue: (r) => r.pendingDeliverables,
+      render: (r) => r.pendingDeliverables,
     },
     {
       key: "overdueTasks",
@@ -119,7 +124,7 @@ function OperationsClientsPage() {
       render: (r) =>
         r.delayedProjects + r.overdueTasks > 0 ? (
           <StatusBadge status="delayed" />
-        ) : r.awaitingReview > 0 ? (
+        ) : r.pendingDeliverables > 0 ? (
           <StatusBadge status="review" />
         ) : (
           <StatusBadge status="on-track" />

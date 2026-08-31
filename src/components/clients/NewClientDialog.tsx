@@ -62,7 +62,6 @@ export function NewClientDialog({ onCreate }: { onCreate: (client: Client) => vo
       owner,
       mrr: packageType === "monthly" ? price : 0,
       health,
-      projects: 0,
       logo: initialsOf(name.trim()),
       since: new Date().toISOString().slice(0, 10),
       address: "—",

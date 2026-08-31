@@ -29,7 +29,7 @@ export function NewProjectDialog({ onCreate }: { onCreate: (project: DeliveryPro
   const employees = useEmployeesStore((s) => s.employees);
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
-  const [client, setClient] = useState("");
+  const [clientId, setClientId] = useState("");
   const [lead, setLead] = useState("");
   const [budget, setBudget] = useState("");
   const [due, setDue] = useState("");
@@ -37,7 +37,7 @@ export function NewProjectDialog({ onCreate }: { onCreate: (project: DeliveryPro
 
   const reset = () => {
     setName("");
-    setClient("");
+    setClientId("");
     setLead("");
     setBudget("");
     setDue("");
@@ -45,7 +45,7 @@ export function NewProjectDialog({ onCreate }: { onCreate: (project: DeliveryPro
   };
 
   const handleSubmit = () => {
-    if (!name.trim() || !client || !lead || !budget || !due) {
+    if (!name.trim() || !clientId || !lead || !budget || !due) {
       toast.error("Please fill in all required fields.");
       return;
     }
@@ -53,7 +53,7 @@ export function NewProjectDialog({ onCreate }: { onCreate: (project: DeliveryPro
     const project: DeliveryProject = {
       id: `pr-${Date.now()}`,
       name: name.trim(),
-      client,
+      clientId,
       lead,
       leadInitials: leadEmployee?.initials ?? lead.slice(0, 2).toUpperCase(),
       team: leadEmployee ? [leadEmployee.id] : [],
@@ -96,13 +96,13 @@ export function NewProjectDialog({ onCreate }: { onCreate: (project: DeliveryPro
           </div>
           <div className="grid gap-1.5">
             <Label>Client</Label>
-            <Select value={client} onValueChange={setClient}>
+            <Select value={clientId} onValueChange={setClientId}>
               <SelectTrigger>
                 <SelectValue placeholder="Select client" />
               </SelectTrigger>
               <SelectContent>
                 {clients.map((c) => (
-                  <SelectItem key={c.id} value={c.name}>
+                  <SelectItem key={c.id} value={c.id}>
                     {c.name}
                   </SelectItem>
                 ))}

@@ -3,16 +3,20 @@ import { StatusBadge } from "@/components/common/StatusBadge";
 import { Link } from "@tanstack/react-router";
 import { useProjectsStore } from "@/store/projectsStore";
 import { useTasksStore } from "@/store/tasksStore";
+import { useClientsStore } from "@/store/clientsStore";
 import { CalendarClock } from "lucide-react";
 
 export function UpcomingDeadlines() {
   const deliveryProjects = useProjectsStore((s) => s.projects);
   const deliveryTasks = useTasksStore((s) => s.tasks);
+  const clients = useClientsStore((s) => s.clients);
+  const clientName = (clientId: string) =>
+    clients.find((c) => c.id === clientId)?.name ?? "Unknown client";
   const items = [
     ...deliveryProjects.map((p) => ({
       id: p.id,
       title: p.name,
-      sub: p.client,
+      sub: clientName(p.clientId),
       due: p.due,
       status: p.status,
       to: "/projects" as const,

@@ -3,8 +3,12 @@ import { Briefcase } from "lucide-react";
 import { StatusBadge } from "@/components/common/StatusBadge";
 import type { Client } from "@/data/crm";
 import { money } from "@/data/crm";
+import { useProjectsStore } from "@/store/projectsStore";
 
 export function ClientCard({ client }: { client: Client }) {
+  const projectCount = useProjectsStore(
+    (s) => s.projects.filter((p) => p.clientId === client.id).length,
+  );
   return (
     <Link
       to="/clients/$clientId"
@@ -35,7 +39,7 @@ export function ClientCard({ client }: { client: Client }) {
       </div>
       <div className="flex items-center gap-1.5 border-t border-border pt-3 text-xs text-muted-foreground">
         <Briefcase className="size-3.5" />
-        {client.projects} active project{client.projects === 1 ? "" : "s"}
+        {projectCount} active project{projectCount === 1 ? "" : "s"}
       </div>
     </Link>
   );

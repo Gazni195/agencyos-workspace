@@ -14,7 +14,6 @@ export type Client = {
   owner: string;
   mrr: number;
   health: ClientHealth;
-  projects: number;
   logo: string;
   since: string;
   address: string;
