@@ -24,6 +24,7 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as TasksRouteImport } from './routes/tasks'
 import { Route as VerifyEmailRouteImport } from './routes/verify-email'
+import { Route as ClientsIndexRouteImport } from './routes/clients.index'
 import { Route as ClientsClientIdRouteImport } from './routes/clients.$clientId'
 import { Route as EmployeesIndexRouteImport } from './routes/employees.index'
 import { Route as EmployeesEmployeeIdRouteImport } from './routes/employees.$employeeId'
@@ -34,6 +35,8 @@ import { Route as EmployeesPayrollRouteImport } from './routes/employees.payroll
 import { Route as EmployeesPerformanceRouteImport } from './routes/employees.performance'
 import { Route as EmployeesSettingsRouteImport } from './routes/employees.settings'
 import { Route as EmployeesTimesheetsRouteImport } from './routes/employees.timesheets'
+import { Route as LeadsIndexRouteImport } from './routes/leads.index'
+import { Route as LeadsLeadIdRouteImport } from './routes/leads.$leadId'
 import { Route as ProjectsProjectIdRouteImport } from './routes/projects.$projectId'
 
 const IndexRoute = IndexRouteImport.update({
@@ -111,6 +114,11 @@ const VerifyEmailRoute = VerifyEmailRouteImport.update({
   path: '/verify-email',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ClientsIndexRoute = ClientsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ClientsRoute,
+} as any)
 const ClientsClientIdRoute = ClientsClientIdRouteImport.update({
   id: '/$clientId',
   path: '/$clientId',
@@ -161,6 +169,16 @@ const EmployeesTimesheetsRoute = EmployeesTimesheetsRouteImport.update({
   path: '/timesheets',
   getParentRoute: () => EmployeesRoute,
 } as any)
+const LeadsIndexRoute = LeadsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => LeadsRoute,
+} as any)
+const LeadsLeadIdRoute = LeadsLeadIdRouteImport.update({
+  id: '/$leadId',
+  path: '/$leadId',
+  getParentRoute: () => LeadsRoute,
+} as any)
 const ProjectsProjectIdRoute = ProjectsProjectIdRouteImport.update({
   id: '/$projectId',
   path: '/$projectId',
@@ -175,7 +193,7 @@ export interface FileRoutesByFullPath {
   '/finance': typeof FinanceRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/inbox': typeof InboxRoute
-  '/leads': typeof LeadsRoute
+  '/leads': typeof LeadsRouteWithChildren
   '/login': typeof LoginRoute
   '/projects': typeof ProjectsRouteWithChildren
   '/reports': typeof ReportsRoute
@@ -192,17 +210,18 @@ export interface FileRoutesByFullPath {
   '/employees/performance': typeof EmployeesPerformanceRoute
   '/employees/settings': typeof EmployeesSettingsRoute
   '/employees/timesheets': typeof EmployeesTimesheetsRoute
+  '/leads/$leadId': typeof LeadsLeadIdRoute
   '/projects/$projectId': typeof ProjectsProjectIdRoute
+  '/clients/': typeof ClientsIndexRoute
   '/employees/': typeof EmployeesIndexRoute
+  '/leads/': typeof LeadsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/assets': typeof AssetsRoute
-  '/clients': typeof ClientsRouteWithChildren
   '/finance': typeof FinanceRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/inbox': typeof InboxRoute
-  '/leads': typeof LeadsRoute
   '/login': typeof LoginRoute
   '/projects': typeof ProjectsRouteWithChildren
   '/reports': typeof ReportsRoute
@@ -219,8 +238,11 @@ export interface FileRoutesByTo {
   '/employees/performance': typeof EmployeesPerformanceRoute
   '/employees/settings': typeof EmployeesSettingsRoute
   '/employees/timesheets': typeof EmployeesTimesheetsRoute
+  '/leads/$leadId': typeof LeadsLeadIdRoute
   '/projects/$projectId': typeof ProjectsProjectIdRoute
+  '/clients': typeof ClientsIndexRoute
   '/employees': typeof EmployeesIndexRoute
+  '/leads': typeof LeadsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -231,7 +253,7 @@ export interface FileRoutesById {
   '/finance': typeof FinanceRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/inbox': typeof InboxRoute
-  '/leads': typeof LeadsRoute
+  '/leads': typeof LeadsRouteWithChildren
   '/login': typeof LoginRoute
   '/projects': typeof ProjectsRouteWithChildren
   '/reports': typeof ReportsRoute
@@ -248,8 +270,11 @@ export interface FileRoutesById {
   '/employees/performance': typeof EmployeesPerformanceRoute
   '/employees/settings': typeof EmployeesSettingsRoute
   '/employees/timesheets': typeof EmployeesTimesheetsRoute
+  '/leads/$leadId': typeof LeadsLeadIdRoute
   '/projects/$projectId': typeof ProjectsProjectIdRoute
+  '/clients/': typeof ClientsIndexRoute
   '/employees/': typeof EmployeesIndexRoute
+  '/leads/': typeof LeadsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -278,17 +303,18 @@ export interface FileRouteTypes {
     | '/employees/performance'
     | '/employees/settings'
     | '/employees/timesheets'
+    | '/leads/$leadId'
     | '/projects/$projectId'
+    | '/clients/'
     | '/employees/'
+    | '/leads/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/assets'
-    | '/clients'
     | '/finance'
     | '/forgot-password'
     | '/inbox'
-    | '/leads'
     | '/login'
     | '/projects'
     | '/reports'
@@ -305,8 +331,11 @@ export interface FileRouteTypes {
     | '/employees/performance'
     | '/employees/settings'
     | '/employees/timesheets'
+    | '/leads/$leadId'
     | '/projects/$projectId'
+    | '/clients'
     | '/employees'
+    | '/leads'
   id:
     | '__root__'
     | '/'
@@ -333,8 +362,11 @@ export interface FileRouteTypes {
     | '/employees/performance'
     | '/employees/settings'
     | '/employees/timesheets'
+    | '/leads/$leadId'
     | '/projects/$projectId'
+    | '/clients/'
     | '/employees/'
+    | '/leads/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -345,7 +377,7 @@ export interface RootRouteChildren {
   FinanceRoute: typeof FinanceRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   InboxRoute: typeof InboxRoute
-  LeadsRoute: typeof LeadsRoute
+  LeadsRoute: typeof LeadsRouteWithChildren
   LoginRoute: typeof LoginRoute
   ProjectsRoute: typeof ProjectsRouteWithChildren
   ReportsRoute: typeof ReportsRoute
@@ -462,6 +494,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VerifyEmailRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/clients/': {
+      id: '/clients/'
+      path: '/'
+      fullPath: '/clients/'
+      preLoaderRoute: typeof ClientsIndexRouteImport
+      parentRoute: typeof ClientsRoute
+    }
     '/clients/$clientId': {
       id: '/clients/$clientId'
       path: '/$clientId'
@@ -532,6 +571,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmployeesTimesheetsRouteImport
       parentRoute: typeof EmployeesRoute
     }
+    '/leads/': {
+      id: '/leads/'
+      path: '/'
+      fullPath: '/leads/'
+      preLoaderRoute: typeof LeadsIndexRouteImport
+      parentRoute: typeof LeadsRoute
+    }
+    '/leads/$leadId': {
+      id: '/leads/$leadId'
+      path: '/$leadId'
+      fullPath: '/leads/$leadId'
+      preLoaderRoute: typeof LeadsLeadIdRouteImport
+      parentRoute: typeof LeadsRoute
+    }
     '/projects/$projectId': {
       id: '/projects/$projectId'
       path: '/$projectId'
@@ -544,10 +597,12 @@ declare module '@tanstack/react-router' {
 
 interface ClientsRouteChildren {
   ClientsClientIdRoute: typeof ClientsClientIdRoute
+  ClientsIndexRoute: typeof ClientsIndexRoute
 }
 
 const ClientsRouteChildren: ClientsRouteChildren = {
   ClientsClientIdRoute: ClientsClientIdRoute,
+  ClientsIndexRoute: ClientsIndexRoute,
 }
 
 const ClientsRouteWithChildren =
@@ -581,6 +636,18 @@ const EmployeesRouteWithChildren = EmployeesRoute._addFileChildren(
   EmployeesRouteChildren,
 )
 
+interface LeadsRouteChildren {
+  LeadsLeadIdRoute: typeof LeadsLeadIdRoute
+  LeadsIndexRoute: typeof LeadsIndexRoute
+}
+
+const LeadsRouteChildren: LeadsRouteChildren = {
+  LeadsLeadIdRoute: LeadsLeadIdRoute,
+  LeadsIndexRoute: LeadsIndexRoute,
+}
+
+const LeadsRouteWithChildren = LeadsRoute._addFileChildren(LeadsRouteChildren)
+
 interface ProjectsRouteChildren {
   ProjectsProjectIdRoute: typeof ProjectsProjectIdRoute
 }
@@ -601,7 +668,7 @@ const rootRouteChildren: RootRouteChildren = {
   FinanceRoute: FinanceRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
   InboxRoute: InboxRoute,
-  LeadsRoute: LeadsRoute,
+  LeadsRoute: LeadsRouteWithChildren,
   LoginRoute: LoginRoute,
   ProjectsRoute: ProjectsRouteWithChildren,
   ReportsRoute: ReportsRoute,
