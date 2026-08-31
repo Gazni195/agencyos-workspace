@@ -35,6 +35,10 @@ import { Route as EmployeesPayrollRouteImport } from './routes/employees.payroll
 import { Route as EmployeesPerformanceRouteImport } from './routes/employees.performance'
 import { Route as EmployeesSettingsRouteImport } from './routes/employees.settings'
 import { Route as EmployeesTimesheetsRouteImport } from './routes/employees.timesheets'
+import { Route as FinanceIndexRouteImport } from './routes/finance.index'
+import { Route as FinanceExpensesRouteImport } from './routes/finance.expenses'
+import { Route as FinanceInvoicesRouteImport } from './routes/finance.invoices'
+import { Route as FinancePaymentsRouteImport } from './routes/finance.payments'
 import { Route as LeadsIndexRouteImport } from './routes/leads.index'
 import { Route as LeadsLeadIdRouteImport } from './routes/leads.$leadId'
 import { Route as ProjectsIndexRouteImport } from './routes/projects.index'
@@ -174,6 +178,26 @@ const EmployeesTimesheetsRoute = EmployeesTimesheetsRouteImport.update({
   path: '/timesheets',
   getParentRoute: () => EmployeesRoute,
 } as any)
+const FinanceIndexRoute = FinanceIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => FinanceRoute,
+} as any)
+const FinanceExpensesRoute = FinanceExpensesRouteImport.update({
+  id: '/expenses',
+  path: '/expenses',
+  getParentRoute: () => FinanceRoute,
+} as any)
+const FinanceInvoicesRoute = FinanceInvoicesRouteImport.update({
+  id: '/invoices',
+  path: '/invoices',
+  getParentRoute: () => FinanceRoute,
+} as any)
+const FinancePaymentsRoute = FinancePaymentsRouteImport.update({
+  id: '/payments',
+  path: '/payments',
+  getParentRoute: () => FinanceRoute,
+} as any)
 const LeadsIndexRoute = LeadsIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -220,7 +244,7 @@ export interface FileRoutesByFullPath {
   '/assets': typeof AssetsRoute
   '/clients': typeof ClientsRouteWithChildren
   '/employees': typeof EmployeesRouteWithChildren
-  '/finance': typeof FinanceRoute
+  '/finance': typeof FinanceRouteWithChildren
   '/forgot-password': typeof ForgotPasswordRoute
   '/inbox': typeof InboxRoute
   '/leads': typeof LeadsRouteWithChildren
@@ -240,6 +264,9 @@ export interface FileRoutesByFullPath {
   '/employees/performance': typeof EmployeesPerformanceRoute
   '/employees/settings': typeof EmployeesSettingsRoute
   '/employees/timesheets': typeof EmployeesTimesheetsRoute
+  '/finance/expenses': typeof FinanceExpensesRoute
+  '/finance/invoices': typeof FinanceInvoicesRoute
+  '/finance/payments': typeof FinancePaymentsRoute
   '/leads/$leadId': typeof LeadsLeadIdRoute
   '/projects/$projectId': typeof ProjectsProjectIdRoute
   '/tasks/board': typeof TasksBoardRoute
@@ -247,6 +274,7 @@ export interface FileRoutesByFullPath {
   '/tasks/list': typeof TasksListRoute
   '/clients/': typeof ClientsIndexRoute
   '/employees/': typeof EmployeesIndexRoute
+  '/finance/': typeof FinanceIndexRoute
   '/leads/': typeof LeadsIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/tasks/': typeof TasksIndexRoute
@@ -254,7 +282,6 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/assets': typeof AssetsRoute
-  '/finance': typeof FinanceRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/inbox': typeof InboxRoute
   '/login': typeof LoginRoute
@@ -271,6 +298,9 @@ export interface FileRoutesByTo {
   '/employees/performance': typeof EmployeesPerformanceRoute
   '/employees/settings': typeof EmployeesSettingsRoute
   '/employees/timesheets': typeof EmployeesTimesheetsRoute
+  '/finance/expenses': typeof FinanceExpensesRoute
+  '/finance/invoices': typeof FinanceInvoicesRoute
+  '/finance/payments': typeof FinancePaymentsRoute
   '/leads/$leadId': typeof LeadsLeadIdRoute
   '/projects/$projectId': typeof ProjectsProjectIdRoute
   '/tasks/board': typeof TasksBoardRoute
@@ -278,6 +308,7 @@ export interface FileRoutesByTo {
   '/tasks/list': typeof TasksListRoute
   '/clients': typeof ClientsIndexRoute
   '/employees': typeof EmployeesIndexRoute
+  '/finance': typeof FinanceIndexRoute
   '/leads': typeof LeadsIndexRoute
   '/projects': typeof ProjectsIndexRoute
   '/tasks': typeof TasksIndexRoute
@@ -288,7 +319,7 @@ export interface FileRoutesById {
   '/assets': typeof AssetsRoute
   '/clients': typeof ClientsRouteWithChildren
   '/employees': typeof EmployeesRouteWithChildren
-  '/finance': typeof FinanceRoute
+  '/finance': typeof FinanceRouteWithChildren
   '/forgot-password': typeof ForgotPasswordRoute
   '/inbox': typeof InboxRoute
   '/leads': typeof LeadsRouteWithChildren
@@ -308,6 +339,9 @@ export interface FileRoutesById {
   '/employees/performance': typeof EmployeesPerformanceRoute
   '/employees/settings': typeof EmployeesSettingsRoute
   '/employees/timesheets': typeof EmployeesTimesheetsRoute
+  '/finance/expenses': typeof FinanceExpensesRoute
+  '/finance/invoices': typeof FinanceInvoicesRoute
+  '/finance/payments': typeof FinancePaymentsRoute
   '/leads/$leadId': typeof LeadsLeadIdRoute
   '/projects/$projectId': typeof ProjectsProjectIdRoute
   '/tasks/board': typeof TasksBoardRoute
@@ -315,6 +349,7 @@ export interface FileRoutesById {
   '/tasks/list': typeof TasksListRoute
   '/clients/': typeof ClientsIndexRoute
   '/employees/': typeof EmployeesIndexRoute
+  '/finance/': typeof FinanceIndexRoute
   '/leads/': typeof LeadsIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/tasks/': typeof TasksIndexRoute
@@ -346,6 +381,9 @@ export interface FileRouteTypes {
     | '/employees/performance'
     | '/employees/settings'
     | '/employees/timesheets'
+    | '/finance/expenses'
+    | '/finance/invoices'
+    | '/finance/payments'
     | '/leads/$leadId'
     | '/projects/$projectId'
     | '/tasks/board'
@@ -353,6 +391,7 @@ export interface FileRouteTypes {
     | '/tasks/list'
     | '/clients/'
     | '/employees/'
+    | '/finance/'
     | '/leads/'
     | '/projects/'
     | '/tasks/'
@@ -360,7 +399,6 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/assets'
-    | '/finance'
     | '/forgot-password'
     | '/inbox'
     | '/login'
@@ -377,6 +415,9 @@ export interface FileRouteTypes {
     | '/employees/performance'
     | '/employees/settings'
     | '/employees/timesheets'
+    | '/finance/expenses'
+    | '/finance/invoices'
+    | '/finance/payments'
     | '/leads/$leadId'
     | '/projects/$projectId'
     | '/tasks/board'
@@ -384,6 +425,7 @@ export interface FileRouteTypes {
     | '/tasks/list'
     | '/clients'
     | '/employees'
+    | '/finance'
     | '/leads'
     | '/projects'
     | '/tasks'
@@ -413,6 +455,9 @@ export interface FileRouteTypes {
     | '/employees/performance'
     | '/employees/settings'
     | '/employees/timesheets'
+    | '/finance/expenses'
+    | '/finance/invoices'
+    | '/finance/payments'
     | '/leads/$leadId'
     | '/projects/$projectId'
     | '/tasks/board'
@@ -420,6 +465,7 @@ export interface FileRouteTypes {
     | '/tasks/list'
     | '/clients/'
     | '/employees/'
+    | '/finance/'
     | '/leads/'
     | '/projects/'
     | '/tasks/'
@@ -430,7 +476,7 @@ export interface RootRouteChildren {
   AssetsRoute: typeof AssetsRoute
   ClientsRoute: typeof ClientsRouteWithChildren
   EmployeesRoute: typeof EmployeesRouteWithChildren
-  FinanceRoute: typeof FinanceRoute
+  FinanceRoute: typeof FinanceRouteWithChildren
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   InboxRoute: typeof InboxRoute
   LeadsRoute: typeof LeadsRouteWithChildren
@@ -627,6 +673,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmployeesTimesheetsRouteImport
       parentRoute: typeof EmployeesRoute
     }
+    '/finance/': {
+      id: '/finance/'
+      path: '/'
+      fullPath: '/finance/'
+      preLoaderRoute: typeof FinanceIndexRouteImport
+      parentRoute: typeof FinanceRoute
+    }
+    '/finance/expenses': {
+      id: '/finance/expenses'
+      path: '/expenses'
+      fullPath: '/finance/expenses'
+      preLoaderRoute: typeof FinanceExpensesRouteImport
+      parentRoute: typeof FinanceRoute
+    }
+    '/finance/invoices': {
+      id: '/finance/invoices'
+      path: '/invoices'
+      fullPath: '/finance/invoices'
+      preLoaderRoute: typeof FinanceInvoicesRouteImport
+      parentRoute: typeof FinanceRoute
+    }
+    '/finance/payments': {
+      id: '/finance/payments'
+      path: '/payments'
+      fullPath: '/finance/payments'
+      preLoaderRoute: typeof FinancePaymentsRouteImport
+      parentRoute: typeof FinanceRoute
+    }
     '/leads/': {
       id: '/leads/'
       path: '/'
@@ -727,6 +801,23 @@ const EmployeesRouteWithChildren = EmployeesRoute._addFileChildren(
   EmployeesRouteChildren,
 )
 
+interface FinanceRouteChildren {
+  FinanceExpensesRoute: typeof FinanceExpensesRoute
+  FinanceInvoicesRoute: typeof FinanceInvoicesRoute
+  FinancePaymentsRoute: typeof FinancePaymentsRoute
+  FinanceIndexRoute: typeof FinanceIndexRoute
+}
+
+const FinanceRouteChildren: FinanceRouteChildren = {
+  FinanceExpensesRoute: FinanceExpensesRoute,
+  FinanceInvoicesRoute: FinanceInvoicesRoute,
+  FinancePaymentsRoute: FinancePaymentsRoute,
+  FinanceIndexRoute: FinanceIndexRoute,
+}
+
+const FinanceRouteWithChildren =
+  FinanceRoute._addFileChildren(FinanceRouteChildren)
+
 interface LeadsRouteChildren {
   LeadsLeadIdRoute: typeof LeadsLeadIdRoute
   LeadsIndexRoute: typeof LeadsIndexRoute
@@ -774,7 +865,7 @@ const rootRouteChildren: RootRouteChildren = {
   AssetsRoute: AssetsRoute,
   ClientsRoute: ClientsRouteWithChildren,
   EmployeesRoute: EmployeesRouteWithChildren,
-  FinanceRoute: FinanceRoute,
+  FinanceRoute: FinanceRouteWithChildren,
   ForgotPasswordRoute: ForgotPasswordRoute,
   InboxRoute: InboxRoute,
   LeadsRoute: LeadsRouteWithChildren,
