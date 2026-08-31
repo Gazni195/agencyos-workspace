@@ -6,6 +6,7 @@ export type { FilterDef } from "./FilterBar";
 export { SearchBar } from "./SearchBar";
 export { Modal } from "./Modal";
 export { DrawerPanel } from "./DrawerPanel";
+export { DeleteConfirmDialog } from "./DeleteConfirmDialog";
 export { CardSkeleton, ChartSkeleton, KpiGridSkeleton, ListSkeleton } from "./LoadingSkeleton";
 export { notify } from "./toast";
 export { StatusBadge } from "@/components/common/StatusBadge";

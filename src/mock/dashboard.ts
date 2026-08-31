@@ -21,14 +21,70 @@ export type DashboardKpi = {
 };
 
 export const dashboardKpis: DashboardKpi[] = [
-  { id: "revenue-mtd", label: "Revenue MTD", value: "$412,800", delta: 8.4, hint: "vs. last month", to: "/finance" },
-  { id: "active-clients", label: "Active Clients", value: "24", delta: 4.2, hint: "3 in onboarding", to: "/clients" },
-  { id: "active-projects", label: "Active Projects", value: "18", delta: 2.1, hint: "5 launching this month", to: "/projects" },
-  { id: "employees", label: "Employees", value: "68", delta: 5.6, hint: "4 open roles", to: "/employees" },
-  { id: "attendance-today", label: "Attendance Today", value: "92%", delta: -1.8, hint: "6 remote · 2 late", to: "/employees/attendance" },
-  { id: "pending-tasks", label: "Pending Tasks", value: "137", delta: -6.3, hint: "22 due this week", to: "/tasks" },
-  { id: "open-leads", label: "Open Leads", value: "31", delta: 12.9, hint: "$740k weighted", to: "/leads" },
-  { id: "receivables", label: "Receivables", value: "$186,400", delta: -3.4, hint: "$42k over 60 days", to: "/finance" },
+  {
+    id: "revenue-mtd",
+    label: "Revenue MTD",
+    value: "$412,800",
+    delta: 8.4,
+    hint: "vs. last month",
+    to: "/finance",
+  },
+  {
+    id: "active-clients",
+    label: "Active Clients",
+    value: "24",
+    delta: 4.2,
+    hint: "3 in onboarding",
+    to: "/clients",
+  },
+  {
+    id: "active-projects",
+    label: "Active Projects",
+    value: "18",
+    delta: 2.1,
+    hint: "5 launching this month",
+    to: "/projects",
+  },
+  {
+    id: "employees",
+    label: "Employees",
+    value: "68",
+    delta: 5.6,
+    hint: "4 open roles",
+    to: "/employees",
+  },
+  {
+    id: "attendance-today",
+    label: "Attendance Today",
+    value: "92%",
+    delta: -1.8,
+    hint: "6 remote · 2 late",
+    to: "/employees/attendance",
+  },
+  {
+    id: "pending-tasks",
+    label: "Pending Tasks",
+    value: "137",
+    delta: -6.3,
+    hint: "22 due this week",
+    to: "/tasks",
+  },
+  {
+    id: "open-leads",
+    label: "Open Leads",
+    value: "31",
+    delta: 12.9,
+    hint: "$740k weighted",
+    to: "/leads",
+  },
+  {
+    id: "receivables",
+    label: "Receivables",
+    value: "$186,400",
+    delta: -3.4,
+    hint: "$42k over 60 days",
+    to: "/finance",
+  },
 ];
 
 export const revenueTrendMock = [
@@ -90,12 +146,60 @@ export type ActivityItem = {
 };
 
 export const recentActivity: ActivityItem[] = [
-  { id: "a1", actor: "Priya Raman", initials: "PR", action: "moved lead", target: "Northwind Retail → Negotiation", when: "12m ago", tone: "primary" },
-  { id: "a2", actor: "Marcus Hale", initials: "MH", action: "approved invoice", target: "INV-2041 · $38,500", when: "45m ago", tone: "success" },
-  { id: "a3", actor: "Dana Whitfield", initials: "DW", action: "flagged project", target: "Vertex Rebrand — at risk", when: "1h ago", tone: "warning" },
-  { id: "a4", actor: "Sam Okoye", initials: "SO", action: "submitted timesheet", target: "Week 35 · 41.5 hrs", when: "2h ago", tone: "info" },
-  { id: "a5", actor: "Lena Fischer", initials: "LF", action: "closed 6 tasks on", target: "Helios Q3 Campaign", when: "3h ago", tone: "success" },
-  { id: "a6", actor: "Tomas Ruiz", initials: "TR", action: "uploaded assets to", target: "Brand Library / Summer 26", when: "5h ago", tone: "info" },
+  {
+    id: "a1",
+    actor: "Priya Raman",
+    initials: "PR",
+    action: "moved lead",
+    target: "Northwind Retail → Negotiation",
+    when: "12m ago",
+    tone: "primary",
+  },
+  {
+    id: "a2",
+    actor: "Marcus Hale",
+    initials: "MH",
+    action: "approved invoice",
+    target: "INV-2041 · $38,500",
+    when: "45m ago",
+    tone: "success",
+  },
+  {
+    id: "a3",
+    actor: "Dana Whitfield",
+    initials: "DW",
+    action: "flagged project",
+    target: "Vertex Rebrand — at risk",
+    when: "1h ago",
+    tone: "warning",
+  },
+  {
+    id: "a4",
+    actor: "Sam Okoye",
+    initials: "SO",
+    action: "submitted timesheet",
+    target: "Week 35 · 41.5 hrs",
+    when: "2h ago",
+    tone: "info",
+  },
+  {
+    id: "a5",
+    actor: "Lena Fischer",
+    initials: "LF",
+    action: "closed 6 tasks on",
+    target: "Helios Q3 Campaign",
+    when: "3h ago",
+    tone: "success",
+  },
+  {
+    id: "a6",
+    actor: "Tomas Ruiz",
+    initials: "TR",
+    action: "uploaded assets to",
+    target: "Brand Library / Summer 26",
+    when: "5h ago",
+    tone: "info",
+  },
 ];
 
 export type UpcomingItem = {
@@ -109,12 +213,60 @@ export type UpcomingItem = {
 };
 
 export const upcomingItems: UpcomingItem[] = [
-  { id: "u1", kind: "approval", title: "Leave request — Sam Okoye", meta: "4 days · Annual leave", due: "Today", priority: "high", to: "/employees/leave" },
-  { id: "u2", kind: "deadline", title: "Helios Q3 Campaign launch", meta: "Creative + Media", due: "Tomorrow", priority: "high", to: "/projects" },
-  { id: "u3", kind: "task", title: "Finalise Northwind proposal deck", meta: "Assigned to Priya Raman", due: "Sep 1", priority: "medium", to: "/tasks" },
-  { id: "u4", kind: "approval", title: "Invoice INV-2048 · $24,300", meta: "Awaiting finance sign-off", due: "Sep 2", priority: "medium", to: "/finance" },
-  { id: "u5", kind: "deadline", title: "Vertex Rebrand milestone 3", meta: "Design system handoff", due: "Sep 4", priority: "high", to: "/projects" },
-  { id: "u6", kind: "task", title: "Quarterly performance reviews", meta: "12 of 68 completed", due: "Sep 8", priority: "low", to: "/employees/performance" },
+  {
+    id: "u1",
+    kind: "approval",
+    title: "Leave request — Sam Okoye",
+    meta: "4 days · Annual leave",
+    due: "Today",
+    priority: "high",
+    to: "/employees/leave",
+  },
+  {
+    id: "u2",
+    kind: "deadline",
+    title: "Helios Q3 Campaign launch",
+    meta: "Creative + Media",
+    due: "Tomorrow",
+    priority: "high",
+    to: "/projects",
+  },
+  {
+    id: "u3",
+    kind: "task",
+    title: "Finalise Northwind proposal deck",
+    meta: "Assigned to Priya Raman",
+    due: "Sep 1",
+    priority: "medium",
+    to: "/tasks",
+  },
+  {
+    id: "u4",
+    kind: "approval",
+    title: "Invoice INV-2048 · $24,300",
+    meta: "Awaiting finance sign-off",
+    due: "Sep 2",
+    priority: "medium",
+    to: "/finance",
+  },
+  {
+    id: "u5",
+    kind: "deadline",
+    title: "Vertex Rebrand milestone 3",
+    meta: "Design system handoff",
+    due: "Sep 4",
+    priority: "high",
+    to: "/projects",
+  },
+  {
+    id: "u6",
+    kind: "task",
+    title: "Quarterly performance reviews",
+    meta: "12 of 68 completed",
+    due: "Sep 8",
+    priority: "low",
+    to: "/employees/performance",
+  },
 ];
 
 export type NotificationItem = {
@@ -126,16 +278,40 @@ export type NotificationItem = {
 };
 
 export const headerNotifications: NotificationItem[] = [
-  { id: "n1", title: "Leave approval pending", body: "Sam Okoye requested 4 days of annual leave.", when: "10m", unread: true },
-  { id: "n2", title: "Invoice overdue", body: "INV-2019 for Vertex Labs is 12 days overdue.", when: "1h", unread: true },
-  { id: "n3", title: "New lead assigned", body: "Northwind Retail was assigned to you.", when: "3h", unread: true },
-  { id: "n4", title: "Timesheet reminder", body: "9 employees have not submitted week 35.", when: "Yesterday", unread: false },
+  {
+    id: "n1",
+    title: "Leave approval pending",
+    body: "Sam Okoye requested 4 days of annual leave.",
+    when: "10m",
+    unread: true,
+  },
+  {
+    id: "n2",
+    title: "Invoice overdue",
+    body: "INV-2019 for Vertex Labs is 12 days overdue.",
+    when: "1h",
+    unread: true,
+  },
+  {
+    id: "n3",
+    title: "New lead assigned",
+    body: "Northwind Retail was assigned to you.",
+    when: "3h",
+    unread: true,
+  },
+  {
+    id: "n4",
+    title: "Timesheet reminder",
+    body: "9 employees have not submitted week 35.",
+    when: "Yesterday",
+    unread: false,
+  },
 ];
 
 export type SearchEntry = { label: string; group: string; to: string };
 
 export const globalSearchIndex: SearchEntry[] = [
-  { label: "Dashboard", group: "Navigation", to: "/dashboard" },
+  { label: "Dashboard", group: "Navigation", to: "/" },
   { label: "Clients", group: "Navigation", to: "/clients" },
   { label: "Leads", group: "Navigation", to: "/leads" },
   { label: "Projects", group: "Navigation", to: "/projects" },
