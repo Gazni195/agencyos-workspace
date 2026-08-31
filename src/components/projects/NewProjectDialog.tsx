@@ -20,10 +20,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { clients, employees } from "@/data/agency";
+import { employees } from "@/data/agency";
+import { useClientsStore } from "@/store/clientsStore";
 import type { DeliveryProject, ProjectStatus } from "@/data/delivery";
 
 export function NewProjectDialog({ onCreate }: { onCreate: (project: DeliveryProject) => void }) {
+  const clients = useClientsStore((s) => s.clients);
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [client, setClient] = useState("");

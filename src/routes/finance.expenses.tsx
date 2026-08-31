@@ -12,6 +12,8 @@ import { ExpenseFormDialog } from "@/components/finance/ExpenseFormDialog";
 import { useFinanceStore } from "@/store/financeStore";
 import { type Expense } from "@/data/finance";
 import { money } from "@/data/agency";
+import { useClientsStore } from "@/store/clientsStore";
+import { useProjectsStore } from "@/store/projectsStore";
 
 export const Route = createFileRoute("/finance/expenses")({
   head: () => ({
@@ -29,6 +31,8 @@ function ExpensesPage() {
   const expenses = useFinanceStore((s) => s.expenses);
   const addExpense = useFinanceStore((s) => s.addExpense);
   const setExpenseStatus = useFinanceStore((s) => s.setExpenseStatus);
+  const clients = useClientsStore((s) => s.clients);
+  const projects = useProjectsStore((s) => s.projects);
 
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState("all");
@@ -81,6 +85,22 @@ function ExpensesPage() {
       header: "Submitted by",
       sortValue: (e) => e.submittedBy,
       render: (e) => <span className="text-muted-foreground">{e.submittedBy}</span>,
+    },
+    {
+      key: "attribution",
+      header: "Client / Project",
+      render: (e) => {
+        const clientName = e.clientId ? clients.find((c) => c.id === e.clientId)?.name : undefined;
+        const projectName = e.projectId
+          ? projects.find((p) => p.id === e.projectId)?.name
+          : undefined;
+        if (!clientName && !projectName) return <span className="text-muted-foreground">—</span>;
+        return (
+          <span className="text-muted-foreground">
+            {[clientName, projectName].filter(Boolean).join(" · ")}
+          </span>
+        );
+      },
     },
     {
       key: "amount",

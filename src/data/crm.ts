@@ -5,6 +5,8 @@ export { money };
 
 export type ClientHealth = "healthy" | "at-risk" | "churn-risk";
 
+export type PackageType = "monthly" | "one-time";
+
 export type Client = {
   id: string;
   name: string;
@@ -18,6 +20,9 @@ export type Client = {
   address: string;
   website: string;
   notes: string;
+  packageType: PackageType;
+  packageName: string;
+  packagePrice: number;
 };
 
 export const clients: Client[] = [];
@@ -75,13 +80,13 @@ export const clientDocuments: ClientDocument[] = [];
 // ---------- Leads / CRM pipeline ----------
 
 export type LeadStage =
-  "New" | "Contacted" | "Qualified" | "Proposal" | "Negotiation" | "Won" | "Lost";
+  "New" | "Contacted" | "Meeting Scheduled" | "Proposal Sent" | "Negotiation" | "Won" | "Lost";
 
 export const leadStages: LeadStage[] = [
   "New",
   "Contacted",
-  "Qualified",
-  "Proposal",
+  "Meeting Scheduled",
+  "Proposal Sent",
   "Negotiation",
   "Won",
   "Lost",
@@ -109,16 +114,18 @@ export const leads: Lead[] = [];
 export const leadStageColor: Record<LeadStage, string> = {
   New: "bg-muted text-muted-foreground",
   Contacted: "bg-info/12 text-info",
-  Qualified: "bg-primary/12 text-primary",
-  Proposal: "bg-warning/18 text-warning-foreground",
+  "Meeting Scheduled": "bg-primary/12 text-primary",
+  "Proposal Sent": "bg-warning/18 text-warning-foreground",
   Negotiation: "bg-warning/18 text-warning-foreground",
   Won: "bg-success/12 text-success",
   Lost: "bg-destructive/12 text-destructive",
 };
 
-export const owners = Array.from(
-  new Set([...clients.map((c) => c.owner), ...leads.map((l) => l.owner)]),
-);
+// Owners are the staff who can be assigned an account — sourced from the
+// employee directory, not from existing clients/leads (that would be
+// circular: you could never assign an owner until a client already had
+// one).
+export const owners = employees.map((e) => e.name);
 export const sources = Array.from(new Set(leads.map((l) => l.source)));
 
 export const initialsOf = (name: string) =>

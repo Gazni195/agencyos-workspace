@@ -146,8 +146,12 @@ function ClientDetailPage() {
                   <p className="text-sm text-muted-foreground">{client.notes}</p>
                 </div>
               </div>
-              <div className="mt-6 grid gap-4 sm:grid-cols-3">
-                <Metric label="Monthly retainer" value={money(client.mrr)} />
+              <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                <Metric label="Package" value={client.packageName} />
+                <Metric
+                  label={client.packageType === "monthly" ? "Monthly price" : "Project price"}
+                  value={money(client.packagePrice)}
+                />
                 <Metric label="Active projects" value={String(client.projects)} />
                 <Metric label="Account owner" value={client.owner} />
               </div>

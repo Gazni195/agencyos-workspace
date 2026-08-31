@@ -22,17 +22,18 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { money } from "@/data/agency";
-import { clients } from "@/data/agency";
+import { useClientsStore } from "@/store/clientsStore";
 
 type DraftLine = { id: string; description: string; quantity: number; rate: number };
 
 export function InvoiceFormDialog({
   onCreate,
 }: {
-  onCreate?: (client: string, total: number) => void;
+  onCreate?: (clientId: string, total: number) => void;
 }) {
+  const clients = useClientsStore((s) => s.clients);
   const [open, setOpen] = useState(false);
-  const [client, setClient] = useState("");
+  const [clientId, setClientId] = useState("");
   const [lines, setLines] = useState<DraftLine[]>([
     { id: "l-1", description: "", quantity: 1, rate: 0 },
   ]);
@@ -50,7 +51,7 @@ export function InvoiceFormDialog({
     setLines((prev) => prev.map((l) => (l.id === id ? { ...l, ...patch } : l)));
 
   const reset = () => {
-    setClient("");
+    setClientId("");
     setLines([{ id: "l-1", description: "", quantity: 1, rate: 0 }]);
   };
 
@@ -75,13 +76,13 @@ export function InvoiceFormDialog({
         <div className="space-y-4">
           <div className="grid gap-2">
             <Label>Client</Label>
-            <Select value={client} onValueChange={setClient}>
+            <Select value={clientId} onValueChange={setClientId}>
               <SelectTrigger>
                 <SelectValue placeholder="Select a client" />
               </SelectTrigger>
               <SelectContent>
                 {clients.map((c) => (
-                  <SelectItem key={c.id} value={c.name}>
+                  <SelectItem key={c.id} value={c.id}>
                     {c.name}
                   </SelectItem>
                 ))}
@@ -155,12 +156,13 @@ export function InvoiceFormDialog({
           </Button>
           <Button
             onClick={() => {
-              if (!client) {
+              if (!clientId) {
                 toast.error("Select a client before saving.");
                 return;
               }
-              onCreate?.(client, subtotal);
-              toast.success(`Invoice created for ${client}`);
+              const clientName = clients.find((c) => c.id === clientId)?.name ?? "client";
+              onCreate?.(clientId, subtotal);
+              toast.success(`Invoice created for ${clientName}`);
               setOpen(false);
               reset();
             }}

@@ -15,10 +15,16 @@ import { currentUser } from "@/mock";
 
 type FinanceState = {
   invoices: Invoice[];
-  addInvoice: (client: string, total: number) => void;
+  addInvoice: (clientId: string, total: number) => void;
   setInvoiceStatus: (id: string, status: InvoiceStatus) => void;
   expenses: Expense[];
-  addExpense: (vendor: string, amount: number, category?: ExpenseCategory) => void;
+  addExpense: (
+    vendor: string,
+    amount: number,
+    category?: ExpenseCategory,
+    clientId?: string,
+    projectId?: string,
+  ) => void;
   setExpenseStatus: (id: string, status: ExpenseStatus) => void;
 };
 
@@ -32,7 +38,7 @@ const nextInvoiceNumber = (invoices: Invoice[]) => {
 
 export const useFinanceStore = create<FinanceState>((set, get) => ({
   invoices: seedInvoices,
-  addInvoice: (client, total) => {
+  addInvoice: (clientId, total) => {
     // InvoiceFormDialog (existing, reused as-is) only reports back the
     // client and the subtotal it computed from the line items the user
     // entered — it doesn't forward the itemized lines themselves. A single
@@ -44,7 +50,7 @@ export const useFinanceStore = create<FinanceState>((set, get) => ({
     const invoice: Invoice = {
       id: `inv-${Date.now()}`,
       number: nextInvoiceNumber(get().invoices),
-      client,
+      clientId,
       issueDate: today,
       dueDate: due,
       status: "draft",
@@ -69,7 +75,7 @@ export const useFinanceStore = create<FinanceState>((set, get) => ({
       ),
     })),
   expenses: seedExpenses,
-  addExpense: (vendor, amount, category = "Software") => {
+  addExpense: (vendor, amount, category = "Software", clientId, projectId) => {
     const expense: Expense = {
       id: `ex-${Date.now()}`,
       vendor,
@@ -78,6 +84,8 @@ export const useFinanceStore = create<FinanceState>((set, get) => ({
       amount,
       status: "pending",
       submittedBy: currentUser.name,
+      ...(clientId ? { clientId } : {}),
+      ...(projectId ? { projectId } : {}),
     };
     set((s) => ({ expenses: [expense, ...s.expenses] }));
   },

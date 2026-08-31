@@ -1,9 +1,17 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { pipeline, money } from "@/data/agency";
+import { money } from "@/data/agency";
+import { leadStages, leads } from "@/data/crm";
 import { Link } from "@tanstack/react-router";
 
 export function PipelineChart() {
+  const pipeline = leadStages
+    .filter((stage) => stage !== "Won" && stage !== "Lost")
+    .map((stage) => ({
+      stage,
+      value: leads.filter((l) => l.stage === stage).reduce((sum, l) => sum + l.value, 0),
+    }));
+
   return (
     <Card className="surface-card">
       <CardHeader className="flex flex-row items-start justify-between gap-2 space-y-0">

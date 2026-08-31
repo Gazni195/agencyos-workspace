@@ -1,5 +1,7 @@
 // Finance & Reports data layer for AgencyOS.
-import { clients, projects, revenueTrend } from "@/data/agency";
+import { revenueTrend } from "@/data/agency";
+import { clients } from "@/data/crm";
+import { deliveryProjects as projects } from "@/data/delivery";
 
 export type InvoiceStatus = "paid" | "sent" | "overdue" | "draft";
 
@@ -13,7 +15,7 @@ export type InvoiceLineItem = {
 export type Invoice = {
   id: string;
   number: string;
-  client: string;
+  clientId: string;
   issueDate: string;
   dueDate: string;
   status: InvoiceStatus;
@@ -48,6 +50,8 @@ export type Expense = {
   amount: number;
   status: ExpenseStatus;
   submittedBy: string;
+  clientId?: string;
+  projectId?: string;
 };
 
 export const expenses: Expense[] = [];

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "@/components/common/PageHeader";
 import { StatusBadge } from "@/components/common/StatusBadge";
@@ -23,6 +23,7 @@ import {
   type InvoiceStatus,
 } from "@/data/finance";
 import { money } from "@/data/agency";
+import { useClientsStore } from "@/store/clientsStore";
 
 export const Route = createFileRoute("/finance/invoices")({
   head: () => ({
@@ -40,6 +41,11 @@ function InvoicesPage() {
   const invoices = useFinanceStore((s) => s.invoices);
   const addInvoice = useFinanceStore((s) => s.addInvoice);
   const setInvoiceStatus = useFinanceStore((s) => s.setInvoiceStatus);
+  const clients = useClientsStore((s) => s.clients);
+  const clientName = useCallback(
+    (clientId: string) => clients.find((c) => c.id === clientId)?.name ?? "Unknown client",
+    [clients],
+  );
 
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState("all");
@@ -51,13 +57,15 @@ function InvoicesPage() {
       invoices.filter((i) => {
         if (
           query.trim() &&
-          !`${i.number} ${i.client}`.toLowerCase().includes(query.trim().toLowerCase())
+          !`${i.number} ${clientName(i.clientId)}`
+            .toLowerCase()
+            .includes(query.trim().toLowerCase())
         )
           return false;
         if (status !== "all" && i.status !== status) return false;
         return true;
       }),
-    [invoices, query, status],
+    [invoices, clientName, query, status],
   );
 
   const filters: FilterDef[] = [
@@ -77,7 +85,12 @@ function InvoicesPage() {
       sortValue: (i) => i.number,
       render: (i) => <span className="font-medium">{i.number}</span>,
     },
-    { key: "client", header: "Client", sortValue: (i) => i.client, render: (i) => i.client },
+    {
+      key: "client",
+      header: "Client",
+      sortValue: (i) => clientName(i.clientId),
+      render: (i) => clientName(i.clientId),
+    },
     {
       key: "issueDate",
       header: "Issued",
@@ -136,7 +149,7 @@ function InvoicesPage() {
         open={!!selected}
         onOpenChange={(open) => !open && setSelectedId(null)}
         title={selected?.number ?? "Invoice"}
-        description={selected?.client}
+        description={selected ? clientName(selected.clientId) : undefined}
       >
         {selected && (
           <div className="space-y-5">

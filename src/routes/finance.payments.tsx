@@ -15,6 +15,7 @@ import { EmptyState } from "@/components/shared/EmptyState";
 import { useFinanceStore } from "@/store/financeStore";
 import { invoiceTotal } from "@/data/finance";
 import { money } from "@/data/agency";
+import { useClientsStore } from "@/store/clientsStore";
 
 export const Route = createFileRoute("/finance/payments")({
   head: () => ({
@@ -28,6 +29,9 @@ export const Route = createFileRoute("/finance/payments")({
 
 function PaymentsPage() {
   const invoices = useFinanceStore((s) => s.invoices);
+  const clients = useClientsStore((s) => s.clients);
+  const clientName = (clientId: string) =>
+    clients.find((c) => c.id === clientId)?.name ?? "Unknown client";
 
   const paid = useMemo(
     () =>
@@ -95,7 +99,9 @@ function PaymentsPage() {
                 {paid.map((inv) => (
                   <TableRow key={inv.id}>
                     <TableCell className="font-medium">{inv.number}</TableCell>
-                    <TableCell className="text-muted-foreground">{inv.client}</TableCell>
+                    <TableCell className="text-muted-foreground">
+                      {clientName(inv.clientId)}
+                    </TableCell>
                     <TableCell className="text-muted-foreground">{inv.issueDate}</TableCell>
                     <TableCell className="text-muted-foreground">{inv.paidOn}</TableCell>
                     <TableCell className="text-right font-semibold">

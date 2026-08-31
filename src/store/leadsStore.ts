@@ -9,10 +9,17 @@ import {
   type LeadNote,
   type LeadStage,
 } from "@/data/crm";
-import { type Client } from "@/data/crm";
+import { type Client, type PackageType } from "@/data/crm";
 import { useClientsStore } from "./clientsStore";
 
 export type StoreLead = Lead & { convertedClientId?: string };
+
+type ConvertDetails = {
+  industry: string;
+  packageType: PackageType;
+  packageName: string;
+  packagePrice: number;
+};
 
 type LeadsState = {
   leads: StoreLead[];
@@ -21,7 +28,7 @@ type LeadsState = {
   removeLead: (id: string) => void;
   setStage: (id: string, stage: LeadStage) => void;
   addNote: (id: string, note: LeadNote) => void;
-  convertToClient: (id: string, details: { industry: string; mrr: number }) => Client | undefined;
+  convertToClient: (id: string, details: ConvertDetails) => Client | undefined;
 };
 
 export const useLeadsStore = create<LeadsState>((set, get) => ({
@@ -45,7 +52,7 @@ export const useLeadsStore = create<LeadsState>((set, get) => ({
       name: lead.company,
       industry: details.industry || "General",
       owner: lead.owner,
-      mrr: details.mrr,
+      mrr: details.packageType === "monthly" ? details.packagePrice : 0,
       health: "healthy",
       projects: 0,
       logo: initialsOf(lead.company),
@@ -53,6 +60,9 @@ export const useLeadsStore = create<LeadsState>((set, get) => ({
       address: "—",
       website: "—",
       notes: `Converted from lead ${lead.id} (${lead.source}). Primary contact: ${lead.contact}.`,
+      packageType: details.packageType,
+      packageName: details.packageName || "General",
+      packagePrice: details.packagePrice,
     };
 
     useClientsStore.getState().addClient(client);
