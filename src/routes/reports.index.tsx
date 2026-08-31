@@ -25,14 +25,16 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ExportCsvButton } from "@/components/reports/ExportCsvButton";
-import {
-  clientHealthDistribution,
-  clientRetention,
-  clientRevenue,
-  financialTrend,
-  receivablesTrend,
-} from "@/data/finance";
 import { money } from "@/data/agency";
+import { useFinanceStore } from "@/store/financeStore";
+import { useClientsStore } from "@/store/clientsStore";
+import {
+  computeClientHealthDistribution,
+  computeClientRetention,
+  computeClientRevenue,
+  computeFinancialTrend,
+  computeReceivablesTrend,
+} from "@/services/financeReportsService";
 
 export const Route = createFileRoute("/reports/")({
   head: () => ({
@@ -51,6 +53,16 @@ const HEALTH_COLORS: Record<string, string> = {
 };
 
 function RevenueReportPage() {
+  const invoices = useFinanceStore((s) => s.invoices);
+  const expenses = useFinanceStore((s) => s.expenses);
+  const clients = useClientsStore((s) => s.clients);
+
+  const financialTrend = computeFinancialTrend(invoices, expenses);
+  const receivablesTrend = computeReceivablesTrend(invoices);
+  const clientHealthDistribution = computeClientHealthDistribution(clients);
+  const clientRevenue = computeClientRevenue(clients);
+  const clientRetention = computeClientRetention(clients);
+
   const totalRevenue = financialTrend.reduce((s, r) => s + r.revenue, 0);
   const avgMargin = financialTrend.length
     ? Math.round((financialTrend.reduce((s, r) => s + r.margin, 0) / financialTrend.length) * 10) /
