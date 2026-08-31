@@ -10,36 +10,7 @@ export type NotificationItem = {
   unread: boolean;
 };
 
-export const headerNotifications: NotificationItem[] = [
-  {
-    id: "n1",
-    title: "Leave approval pending",
-    body: "Sam Okoye requested 4 days of annual leave.",
-    when: "10m",
-    unread: true,
-  },
-  {
-    id: "n2",
-    title: "Invoice overdue",
-    body: "INV-2019 for Vertex Labs is 12 days overdue.",
-    when: "1h",
-    unread: true,
-  },
-  {
-    id: "n3",
-    title: "New lead assigned",
-    body: "Northwind Retail was assigned to you.",
-    when: "3h",
-    unread: true,
-  },
-  {
-    id: "n4",
-    title: "Timesheet reminder",
-    body: "9 employees have not submitted week 35.",
-    when: "Yesterday",
-    unread: false,
-  },
-];
+export const headerNotifications: NotificationItem[] = [];
 
 export type SearchEntry = { label: string; group: string; to: string };
 

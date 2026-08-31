@@ -60,9 +60,10 @@ function FinanceReportPage() {
   const categoryTotals = expenseCategoryTotals();
   const totalExpenses = categoryTotals.reduce((s, c) => s + c.amount, 0);
 
-  const avgMargin =
-    Math.round((financialTrend.reduce((s, r) => s + r.margin, 0) / financialTrend.length) * 10) /
-    10;
+  const avgMargin = financialTrend.length
+    ? Math.round((financialTrend.reduce((s, r) => s + r.margin, 0) / financialTrend.length) * 10) /
+      10
+    : 0;
 
   return (
     <div>
