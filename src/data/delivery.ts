@@ -118,7 +118,8 @@ export const deliveryProjects: DeliveryProject[] = [
     status: "on-track",
     startDate: "2026-08-10",
     due: "2027-01-20",
-    description: "Positioning, naming and visual identity refresh ahead of Lumen Finance's Series B announcement.",
+    description:
+      "Positioning, naming and visual identity refresh ahead of Lumen Finance's Series B announcement.",
     health: "green",
   },
 ];
@@ -135,30 +136,114 @@ export type Milestone = {
 
 export const milestones: Milestone[] = [
   { id: "ms-1", projectId: "pr-1", title: "Discovery & audit", date: "2026-06-12", status: "done" },
-  { id: "ms-2", projectId: "pr-1", title: "Logo concepts approved", date: "2026-07-18", status: "done" },
-  { id: "ms-3", projectId: "pr-1", title: "Packaging design system", date: "2026-08-29", status: "in-progress" },
-  { id: "ms-4", projectId: "pr-1", title: "Retail rollout kit", date: "2026-09-25", status: "upcoming" },
+  {
+    id: "ms-2",
+    projectId: "pr-1",
+    title: "Logo concepts approved",
+    date: "2026-07-18",
+    status: "done",
+  },
+  {
+    id: "ms-3",
+    projectId: "pr-1",
+    title: "Packaging design system",
+    date: "2026-08-29",
+    status: "in-progress",
+  },
+  {
+    id: "ms-4",
+    projectId: "pr-1",
+    title: "Retail rollout kit",
+    date: "2026-09-25",
+    status: "upcoming",
+  },
 
-  { id: "ms-5", projectId: "pr-2", title: "Media plan sign-off", date: "2026-07-05", status: "done" },
+  {
+    id: "ms-5",
+    projectId: "pr-2",
+    title: "Media plan sign-off",
+    date: "2026-07-05",
+    status: "done",
+  },
   { id: "ms-6", projectId: "pr-2", title: "Flight 1 live", date: "2026-08-01", status: "done" },
-  { id: "ms-7", projectId: "pr-2", title: "Mid-flight optimization", date: "2026-09-10", status: "in-progress" },
-  { id: "ms-8", projectId: "pr-2", title: "Final performance report", date: "2026-10-14", status: "upcoming" },
+  {
+    id: "ms-7",
+    projectId: "pr-2",
+    title: "Mid-flight optimization",
+    date: "2026-09-10",
+    status: "in-progress",
+  },
+  {
+    id: "ms-8",
+    projectId: "pr-2",
+    title: "Final performance report",
+    date: "2026-10-14",
+    status: "upcoming",
+  },
 
-  { id: "ms-9", projectId: "pr-3", title: "Content model finalized", date: "2026-06-01", status: "done" },
-  { id: "ms-10", projectId: "pr-3", title: "Design system handoff", date: "2026-08-15", status: "in-progress" },
+  {
+    id: "ms-9",
+    projectId: "pr-3",
+    title: "Content model finalized",
+    date: "2026-06-01",
+    status: "done",
+  },
+  {
+    id: "ms-10",
+    projectId: "pr-3",
+    title: "Design system handoff",
+    date: "2026-08-15",
+    status: "in-progress",
+  },
   { id: "ms-11", projectId: "pr-3", title: "Beta launch", date: "2026-10-01", status: "upcoming" },
-  { id: "ms-12", projectId: "pr-3", title: "Public launch", date: "2026-11-04", status: "upcoming" },
+  {
+    id: "ms-12",
+    projectId: "pr-3",
+    title: "Public launch",
+    date: "2026-11-04",
+    status: "upcoming",
+  },
 
   { id: "ms-13", projectId: "pr-4", title: "Storyboard lock", date: "2026-07-02", status: "done" },
   { id: "ms-14", projectId: "pr-4", title: "Principal shoot", date: "2026-07-28", status: "done" },
-  { id: "ms-15", projectId: "pr-4", title: "Final color & mix", date: "2026-08-30", status: "in-progress" },
+  {
+    id: "ms-15",
+    projectId: "pr-4",
+    title: "Final color & mix",
+    date: "2026-08-30",
+    status: "in-progress",
+  },
 
-  { id: "ms-16", projectId: "pr-5", title: "Editorial calendar Q3", date: "2026-05-10", status: "done" },
+  {
+    id: "ms-16",
+    projectId: "pr-5",
+    title: "Editorial calendar Q3",
+    date: "2026-05-10",
+    status: "done",
+  },
   { id: "ms-17", projectId: "pr-5", title: "SEO audit", date: "2026-07-01", status: "in-progress" },
-  { id: "ms-18", projectId: "pr-5", title: "Q4 content plan", date: "2026-11-01", status: "upcoming" },
+  {
+    id: "ms-18",
+    projectId: "pr-5",
+    title: "Q4 content plan",
+    date: "2026-11-01",
+    status: "upcoming",
+  },
 
-  { id: "ms-19", projectId: "pr-6", title: "Positioning workshop", date: "2026-08-22", status: "in-progress" },
-  { id: "ms-20", projectId: "pr-6", title: "Naming exploration", date: "2026-09-20", status: "upcoming" },
+  {
+    id: "ms-19",
+    projectId: "pr-6",
+    title: "Positioning workshop",
+    date: "2026-08-22",
+    status: "in-progress",
+  },
+  {
+    id: "ms-20",
+    projectId: "pr-6",
+    title: "Naming exploration",
+    date: "2026-09-20",
+    status: "upcoming",
+  },
 ];
 
 export type ProjectAllocation = {
@@ -242,15 +327,196 @@ export type ProjectActivity = {
 };
 
 export const projectActivity: ProjectActivity[] = [
-  { id: "pa-1", projectId: "pr-1", who: "Amara Okafor", what: "uploaded 3 new key visual concepts", when: "2h ago" },
-  { id: "pa-2", projectId: "pr-1", who: "Fatima Zahra", what: "added copy notes to packaging brief", when: "Yesterday" },
-  { id: "pa-3", projectId: "pr-1", who: "Noah Feldman", what: "marked 'Logo concepts approved' complete", when: "3 days ago" },
-  { id: "pa-4", projectId: "pr-2", who: "Kenji Tanaka", what: "rebalanced budget across channels", when: "5h ago" },
-  { id: "pa-5", projectId: "pr-2", who: "Priya Nair", what: "approved flight 1 creative", when: "2 days ago" },
-  { id: "pa-6", projectId: "pr-3", who: "Liam Bennett", what: "pushed component library v2", when: "1h ago" },
-  { id: "pa-7", projectId: "pr-3", who: "Diego Alvarez", what: "flagged API latency risk", when: "1 day ago" },
-  { id: "pa-8", projectId: "pr-5", who: "Fatima Zahra", what: "requested deadline extension", when: "6h ago" },
+  {
+    id: "pa-1",
+    projectId: "pr-1",
+    who: "Amara Okafor",
+    what: "uploaded 3 new key visual concepts",
+    when: "2h ago",
+  },
+  {
+    id: "pa-2",
+    projectId: "pr-1",
+    who: "Fatima Zahra",
+    what: "added copy notes to packaging brief",
+    when: "Yesterday",
+  },
+  {
+    id: "pa-3",
+    projectId: "pr-1",
+    who: "Noah Feldman",
+    what: "marked 'Logo concepts approved' complete",
+    when: "3 days ago",
+  },
+  {
+    id: "pa-4",
+    projectId: "pr-2",
+    who: "Kenji Tanaka",
+    what: "rebalanced budget across channels",
+    when: "5h ago",
+  },
+  {
+    id: "pa-5",
+    projectId: "pr-2",
+    who: "Priya Nair",
+    what: "approved flight 1 creative",
+    when: "2 days ago",
+  },
+  {
+    id: "pa-6",
+    projectId: "pr-3",
+    who: "Liam Bennett",
+    what: "pushed component library v2",
+    when: "1h ago",
+  },
+  {
+    id: "pa-7",
+    projectId: "pr-3",
+    who: "Diego Alvarez",
+    what: "flagged API latency risk",
+    when: "1 day ago",
+  },
+  {
+    id: "pa-8",
+    projectId: "pr-5",
+    who: "Fatima Zahra",
+    what: "requested deadline extension",
+    when: "6h ago",
+  },
 ];
+
+export type ProjectFile = {
+  id: string;
+  projectId: string;
+  name: string;
+  category: "Brief" | "Design" | "Contract" | "Deliverable" | "Report";
+  size: string;
+  uploadedBy: string;
+  uploadedOn: string;
+};
+
+export const projectFiles: ProjectFile[] = [
+  {
+    id: "pf-1",
+    projectId: "pr-1",
+    name: "Brand Refresh Creative Brief.pdf",
+    category: "Brief",
+    size: "212 KB",
+    uploadedBy: "Amara Okafor",
+    uploadedOn: "2026-06-02",
+  },
+  {
+    id: "pf-2",
+    projectId: "pr-1",
+    name: "Logo System v3.fig",
+    category: "Design",
+    size: "18.4 MB",
+    uploadedBy: "Amara Okafor",
+    uploadedOn: "2026-07-20",
+  },
+  {
+    id: "pf-3",
+    projectId: "pr-1",
+    name: "Packaging Guidelines Draft.pdf",
+    category: "Deliverable",
+    size: "4.1 MB",
+    uploadedBy: "Fatima Zahra",
+    uploadedOn: "2026-08-25",
+  },
+  {
+    id: "pf-4",
+    projectId: "pr-2",
+    name: "Q3 Media Plan.xlsx",
+    category: "Brief",
+    size: "1.2 MB",
+    uploadedBy: "Kenji Tanaka",
+    uploadedOn: "2026-07-03",
+  },
+  {
+    id: "pf-5",
+    projectId: "pr-2",
+    name: "Flight 1 Creative Assets.zip",
+    category: "Design",
+    size: "86 MB",
+    uploadedBy: "Kenji Tanaka",
+    uploadedOn: "2026-08-01",
+  },
+  {
+    id: "pf-6",
+    projectId: "pr-3",
+    name: "Website Rebuild SOW.pdf",
+    category: "Contract",
+    size: "455 KB",
+    uploadedBy: "Liam Bennett",
+    uploadedOn: "2026-01-09",
+  },
+  {
+    id: "pf-7",
+    projectId: "pr-3",
+    name: "Component Library v2 Docs.pdf",
+    category: "Deliverable",
+    size: "2.8 MB",
+    uploadedBy: "Liam Bennett",
+    uploadedOn: "2026-08-15",
+  },
+  {
+    id: "pf-8",
+    projectId: "pr-3",
+    name: "API Schema Draft.json",
+    category: "Report",
+    size: "44 KB",
+    uploadedBy: "Diego Alvarez",
+    uploadedOn: "2026-08-24",
+  },
+  {
+    id: "pf-9",
+    projectId: "pr-4",
+    name: "Launch Film Storyboard.pdf",
+    category: "Brief",
+    size: "3.4 MB",
+    uploadedBy: "Noah Feldman",
+    uploadedOn: "2026-06-18",
+  },
+  {
+    id: "pf-10",
+    projectId: "pr-4",
+    name: "Final Cut — Master.mp4",
+    category: "Deliverable",
+    size: "1.2 GB",
+    uploadedBy: "Noah Feldman",
+    uploadedOn: "2026-08-25",
+  },
+  {
+    id: "pf-11",
+    projectId: "pr-5",
+    name: "Q3 Editorial Calendar.xlsx",
+    category: "Brief",
+    size: "340 KB",
+    uploadedBy: "Fatima Zahra",
+    uploadedOn: "2026-05-12",
+  },
+  {
+    id: "pf-12",
+    projectId: "pr-5",
+    name: "SEO Audit Report.pdf",
+    category: "Report",
+    size: "1.6 MB",
+    uploadedBy: "Fatima Zahra",
+    uploadedOn: "2026-07-05",
+  },
+  {
+    id: "pf-13",
+    projectId: "pr-6",
+    name: "Positioning Workshop Deck.pdf",
+    category: "Brief",
+    size: "2.9 MB",
+    uploadedBy: "Sofia Marchetti",
+    uploadedOn: "2026-08-22",
+  },
+];
+
+export const projectFilesByProject = (projectId: string) =>
+  projectFiles.filter((f) => f.projectId === projectId);
 
 export type TaskStatus = "todo" | "in-progress" | "review" | "done";
 export type TaskPriority = "low" | "medium" | "high" | "urgent";
@@ -277,7 +543,8 @@ export const deliveryTasks: DeliveryTask[] = [
   {
     id: "tk-1",
     title: "Approve key visual round 3",
-    description: "Review the third round of key visual concepts and provide sign-off for production.",
+    description:
+      "Review the third round of key visual concepts and provide sign-off for production.",
     projectId: "pr-1",
     assigneeId: "emp-1001",
     due: "2026-08-29",
@@ -291,7 +558,12 @@ export const deliveryTasks: DeliveryTask[] = [
       { id: "cl-3", label: "Collect client feedback", done: false },
     ],
     comments: [
-      { id: "cm-1", author: "Fatima Zahra", text: "Client leans towards concept B, waiting on final word.", when: "2h ago" },
+      {
+        id: "cm-1",
+        author: "Fatima Zahra",
+        text: "Client leans towards concept B, waiting on final word.",
+        when: "2h ago",
+      },
     ],
   },
   {
@@ -328,7 +600,12 @@ export const deliveryTasks: DeliveryTask[] = [
       { id: "cl-8", label: "Write usage docs", done: false },
     ],
     comments: [
-      { id: "cm-2", author: "Diego Alvarez", text: "Let's align naming with the API schema before publishing.", when: "1 day ago" },
+      {
+        id: "cm-2",
+        author: "Diego Alvarez",
+        text: "Let's align naming with the API schema before publishing.",
+        when: "1 day ago",
+      },
     ],
   },
   {
@@ -424,13 +701,19 @@ export const deliveryTasks: DeliveryTask[] = [
       { id: "cl-16", label: "Review with frontend", done: false },
     ],
     comments: [
-      { id: "cm-3", author: "Liam Bennett", text: "Blocking the tokens package, prioritizing this today.", when: "3h ago" },
+      {
+        id: "cm-3",
+        author: "Liam Bennett",
+        text: "Blocking the tokens package, prioritizing this today.",
+        when: "3h ago",
+      },
     ],
   },
   {
     id: "tk-10",
     title: "Positioning workshop prep",
-    description: "Prepare workshop materials and discussion guide for the Lumen positioning session.",
+    description:
+      "Prepare workshop materials and discussion guide for the Lumen positioning session.",
     projectId: "pr-6",
     assigneeId: "emp-1003",
     due: "2026-09-03",

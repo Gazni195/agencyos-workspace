@@ -37,6 +37,7 @@ import { Route as EmployeesSettingsRouteImport } from './routes/employees.settin
 import { Route as EmployeesTimesheetsRouteImport } from './routes/employees.timesheets'
 import { Route as LeadsIndexRouteImport } from './routes/leads.index'
 import { Route as LeadsLeadIdRouteImport } from './routes/leads.$leadId'
+import { Route as ProjectsIndexRouteImport } from './routes/projects.index'
 import { Route as ProjectsProjectIdRouteImport } from './routes/projects.$projectId'
 
 const IndexRoute = IndexRouteImport.update({
@@ -179,6 +180,11 @@ const LeadsLeadIdRoute = LeadsLeadIdRouteImport.update({
   path: '/$leadId',
   getParentRoute: () => LeadsRoute,
 } as any)
+const ProjectsIndexRoute = ProjectsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ProjectsRoute,
+} as any)
 const ProjectsProjectIdRoute = ProjectsProjectIdRouteImport.update({
   id: '/$projectId',
   path: '/$projectId',
@@ -215,6 +221,7 @@ export interface FileRoutesByFullPath {
   '/clients/': typeof ClientsIndexRoute
   '/employees/': typeof EmployeesIndexRoute
   '/leads/': typeof LeadsIndexRoute
+  '/projects/': typeof ProjectsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -223,7 +230,6 @@ export interface FileRoutesByTo {
   '/forgot-password': typeof ForgotPasswordRoute
   '/inbox': typeof InboxRoute
   '/login': typeof LoginRoute
-  '/projects': typeof ProjectsRouteWithChildren
   '/reports': typeof ReportsRoute
   '/reset-password': typeof ResetPasswordRoute
   '/settings': typeof SettingsRoute
@@ -243,6 +249,7 @@ export interface FileRoutesByTo {
   '/clients': typeof ClientsIndexRoute
   '/employees': typeof EmployeesIndexRoute
   '/leads': typeof LeadsIndexRoute
+  '/projects': typeof ProjectsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -275,6 +282,7 @@ export interface FileRoutesById {
   '/clients/': typeof ClientsIndexRoute
   '/employees/': typeof EmployeesIndexRoute
   '/leads/': typeof LeadsIndexRoute
+  '/projects/': typeof ProjectsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -308,6 +316,7 @@ export interface FileRouteTypes {
     | '/clients/'
     | '/employees/'
     | '/leads/'
+    | '/projects/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -316,7 +325,6 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/inbox'
     | '/login'
-    | '/projects'
     | '/reports'
     | '/reset-password'
     | '/settings'
@@ -336,6 +344,7 @@ export interface FileRouteTypes {
     | '/clients'
     | '/employees'
     | '/leads'
+    | '/projects'
   id:
     | '__root__'
     | '/'
@@ -367,6 +376,7 @@ export interface FileRouteTypes {
     | '/clients/'
     | '/employees/'
     | '/leads/'
+    | '/projects/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -585,6 +595,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LeadsLeadIdRouteImport
       parentRoute: typeof LeadsRoute
     }
+    '/projects/': {
+      id: '/projects/'
+      path: '/'
+      fullPath: '/projects/'
+      preLoaderRoute: typeof ProjectsIndexRouteImport
+      parentRoute: typeof ProjectsRoute
+    }
     '/projects/$projectId': {
       id: '/projects/$projectId'
       path: '/$projectId'
@@ -650,10 +667,12 @@ const LeadsRouteWithChildren = LeadsRoute._addFileChildren(LeadsRouteChildren)
 
 interface ProjectsRouteChildren {
   ProjectsProjectIdRoute: typeof ProjectsProjectIdRoute
+  ProjectsIndexRoute: typeof ProjectsIndexRoute
 }
 
 const ProjectsRouteChildren: ProjectsRouteChildren = {
   ProjectsProjectIdRoute: ProjectsProjectIdRoute,
+  ProjectsIndexRoute: ProjectsIndexRoute,
 }
 
 const ProjectsRouteWithChildren = ProjectsRoute._addFileChildren(
