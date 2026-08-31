@@ -1,5 +1,14 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Area, AreaChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import {
+  Area,
+  AreaChart,
+  CartesianGrid,
+  Legend,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 import { revenueTrend } from "@/data/agency";
 
 export function RevenueChart() {
@@ -23,7 +32,13 @@ export function RevenueChart() {
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
-            <XAxis dataKey="month" stroke="var(--color-muted-foreground)" fontSize={12} tickLine={false} axisLine={false} />
+            <XAxis
+              dataKey="month"
+              stroke="var(--color-muted-foreground)"
+              fontSize={12}
+              tickLine={false}
+              axisLine={false}
+            />
             <YAxis
               stroke="var(--color-muted-foreground)"
               fontSize={12}
@@ -39,11 +54,31 @@ export function RevenueChart() {
                 borderRadius: 8,
                 fontSize: 12,
               }}
-              formatter={(v: number) => v.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 })}
+              formatter={(v: number) =>
+                v.toLocaleString("en-US", {
+                  style: "currency",
+                  currency: "USD",
+                  maximumFractionDigits: 0,
+                })
+              }
             />
             <Legend wrapperStyle={{ fontSize: 12 }} />
-            <Area type="monotone" dataKey="revenue" name="Revenue" stroke="var(--color-chart-1)" fill="url(#revFill)" strokeWidth={2} />
-            <Area type="monotone" dataKey="costs" name="Costs" stroke="var(--color-chart-3)" fill="url(#costFill)" strokeWidth={2} />
+            <Area
+              type="monotone"
+              dataKey="revenue"
+              name="Revenue"
+              stroke="var(--color-chart-1)"
+              fill="url(#revFill)"
+              strokeWidth={2}
+            />
+            <Area
+              type="monotone"
+              dataKey="costs"
+              name="Costs"
+              stroke="var(--color-chart-3)"
+              fill="url(#costFill)"
+              strokeWidth={2}
+            />
           </AreaChart>
         </ResponsiveContainer>
       </CardContent>

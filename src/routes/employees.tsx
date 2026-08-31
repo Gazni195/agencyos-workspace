@@ -6,9 +6,15 @@ export const Route = createFileRoute("/employees")({
   head: () => ({
     meta: [
       { title: "Employees — AgencyOS" },
-      { name: "description", content: "Manage your agency team, attendance, leave, payroll and performance in AgencyOS." },
+      {
+        name: "description",
+        content: "Manage your agency team, attendance, leave, payroll and performance in AgencyOS.",
+      },
       { property: "og:title", content: "Employees — AgencyOS" },
-      { property: "og:description", content: "Manage your agency team, attendance, leave, payroll and performance in AgencyOS." },
+      {
+        property: "og:description",
+        content: "Manage your agency team, attendance, leave, payroll and performance in AgencyOS.",
+      },
     ],
   }),
   component: EmployeesLayout,
@@ -28,8 +34,14 @@ const tabs = [
 function EmployeesLayout() {
   return (
     <section className="mx-auto max-w-7xl">
-      <PageHeader title="Employees" description="Directory, attendance, leave, payroll and performance in one HR workspace." />
-      <nav aria-label="Employees sections" className="mb-6 flex gap-1 overflow-x-auto border-b border-border pb-px">
+      <PageHeader
+        title="Employees"
+        description="Directory, attendance, leave, payroll and performance in one HR workspace."
+      />
+      <nav
+        aria-label="Employees sections"
+        className="mb-6 flex gap-1 overflow-x-auto border-b border-border pb-px"
+      >
         {tabs.map((tab) => (
           <Link
             key={tab.to}

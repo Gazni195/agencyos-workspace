@@ -84,11 +84,21 @@ export function NewClientDialog({ onCreate }: { onCreate: (client: Client) => vo
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
               <Label htmlFor="client-name">Client name</Label>
-              <Input id="client-name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Acme Corp" />
+              <Input
+                id="client-name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Acme Corp"
+              />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="client-industry">Industry</Label>
-              <Input id="client-industry" value={industry} onChange={(e) => setIndustry(e.target.value)} placeholder="Retail" />
+              <Input
+                id="client-industry"
+                value={industry}
+                onChange={(e) => setIndustry(e.target.value)}
+                placeholder="Retail"
+              />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
@@ -122,11 +132,23 @@ export function NewClientDialog({ onCreate }: { onCreate: (client: Client) => vo
             </div>
             <div className="grid gap-2">
               <Label htmlFor="client-mrr">Monthly recurring revenue (USD)</Label>
-              <Input id="client-mrr" type="number" min="0" value={mrr} onChange={(e) => setMrr(e.target.value)} placeholder="15000" />
+              <Input
+                id="client-mrr"
+                type="number"
+                min="0"
+                value={mrr}
+                onChange={(e) => setMrr(e.target.value)}
+                placeholder="15000"
+              />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="client-contact">Primary contact</Label>
-              <Input id="client-contact" value={contact} onChange={(e) => setContact(e.target.value)} placeholder="Jane Doe" />
+              <Input
+                id="client-contact"
+                value={contact}
+                onChange={(e) => setContact(e.target.value)}
+                placeholder="Jane Doe"
+              />
             </div>
           </div>
           <DialogFooter>

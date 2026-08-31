@@ -20,7 +20,16 @@ export type Client = {
   notes: string;
 };
 
-const industries = ["Retail", "Automotive", "Healthcare", "Fintech", "Apparel", "Hospitality", "SaaS", "CPG"];
+const industries = [
+  "Retail",
+  "Automotive",
+  "Healthcare",
+  "Fintech",
+  "Apparel",
+  "Hospitality",
+  "SaaS",
+  "CPG",
+];
 
 export const clients: Client[] = [
   ...baseClients.map((c, i) => ({
@@ -32,8 +41,10 @@ export const clients: Client[] = [
       .join("")
       .slice(0, 2)
       .toUpperCase(),
-    since: ["2022-03-01", "2021-11-15", "2023-01-09", "2022-07-22", "2024-02-14"][i] ?? "2023-01-01",
-    address: ["Portland, OR", "Detroit, MI", "Austin, TX", "New York, NY", "Denver, CO"][i] ?? "Remote",
+    since:
+      ["2022-03-01", "2021-11-15", "2023-01-09", "2022-07-22", "2024-02-14"][i] ?? "2023-01-01",
+    address:
+      ["Portland, OR", "Detroit, MI", "Austin, TX", "New York, NY", "Denver, CO"][i] ?? "Remote",
     website: `https://${c.name.toLowerCase().replace(/\s+/g, "")}.com`,
     notes: "Long-standing account with quarterly business reviews.",
   })),
@@ -80,16 +91,96 @@ export type ClientContact = {
 };
 
 export const clientContacts: ClientContact[] = [
-  { id: "cc-1", clientId: "cl-1", name: "Rosa Delgado", role: "VP Marketing", email: "rosa@northwindcoffee.com", phone: "+1 (503) 555-0142", primary: true },
-  { id: "cc-2", clientId: "cl-1", name: "Ben Halloway", role: "Brand Manager", email: "ben@northwindcoffee.com", phone: "+1 (503) 555-0198", primary: false },
-  { id: "cc-3", clientId: "cl-2", name: "Grace Lindqvist", role: "CMO", email: "grace@voltamotors.com", phone: "+1 (313) 555-0110", primary: true },
-  { id: "cc-4", clientId: "cl-2", name: "Owen Marsh", role: "Media Director", email: "owen@voltamotors.com", phone: "+1 (313) 555-0187", primary: false },
-  { id: "cc-5", clientId: "cl-3", name: "Dr. Alicia Reyes", role: "Director of Comms", email: "alicia@heliohealth.com", phone: "+1 (512) 555-0155", primary: true },
-  { id: "cc-6", clientId: "cl-4", name: "Marcus Feld", role: "Head of Growth", email: "marcus@lumenfinance.com", phone: "+1 (212) 555-0129", primary: true },
-  { id: "cc-7", clientId: "cl-5", name: "Talia Osei", role: "Founder", email: "talia@terraoutdoor.com", phone: "+1 (720) 555-0167", primary: true },
-  { id: "cc-8", clientId: "cl-6", name: "Nate Fournier", role: "Marketing Lead", email: "nate@solacewellness.com", phone: "+1 (737) 555-0121", primary: true },
-  { id: "cc-9", clientId: "cl-7", name: "Devi Prakash", role: "VP Demand Gen", email: "devi@pinnaclesaas.com", phone: "+1 (415) 555-0133", primary: true },
-  { id: "cc-10", clientId: "cl-7", name: "Sam Chu", role: "Product Marketing", email: "sam@pinnaclesaas.com", phone: "+1 (415) 555-0177", primary: false },
+  {
+    id: "cc-1",
+    clientId: "cl-1",
+    name: "Rosa Delgado",
+    role: "VP Marketing",
+    email: "rosa@northwindcoffee.com",
+    phone: "+1 (503) 555-0142",
+    primary: true,
+  },
+  {
+    id: "cc-2",
+    clientId: "cl-1",
+    name: "Ben Halloway",
+    role: "Brand Manager",
+    email: "ben@northwindcoffee.com",
+    phone: "+1 (503) 555-0198",
+    primary: false,
+  },
+  {
+    id: "cc-3",
+    clientId: "cl-2",
+    name: "Grace Lindqvist",
+    role: "CMO",
+    email: "grace@voltamotors.com",
+    phone: "+1 (313) 555-0110",
+    primary: true,
+  },
+  {
+    id: "cc-4",
+    clientId: "cl-2",
+    name: "Owen Marsh",
+    role: "Media Director",
+    email: "owen@voltamotors.com",
+    phone: "+1 (313) 555-0187",
+    primary: false,
+  },
+  {
+    id: "cc-5",
+    clientId: "cl-3",
+    name: "Dr. Alicia Reyes",
+    role: "Director of Comms",
+    email: "alicia@heliohealth.com",
+    phone: "+1 (512) 555-0155",
+    primary: true,
+  },
+  {
+    id: "cc-6",
+    clientId: "cl-4",
+    name: "Marcus Feld",
+    role: "Head of Growth",
+    email: "marcus@lumenfinance.com",
+    phone: "+1 (212) 555-0129",
+    primary: true,
+  },
+  {
+    id: "cc-7",
+    clientId: "cl-5",
+    name: "Talia Osei",
+    role: "Founder",
+    email: "talia@terraoutdoor.com",
+    phone: "+1 (720) 555-0167",
+    primary: true,
+  },
+  {
+    id: "cc-8",
+    clientId: "cl-6",
+    name: "Nate Fournier",
+    role: "Marketing Lead",
+    email: "nate@solacewellness.com",
+    phone: "+1 (737) 555-0121",
+    primary: true,
+  },
+  {
+    id: "cc-9",
+    clientId: "cl-7",
+    name: "Devi Prakash",
+    role: "VP Demand Gen",
+    email: "devi@pinnaclesaas.com",
+    phone: "+1 (415) 555-0133",
+    primary: true,
+  },
+  {
+    id: "cc-10",
+    clientId: "cl-7",
+    name: "Sam Chu",
+    role: "Product Marketing",
+    email: "sam@pinnaclesaas.com",
+    phone: "+1 (415) 555-0177",
+    primary: false,
+  },
 ];
 
 export type Retainer = {
@@ -104,15 +195,96 @@ export type Retainer = {
 };
 
 export const retainers: Retainer[] = [
-  { id: "rt-1", clientId: "cl-1", name: "Brand & Content Retainer", monthlyValue: 14000, scope: "Brand strategy, content production, social management", startDate: "2022-03-01", renewalDate: "2026-12-31", status: "active" },
-  { id: "rt-2", clientId: "cl-1", name: "Content Engine", monthlyValue: 10000, scope: "Editorial calendar, blog, newsletter", startDate: "2024-01-15", renewalDate: "2026-10-15", status: "renewal-due" },
-  { id: "rt-3", clientId: "cl-2", name: "Paid Media Management", monthlyValue: 38000, scope: "Paid social, search, programmatic display", startDate: "2021-11-15", renewalDate: "2027-01-31", status: "active" },
-  { id: "rt-4", clientId: "cl-2", name: "Creative Production", monthlyValue: 20000, scope: "Video, motion, campaign assets", startDate: "2023-04-01", renewalDate: "2026-11-01", status: "active" },
-  { id: "rt-5", clientId: "cl-3", name: "Website & CRO Retainer", monthlyValue: 31000, scope: "Website rebuild, CRO testing, analytics", startDate: "2023-01-09", renewalDate: "2026-09-20", status: "at-risk" },
-  { id: "rt-6", clientId: "cl-4", name: "Growth Marketing", monthlyValue: 19500, scope: "Paid search, lifecycle email, reporting", startDate: "2022-07-22", renewalDate: "2027-02-28", status: "active" },
-  { id: "rt-7", clientId: "cl-5", name: "Brand Partnerships", monthlyValue: 12500, scope: "Influencer, affiliate, seasonal campaigns", startDate: "2024-02-14", renewalDate: "2026-09-30", status: "renewal-due" },
-  { id: "rt-8", clientId: "cl-6", name: "Social & Community", monthlyValue: 15200, scope: "Organic social, community management", startDate: "2024-06-10", renewalDate: "2027-06-10", status: "active" },
-  { id: "rt-9", clientId: "cl-7", name: "Full-Funnel Demand Gen", monthlyValue: 42000, scope: "Paid, SEO, ABM, lifecycle", startDate: "2023-09-01", renewalDate: "2027-09-01", status: "active" },
+  {
+    id: "rt-1",
+    clientId: "cl-1",
+    name: "Brand & Content Retainer",
+    monthlyValue: 14000,
+    scope: "Brand strategy, content production, social management",
+    startDate: "2022-03-01",
+    renewalDate: "2026-12-31",
+    status: "active",
+  },
+  {
+    id: "rt-2",
+    clientId: "cl-1",
+    name: "Content Engine",
+    monthlyValue: 10000,
+    scope: "Editorial calendar, blog, newsletter",
+    startDate: "2024-01-15",
+    renewalDate: "2026-10-15",
+    status: "renewal-due",
+  },
+  {
+    id: "rt-3",
+    clientId: "cl-2",
+    name: "Paid Media Management",
+    monthlyValue: 38000,
+    scope: "Paid social, search, programmatic display",
+    startDate: "2021-11-15",
+    renewalDate: "2027-01-31",
+    status: "active",
+  },
+  {
+    id: "rt-4",
+    clientId: "cl-2",
+    name: "Creative Production",
+    monthlyValue: 20000,
+    scope: "Video, motion, campaign assets",
+    startDate: "2023-04-01",
+    renewalDate: "2026-11-01",
+    status: "active",
+  },
+  {
+    id: "rt-5",
+    clientId: "cl-3",
+    name: "Website & CRO Retainer",
+    monthlyValue: 31000,
+    scope: "Website rebuild, CRO testing, analytics",
+    startDate: "2023-01-09",
+    renewalDate: "2026-09-20",
+    status: "at-risk",
+  },
+  {
+    id: "rt-6",
+    clientId: "cl-4",
+    name: "Growth Marketing",
+    monthlyValue: 19500,
+    scope: "Paid search, lifecycle email, reporting",
+    startDate: "2022-07-22",
+    renewalDate: "2027-02-28",
+    status: "active",
+  },
+  {
+    id: "rt-7",
+    clientId: "cl-5",
+    name: "Brand Partnerships",
+    monthlyValue: 12500,
+    scope: "Influencer, affiliate, seasonal campaigns",
+    startDate: "2024-02-14",
+    renewalDate: "2026-09-30",
+    status: "renewal-due",
+  },
+  {
+    id: "rt-8",
+    clientId: "cl-6",
+    name: "Social & Community",
+    monthlyValue: 15200,
+    scope: "Organic social, community management",
+    startDate: "2024-06-10",
+    renewalDate: "2027-06-10",
+    status: "active",
+  },
+  {
+    id: "rt-9",
+    clientId: "cl-7",
+    name: "Full-Funnel Demand Gen",
+    monthlyValue: 42000,
+    scope: "Paid, SEO, ABM, lifecycle",
+    startDate: "2023-09-01",
+    renewalDate: "2027-09-01",
+    status: "active",
+  },
 ];
 
 export type ClientActivityEvent = {
@@ -126,17 +298,105 @@ export type ClientActivityEvent = {
 };
 
 export const clientActivity: ClientActivityEvent[] = [
-  { id: "ca-1", clientId: "cl-1", type: "meeting", title: "Quarterly business review", description: "Reviewed Q3 performance and content roadmap.", who: "Sofia Marchetti", when: "2026-08-20" },
-  { id: "ca-2", clientId: "cl-1", type: "milestone", title: "Brand Refresh key visuals approved", description: "Round 3 visuals signed off by Rosa Delgado.", who: "Amara Okafor", when: "2026-08-18" },
-  { id: "ca-3", clientId: "cl-1", type: "invoice", title: "August invoice sent", description: "$24,000 retainer invoice sent, due Sep 15.", who: "Finance", when: "2026-08-01" },
-  { id: "ca-4", clientId: "cl-2", type: "email", title: "Budget approval thread", description: "Priya confirmed Q3 media budget increase.", who: "Priya Nair", when: "2026-08-26" },
-  { id: "ca-5", clientId: "cl-2", type: "meeting", title: "Launch film review", description: "Final color grade presented to Grace Lindqvist.", who: "Noah Feldman", when: "2026-08-22" },
-  { id: "ca-6", clientId: "cl-3", type: "note", title: "Timeline slipping on website rebuild", description: "Flagged as at-risk; escalation call scheduled.", who: "Marcus Doyle", when: "2026-08-25" },
-  { id: "ca-7", clientId: "cl-3", type: "meeting", title: "Sprint review", description: "Walked through component library progress.", who: "Liam Bennett", when: "2026-08-19" },
-  { id: "ca-8", clientId: "cl-4", type: "milestone", title: "Growth retainer renewed", description: "Signed 12-month renewal at current rate.", who: "Sofia Marchetti", when: "2026-07-30" },
-  { id: "ca-9", clientId: "cl-5", type: "note", title: "Churn risk flagged", description: "Talia raised concerns about campaign ROI.", who: "Marcus Doyle", when: "2026-08-15" },
-  { id: "ca-10", clientId: "cl-6", type: "email", title: "Kickoff recap sent", description: "Shared onboarding recap and content calendar.", who: "Priya Nair", when: "2026-06-12" },
-  { id: "ca-11", clientId: "cl-7", type: "meeting", title: "ABM strategy workshop", description: "Aligned on target account list for H2.", who: "Sofia Marchetti", when: "2026-08-10" },
+  {
+    id: "ca-1",
+    clientId: "cl-1",
+    type: "meeting",
+    title: "Quarterly business review",
+    description: "Reviewed Q3 performance and content roadmap.",
+    who: "Sofia Marchetti",
+    when: "2026-08-20",
+  },
+  {
+    id: "ca-2",
+    clientId: "cl-1",
+    type: "milestone",
+    title: "Brand Refresh key visuals approved",
+    description: "Round 3 visuals signed off by Rosa Delgado.",
+    who: "Amara Okafor",
+    when: "2026-08-18",
+  },
+  {
+    id: "ca-3",
+    clientId: "cl-1",
+    type: "invoice",
+    title: "August invoice sent",
+    description: "$24,000 retainer invoice sent, due Sep 15.",
+    who: "Finance",
+    when: "2026-08-01",
+  },
+  {
+    id: "ca-4",
+    clientId: "cl-2",
+    type: "email",
+    title: "Budget approval thread",
+    description: "Priya confirmed Q3 media budget increase.",
+    who: "Priya Nair",
+    when: "2026-08-26",
+  },
+  {
+    id: "ca-5",
+    clientId: "cl-2",
+    type: "meeting",
+    title: "Launch film review",
+    description: "Final color grade presented to Grace Lindqvist.",
+    who: "Noah Feldman",
+    when: "2026-08-22",
+  },
+  {
+    id: "ca-6",
+    clientId: "cl-3",
+    type: "note",
+    title: "Timeline slipping on website rebuild",
+    description: "Flagged as at-risk; escalation call scheduled.",
+    who: "Marcus Doyle",
+    when: "2026-08-25",
+  },
+  {
+    id: "ca-7",
+    clientId: "cl-3",
+    type: "meeting",
+    title: "Sprint review",
+    description: "Walked through component library progress.",
+    who: "Liam Bennett",
+    when: "2026-08-19",
+  },
+  {
+    id: "ca-8",
+    clientId: "cl-4",
+    type: "milestone",
+    title: "Growth retainer renewed",
+    description: "Signed 12-month renewal at current rate.",
+    who: "Sofia Marchetti",
+    when: "2026-07-30",
+  },
+  {
+    id: "ca-9",
+    clientId: "cl-5",
+    type: "note",
+    title: "Churn risk flagged",
+    description: "Talia raised concerns about campaign ROI.",
+    who: "Marcus Doyle",
+    when: "2026-08-15",
+  },
+  {
+    id: "ca-10",
+    clientId: "cl-6",
+    type: "email",
+    title: "Kickoff recap sent",
+    description: "Shared onboarding recap and content calendar.",
+    who: "Priya Nair",
+    when: "2026-06-12",
+  },
+  {
+    id: "ca-11",
+    clientId: "cl-7",
+    type: "meeting",
+    title: "ABM strategy workshop",
+    description: "Aligned on target account list for H2.",
+    who: "Sofia Marchetti",
+    when: "2026-08-10",
+  },
 ];
 
 export type ClientDocument = {
@@ -149,22 +409,94 @@ export type ClientDocument = {
 };
 
 export const clientDocuments: ClientDocument[] = [
-  { id: "cd-1", clientId: "cl-1", name: "Master Services Agreement.pdf", category: "Contract", size: "540 KB", uploadedOn: "2022-03-01" },
-  { id: "cd-2", clientId: "cl-1", name: "Brand Refresh Creative Brief.pdf", category: "Brief", size: "212 KB", uploadedOn: "2026-05-10" },
-  { id: "cd-3", clientId: "cl-1", name: "Q2 Performance Report.pdf", category: "Report", size: "1.1 MB", uploadedOn: "2026-07-05" },
-  { id: "cd-4", clientId: "cl-2", name: "Media Retainer SOW.pdf", category: "Contract", size: "398 KB", uploadedOn: "2021-11-15" },
-  { id: "cd-5", clientId: "cl-2", name: "Launch Film Storyboard.pdf", category: "Creative", size: "3.4 MB", uploadedOn: "2026-06-18" },
-  { id: "cd-6", clientId: "cl-3", name: "Website Rebuild SOW.pdf", category: "Contract", size: "455 KB", uploadedOn: "2023-01-09" },
-  { id: "cd-7", clientId: "cl-3", name: "August Invoice.pdf", category: "Invoice", size: "88 KB", uploadedOn: "2026-08-01" },
-  { id: "cd-8", clientId: "cl-4", name: "Growth Marketing MSA.pdf", category: "Contract", size: "310 KB", uploadedOn: "2022-07-22" },
-  { id: "cd-9", clientId: "cl-7", name: "ABM Strategy Deck.pdf", category: "Brief", size: "2.2 MB", uploadedOn: "2026-08-10" },
+  {
+    id: "cd-1",
+    clientId: "cl-1",
+    name: "Master Services Agreement.pdf",
+    category: "Contract",
+    size: "540 KB",
+    uploadedOn: "2022-03-01",
+  },
+  {
+    id: "cd-2",
+    clientId: "cl-1",
+    name: "Brand Refresh Creative Brief.pdf",
+    category: "Brief",
+    size: "212 KB",
+    uploadedOn: "2026-05-10",
+  },
+  {
+    id: "cd-3",
+    clientId: "cl-1",
+    name: "Q2 Performance Report.pdf",
+    category: "Report",
+    size: "1.1 MB",
+    uploadedOn: "2026-07-05",
+  },
+  {
+    id: "cd-4",
+    clientId: "cl-2",
+    name: "Media Retainer SOW.pdf",
+    category: "Contract",
+    size: "398 KB",
+    uploadedOn: "2021-11-15",
+  },
+  {
+    id: "cd-5",
+    clientId: "cl-2",
+    name: "Launch Film Storyboard.pdf",
+    category: "Creative",
+    size: "3.4 MB",
+    uploadedOn: "2026-06-18",
+  },
+  {
+    id: "cd-6",
+    clientId: "cl-3",
+    name: "Website Rebuild SOW.pdf",
+    category: "Contract",
+    size: "455 KB",
+    uploadedOn: "2023-01-09",
+  },
+  {
+    id: "cd-7",
+    clientId: "cl-3",
+    name: "August Invoice.pdf",
+    category: "Invoice",
+    size: "88 KB",
+    uploadedOn: "2026-08-01",
+  },
+  {
+    id: "cd-8",
+    clientId: "cl-4",
+    name: "Growth Marketing MSA.pdf",
+    category: "Contract",
+    size: "310 KB",
+    uploadedOn: "2022-07-22",
+  },
+  {
+    id: "cd-9",
+    clientId: "cl-7",
+    name: "ABM Strategy Deck.pdf",
+    category: "Brief",
+    size: "2.2 MB",
+    uploadedOn: "2026-08-10",
+  },
 ];
 
 // ---------- Leads / CRM pipeline ----------
 
-export type LeadStage = "New" | "Contacted" | "Qualified" | "Proposal" | "Negotiation" | "Won" | "Lost";
+export type LeadStage =
+  "New" | "Contacted" | "Qualified" | "Proposal" | "Negotiation" | "Won" | "Lost";
 
-export const leadStages: LeadStage[] = ["New", "Contacted", "Qualified", "Proposal", "Negotiation", "Won", "Lost"];
+export const leadStages: LeadStage[] = [
+  "New",
+  "Contacted",
+  "Qualified",
+  "Proposal",
+  "Negotiation",
+  "Won",
+  "Lost",
+];
 
 export type LeadNote = { id: string; author: string; when: string; text: string };
 
@@ -202,7 +534,14 @@ export const leads: Lead[] = [
     source: l.source,
     nextAction: ["2026-09-02", "2026-09-05", "2026-09-08", "2026-09-10"][i] ?? "2026-09-12",
     createdOn: ["2026-07-14", "2026-08-01", "2026-06-20", "2026-08-10"][i] ?? "2026-08-01",
-    notes: [{ id: `n-${l.id}-1`, author: l.owner, when: "2026-08-20", text: "Initial discovery call went well." }],
+    notes: [
+      {
+        id: `n-${l.id}-1`,
+        author: l.owner,
+        when: "2026-08-20",
+        text: "Initial discovery call went well.",
+      },
+    ],
   })),
   {
     id: "ld-5",
@@ -244,7 +583,14 @@ export const leads: Lead[] = [
     source: "Event",
     nextAction: "2026-09-06",
     createdOn: "2026-08-15",
-    notes: [{ id: "n-ld7-1", author: "Marcus Doyle", when: "2026-08-22", text: "Sent intro email and case studies." }],
+    notes: [
+      {
+        id: "n-ld7-1",
+        author: "Marcus Doyle",
+        when: "2026-08-22",
+        text: "Sent intro email and case studies.",
+      },
+    ],
   },
   {
     id: "ld-8",
@@ -258,7 +604,14 @@ export const leads: Lead[] = [
     source: "Outbound",
     nextAction: "2026-09-05",
     createdOn: "2026-08-12",
-    notes: [{ id: "n-ld8-1", author: "Priya Nair", when: "2026-08-19", text: "Left voicemail, following up Friday." }],
+    notes: [
+      {
+        id: "n-ld8-1",
+        author: "Priya Nair",
+        when: "2026-08-19",
+        text: "Left voicemail, following up Friday.",
+      },
+    ],
   },
   {
     id: "ld-9",
@@ -272,7 +625,14 @@ export const leads: Lead[] = [
     source: "Referral",
     nextAction: "2026-09-07",
     createdOn: "2026-07-28",
-    notes: [{ id: "n-ld9-1", author: "Sofia Marchetti", when: "2026-08-14", text: "Budget confirmed, scoping full-funnel proposal." }],
+    notes: [
+      {
+        id: "n-ld9-1",
+        author: "Sofia Marchetti",
+        when: "2026-08-14",
+        text: "Budget confirmed, scoping full-funnel proposal.",
+      },
+    ],
   },
   {
     id: "ld-10",
@@ -286,7 +646,14 @@ export const leads: Lead[] = [
     source: "Inbound",
     nextAction: "2026-09-09",
     createdOn: "2026-07-10",
-    notes: [{ id: "n-ld10-1", author: "Marcus Doyle", when: "2026-08-25", text: "Proposal sent, awaiting procurement review." }],
+    notes: [
+      {
+        id: "n-ld10-1",
+        author: "Marcus Doyle",
+        when: "2026-08-25",
+        text: "Proposal sent, awaiting procurement review.",
+      },
+    ],
   },
   {
     id: "ld-11",
@@ -300,7 +667,14 @@ export const leads: Lead[] = [
     source: "Outbound",
     nextAction: "2026-09-04",
     createdOn: "2026-06-30",
-    notes: [{ id: "n-ld11-1", author: "Priya Nair", when: "2026-08-24", text: "Negotiating scope down to fit Q4 budget." }],
+    notes: [
+      {
+        id: "n-ld11-1",
+        author: "Priya Nair",
+        when: "2026-08-24",
+        text: "Negotiating scope down to fit Q4 budget.",
+      },
+    ],
   },
   {
     id: "ld-12",
@@ -314,7 +688,14 @@ export const leads: Lead[] = [
     source: "Referral",
     nextAction: "2026-09-15",
     createdOn: "2026-06-01",
-    notes: [{ id: "n-ld12-1", author: "Sofia Marchetti", when: "2026-08-05", text: "Contract signed, kickoff scheduled." }],
+    notes: [
+      {
+        id: "n-ld12-1",
+        author: "Sofia Marchetti",
+        when: "2026-08-05",
+        text: "Contract signed, kickoff scheduled.",
+      },
+    ],
   },
   {
     id: "ld-13",
@@ -328,7 +709,14 @@ export const leads: Lead[] = [
     source: "Event",
     nextAction: "2026-09-12",
     createdOn: "2026-05-20",
-    notes: [{ id: "n-ld13-1", author: "Marcus Doyle", when: "2026-08-01", text: "Closed-won, onboarding call booked." }],
+    notes: [
+      {
+        id: "n-ld13-1",
+        author: "Marcus Doyle",
+        when: "2026-08-01",
+        text: "Closed-won, onboarding call booked.",
+      },
+    ],
   },
   {
     id: "ld-14",
@@ -342,7 +730,14 @@ export const leads: Lead[] = [
     source: "Inbound",
     nextAction: "—",
     createdOn: "2026-06-15",
-    notes: [{ id: "n-ld14-1", author: "Priya Nair", when: "2026-07-20", text: "Went with a competitor on price." }],
+    notes: [
+      {
+        id: "n-ld14-1",
+        author: "Priya Nair",
+        when: "2026-07-20",
+        text: "Went with a competitor on price.",
+      },
+    ],
   },
 ];
 
@@ -356,7 +751,9 @@ export const leadStageColor: Record<LeadStage, string> = {
   Lost: "bg-destructive/12 text-destructive",
 };
 
-export const owners = Array.from(new Set([...clients.map((c) => c.owner), ...leads.map((l) => l.owner)]));
+export const owners = Array.from(
+  new Set([...clients.map((c) => c.owner), ...leads.map((l) => l.owner)]),
+);
 export const sources = Array.from(new Set(leads.map((l) => l.source)));
 
 export const initialsOf = (name: string) =>

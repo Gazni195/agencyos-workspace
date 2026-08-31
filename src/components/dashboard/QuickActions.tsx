@@ -9,6 +9,8 @@ import {
   Wallet,
   BarChart3,
   Inbox,
+  Package,
+  Settings,
 } from "lucide-react";
 
 const actions = [
@@ -20,6 +22,8 @@ const actions = [
   { label: "Finance", to: "/finance", icon: Wallet },
   { label: "Reports", to: "/reports", icon: BarChart3 },
   { label: "Inbox", to: "/inbox", icon: Inbox },
+  { label: "Assets", to: "/assets", icon: Package },
+  { label: "Settings", to: "/settings", icon: Settings },
 ] as const;
 
 export function QuickActions() {

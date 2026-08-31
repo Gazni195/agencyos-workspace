@@ -6,7 +6,13 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import type { DeliveryProject } from "@/data/delivery";
 import { money } from "@/data/agency";
 
-export function ProjectCard({ project, view = "grid" }: { project: DeliveryProject; view?: "grid" | "list" }) {
+export function ProjectCard({
+  project,
+  view = "grid",
+}: {
+  project: DeliveryProject;
+  view?: "grid" | "list";
+}) {
   if (view === "list") {
     return (
       <Link

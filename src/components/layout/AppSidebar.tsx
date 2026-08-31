@@ -120,11 +120,12 @@ export function AppSidebar({ open, onClose }: { open: boolean; onClose: () => vo
               )}
             </div>
           ))}
-
         </nav>
 
         <div className="m-3 rounded-xl bg-sidebar-accent p-4">
-          <p className="text-xs font-semibold text-sidebar-accent-foreground">Cloud not connected</p>
+          <p className="text-xs font-semibold text-sidebar-accent-foreground">
+            Cloud not connected
+          </p>
           <p className="mt-1 text-[11px] leading-relaxed text-sidebar-muted">
             Sample data is local. Connect a backend to persist records.
           </p>

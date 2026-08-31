@@ -107,7 +107,9 @@ export const invoices: Invoice[] = [
     status: "sent",
     taxRate: 8,
     notes: "Content Engine — August retainer.",
-    lineItems: [{ id: "li-1", description: "Editorial & Content Production", quantity: 1, rate: 11000 }],
+    lineItems: [
+      { id: "li-1", description: "Editorial & Content Production", quantity: 1, rate: 11000 },
+    ],
   },
   {
     id: "inv-1007",
@@ -155,7 +157,9 @@ export const invoices: Invoice[] = [
     status: "draft",
     taxRate: 8,
     notes: "Fall campaign kickoff.",
-    lineItems: [{ id: "li-1", description: "Campaign Strategy & Planning", quantity: 1, rate: 7200 }],
+    lineItems: [
+      { id: "li-1", description: "Campaign Strategy & Planning", quantity: 1, rate: 7200 },
+    ],
   },
   {
     id: "inv-1011",
@@ -166,7 +170,9 @@ export const invoices: Invoice[] = [
     status: "overdue",
     taxRate: 8,
     notes: "Past due — flagged for collections.",
-    lineItems: [{ id: "li-1", description: "Content Engine — May retainer", quantity: 1, rate: 11000 }],
+    lineItems: [
+      { id: "li-1", description: "Content Engine — May retainer", quantity: 1, rate: 11000 },
+    ],
   },
   {
     id: "inv-1012",
@@ -227,22 +233,150 @@ export type Expense = {
 };
 
 export const expenses: Expense[] = [
-  { id: "ex-1", vendor: "Adobe", category: "Software", date: "2026-08-01", amount: 2400, status: "approved", submittedBy: "Amara Okafor" },
-  { id: "ex-2", vendor: "Meta Ads Platform", category: "Media Spend", date: "2026-08-03", amount: 58000, status: "approved", submittedBy: "Kenji Tanaka" },
-  { id: "ex-3", vendor: "Freelance Editor — J. Ruiz", category: "Contractors", date: "2026-08-04", amount: 4200, status: "approved", submittedBy: "Noah Feldman" },
-  { id: "ex-4", vendor: "United Airlines", category: "Travel", date: "2026-08-06", amount: 860, status: "approved", submittedBy: "Marcus Doyle" },
-  { id: "ex-5", vendor: "WeWork", category: "Office", date: "2026-08-01", amount: 12500, status: "approved", submittedBy: "Ivy Chen" },
-  { id: "ex-6", vendor: "Sony Rentals", category: "Production", date: "2026-08-08", amount: 3100, status: "pending", submittedBy: "Noah Feldman" },
-  { id: "ex-7", vendor: "Figma", category: "Software", date: "2026-08-01", amount: 780, status: "approved", submittedBy: "Liam Bennett" },
-  { id: "ex-8", vendor: "Deloitte Advisory", category: "Professional Services", date: "2026-08-10", amount: 9500, status: "pending", submittedBy: "Ivy Chen" },
-  { id: "ex-9", vendor: "Google Ads Platform", category: "Media Spend", date: "2026-08-12", amount: 41000, status: "approved", submittedBy: "Kenji Tanaka" },
-  { id: "ex-10", vendor: "Freelance Copywriter — R. Singh", category: "Contractors", date: "2026-08-14", amount: 2800, status: "rejected", submittedBy: "Fatima Zahra" },
-  { id: "ex-11", vendor: "Delta Airlines", category: "Travel", date: "2026-08-15", amount: 1120, status: "approved", submittedBy: "Sofia Marchetti" },
-  { id: "ex-12", vendor: "Slack", category: "Software", date: "2026-08-01", amount: 640, status: "approved", submittedBy: "Ivy Chen" },
-  { id: "ex-13", vendor: "Location Scout LLC", category: "Production", date: "2026-08-18", amount: 5200, status: "pending", submittedBy: "Noah Feldman" },
-  { id: "ex-14", vendor: "Marriott", category: "Travel", date: "2026-08-19", amount: 940, status: "approved", submittedBy: "Marcus Doyle" },
-  { id: "ex-15", vendor: "Legal Counsel — Bright & Cho", category: "Professional Services", date: "2026-08-21", amount: 6800, status: "approved", submittedBy: "Daniel Reyes" },
-  { id: "ex-16", vendor: "TikTok Ads Platform", category: "Media Spend", date: "2026-08-22", amount: 27500, status: "pending", submittedBy: "Kenji Tanaka" },
+  {
+    id: "ex-1",
+    vendor: "Adobe",
+    category: "Software",
+    date: "2026-08-01",
+    amount: 2400,
+    status: "approved",
+    submittedBy: "Amara Okafor",
+  },
+  {
+    id: "ex-2",
+    vendor: "Meta Ads Platform",
+    category: "Media Spend",
+    date: "2026-08-03",
+    amount: 58000,
+    status: "approved",
+    submittedBy: "Kenji Tanaka",
+  },
+  {
+    id: "ex-3",
+    vendor: "Freelance Editor — J. Ruiz",
+    category: "Contractors",
+    date: "2026-08-04",
+    amount: 4200,
+    status: "approved",
+    submittedBy: "Noah Feldman",
+  },
+  {
+    id: "ex-4",
+    vendor: "United Airlines",
+    category: "Travel",
+    date: "2026-08-06",
+    amount: 860,
+    status: "approved",
+    submittedBy: "Marcus Doyle",
+  },
+  {
+    id: "ex-5",
+    vendor: "WeWork",
+    category: "Office",
+    date: "2026-08-01",
+    amount: 12500,
+    status: "approved",
+    submittedBy: "Ivy Chen",
+  },
+  {
+    id: "ex-6",
+    vendor: "Sony Rentals",
+    category: "Production",
+    date: "2026-08-08",
+    amount: 3100,
+    status: "pending",
+    submittedBy: "Noah Feldman",
+  },
+  {
+    id: "ex-7",
+    vendor: "Figma",
+    category: "Software",
+    date: "2026-08-01",
+    amount: 780,
+    status: "approved",
+    submittedBy: "Liam Bennett",
+  },
+  {
+    id: "ex-8",
+    vendor: "Deloitte Advisory",
+    category: "Professional Services",
+    date: "2026-08-10",
+    amount: 9500,
+    status: "pending",
+    submittedBy: "Ivy Chen",
+  },
+  {
+    id: "ex-9",
+    vendor: "Google Ads Platform",
+    category: "Media Spend",
+    date: "2026-08-12",
+    amount: 41000,
+    status: "approved",
+    submittedBy: "Kenji Tanaka",
+  },
+  {
+    id: "ex-10",
+    vendor: "Freelance Copywriter — R. Singh",
+    category: "Contractors",
+    date: "2026-08-14",
+    amount: 2800,
+    status: "rejected",
+    submittedBy: "Fatima Zahra",
+  },
+  {
+    id: "ex-11",
+    vendor: "Delta Airlines",
+    category: "Travel",
+    date: "2026-08-15",
+    amount: 1120,
+    status: "approved",
+    submittedBy: "Sofia Marchetti",
+  },
+  {
+    id: "ex-12",
+    vendor: "Slack",
+    category: "Software",
+    date: "2026-08-01",
+    amount: 640,
+    status: "approved",
+    submittedBy: "Ivy Chen",
+  },
+  {
+    id: "ex-13",
+    vendor: "Location Scout LLC",
+    category: "Production",
+    date: "2026-08-18",
+    amount: 5200,
+    status: "pending",
+    submittedBy: "Noah Feldman",
+  },
+  {
+    id: "ex-14",
+    vendor: "Marriott",
+    category: "Travel",
+    date: "2026-08-19",
+    amount: 940,
+    status: "approved",
+    submittedBy: "Marcus Doyle",
+  },
+  {
+    id: "ex-15",
+    vendor: "Legal Counsel — Bright & Cho",
+    category: "Professional Services",
+    date: "2026-08-21",
+    amount: 6800,
+    status: "approved",
+    submittedBy: "Daniel Reyes",
+  },
+  {
+    id: "ex-16",
+    vendor: "TikTok Ads Platform",
+    category: "Media Spend",
+    date: "2026-08-22",
+    amount: 27500,
+    status: "pending",
+    submittedBy: "Kenji Tanaka",
+  },
 ];
 
 export const expenseCategoryTotals = () => {
@@ -253,7 +387,13 @@ export const expenseCategoryTotals = () => {
 
 export type AgingBucket = "0-30" | "31-60" | "61-90" | "90+";
 
-export const agingByClient: { client: string; "0-30": number; "31-60": number; "61-90": number; "90+": number }[] = [
+export const agingByClient: {
+  client: string;
+  "0-30": number;
+  "31-60": number;
+  "61-90": number;
+  "90+": number;
+}[] = [
   { client: "Northwind Coffee", "0-30": 11880, "31-60": 0, "61-90": 0, "90+": 11880 },
   { client: "Volta Motors", "0-30": 66700, "31-60": 0, "61-90": 0, "90+": 0 },
   { client: "Helio Health", "0-30": 0, "31-60": 38830, "61-90": 0, "90+": 0 },
