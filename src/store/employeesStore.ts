@@ -5,6 +5,7 @@
 // Directory page.
 import { create } from "zustand";
 import { employees as seedEmployees, type Employee } from "@/data/agency";
+import { useInboxStore } from "./inboxStore";
 
 type EmployeesState = {
   employees: Employee[];
@@ -15,7 +16,17 @@ type EmployeesState = {
 
 export const useEmployeesStore = create<EmployeesState>((set) => ({
   employees: seedEmployees,
-  addEmployee: (employee) => set((s) => ({ employees: [employee, ...s.employees] })),
+  addEmployee: (employee) => {
+    set((s) => ({ employees: [employee, ...s.employees] }));
+    useInboxStore.getState().addNotification({
+      id: `nt-employee-${employee.id}`,
+      icon: "system",
+      title: "New employee added",
+      detail: `${employee.name} joined as ${employee.role}.`,
+      time: "Just now",
+      read: false,
+    });
+  },
   updateEmployee: (id, patch) =>
     set((s) => ({
       employees: s.employees.map((e) => (e.id === id ? { ...e, ...patch } : e)),

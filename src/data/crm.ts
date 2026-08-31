@@ -124,8 +124,9 @@ export const leadStageColor: Record<LeadStage, string> = {
 // live employee directory, not this static seed array — see
 // useEmployeesStore. Consumers should derive owner names from that store
 // rather than importing a static list here, since employees are created at
-// runtime, not seeded.
-export const sources = Array.from(new Set(leads.map((l) => l.source)));
+// runtime, not seeded. Lead sources work the same way — see
+// LeadFormDialog.tsx and reports.leads.tsx, both of which derive their own
+// live source list from useLeadsStore rather than a static export here.
 
 export const initialsOf = (name: string) =>
   name

@@ -21,15 +21,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { headerNotifications } from "@/mock";
 import { usePermissions } from "@/hooks/usePermissions";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { useAuthStore } from "@/store/authStore";
+import { useInboxStore } from "@/store/inboxStore";
 
 export function AppShell({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
-  const [notes, setNotes] = useState(headerNotifications);
-  const unread = notes.filter((n) => n.unread).length;
+  const notes = useInboxStore((s) => s.notifications);
+  const markAllNotificationsRead = useInboxStore((s) => s.markAllNotificationsRead);
+  const unread = notes.filter((n) => !n.read).length;
   const { role, roles, roleId, setRole } = usePermissions();
   const currentUser = useCurrentUser();
   const logout = useAuthStore((s) => s.logout);
@@ -73,25 +74,30 @@ export function AppShell({ children }: { children: ReactNode }) {
                   <p className="text-sm font-semibold">Notifications</p>
                   <button
                     type="button"
-                    onClick={() => setNotes((prev) => prev.map((n) => ({ ...n, unread: false })))}
+                    onClick={markAllNotificationsRead}
                     className="text-xs font-medium text-primary hover:underline"
                   >
                     Mark all read
                   </button>
                 </div>
                 <ul className="max-h-80 overflow-y-auto">
+                  {notes.length === 0 && (
+                    <li className="px-4 py-6 text-center text-xs text-muted-foreground">
+                      Nothing yet — activity across the workspace shows up here.
+                    </li>
+                  )}
                   {notes.map((n) => (
                     <li
                       key={n.id}
                       className="flex gap-3 border-b border-border/60 px-4 py-3 last:border-0"
                     >
                       <span
-                        className={`mt-1.5 size-2 shrink-0 rounded-full ${n.unread ? "bg-primary" : "bg-muted-foreground/30"}`}
+                        className={`mt-1.5 size-2 shrink-0 rounded-full ${!n.read ? "bg-primary" : "bg-muted-foreground/30"}`}
                       />
                       <div className="min-w-0">
                         <p className="text-sm font-medium">{n.title}</p>
-                        <p className="text-xs text-muted-foreground">{n.body}</p>
-                        <p className="mt-1 text-[11px] text-muted-foreground">{n.when}</p>
+                        <p className="text-xs text-muted-foreground">{n.detail}</p>
+                        <p className="mt-1 text-[11px] text-muted-foreground">{n.time}</p>
                       </div>
                     </li>
                   ))}

@@ -11,6 +11,9 @@ import {
 } from "@/data/crm";
 import { type Client, type PackageType } from "@/data/crm";
 import { useClientsStore } from "./clientsStore";
+import { useActivityStore } from "./activityStore";
+import { useInboxStore } from "./inboxStore";
+import { getCurrentUser } from "@/hooks/useCurrentUser";
 
 export type StoreLead = Lead & { convertedClientId?: string };
 
@@ -33,7 +36,17 @@ type LeadsState = {
 
 export const useLeadsStore = create<LeadsState>((set, get) => ({
   leads: seedLeads,
-  addLead: (lead) => set((s) => ({ leads: [lead, ...s.leads] })),
+  addLead: (lead) => {
+    set((s) => ({ leads: [lead, ...s.leads] }));
+    useInboxStore.getState().addNotification({
+      id: `nt-lead-${lead.id}`,
+      icon: "task",
+      title: "New lead",
+      detail: `${lead.company} (${lead.source}) was added to the pipeline.`,
+      time: "Just now",
+      read: false,
+    });
+  },
   updateLead: (id, patch) =>
     set((s) => ({ leads: s.leads.map((l) => (l.id === id ? { ...l, ...patch } : l)) })),
   removeLead: (id) => set((s) => ({ leads: s.leads.filter((l) => l.id !== id) })),
@@ -65,6 +78,23 @@ export const useLeadsStore = create<LeadsState>((set, get) => ({
     };
 
     useClientsStore.getState().addClient(client);
+    useActivityStore.getState().addClientActivity({
+      id: `ca-${client.id}-converted`,
+      clientId: client.id,
+      type: "milestone",
+      title: "Converted from a lead",
+      description: `Converted from lead "${lead.company}" (source: ${lead.source}).`,
+      who: getCurrentUser().name,
+      when: new Date().toISOString().slice(0, 10),
+    });
+    useInboxStore.getState().addNotification({
+      id: `nt-lead-won-${lead.id}`,
+      icon: "task",
+      title: "Lead won",
+      detail: `${lead.company} converted to a client.`,
+      time: "Just now",
+      read: false,
+    });
     set((s) => ({
       leads: s.leads.map((l) =>
         l.id === id ? { ...l, stage: "Won", convertedClientId: client.id } : l,
