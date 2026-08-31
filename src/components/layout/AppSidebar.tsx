@@ -16,6 +16,7 @@ import {
   X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { usePermissions } from "@/hooks/usePermissions";
 
 const employeeChildren = [
   { title: "Directory", url: "/employees" },
@@ -45,9 +46,18 @@ const items = [
 
 export function AppSidebar({ open, onClose }: { open: boolean; onClose: () => void }) {
   const pathname = useRouterState({ select: (r) => r.location.pathname });
+  const { can } = usePermissions();
 
   const isActive = (url: string) =>
     url === "/" ? pathname === "/" : pathname === url || pathname.startsWith(url + "/");
+
+  // Dashboard has no permission module — it's the shared landing page.
+  // Every other item is gated by the active role's view permission for the
+  // matching module, so Settings -> Roles & Permissions actually controls
+  // what shows up here instead of just being a checkbox that does nothing.
+  const visibleItems = items.filter(
+    (item) => item.title === "Dashboard" || can(item.title, "view"),
+  );
 
   return (
     <>
@@ -85,7 +95,7 @@ export function AppSidebar({ open, onClose }: { open: boolean; onClose: () => vo
           <p className="px-3 pb-2 pt-3 text-[11px] font-semibold uppercase tracking-wider text-sidebar-muted">
             Workspace
           </p>
-          {items.map((item) => (
+          {visibleItems.map((item) => (
             <div key={item.url}>
               <Link
                 to={item.url}

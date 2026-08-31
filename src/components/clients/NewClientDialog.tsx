@@ -23,10 +23,14 @@ import {
 import type { Client, ClientHealth, PackageType } from "@/data/crm";
 import { initialsOf } from "@/data/crm";
 import { useEmployeesStore } from "@/store/employeesStore";
+import { useSettingsStore } from "@/store/settingsStore";
+
+const CUSTOM = "custom";
 
 export function NewClientDialog({ onCreate }: { onCreate: (client: Client) => void }) {
   const employees = useEmployeesStore((s) => s.employees);
   const owners = employees.map((e) => e.name);
+  const clientPackages = useSettingsStore((s) => s.clientPackages);
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [industry, setIndustry] = useState("");
@@ -140,6 +144,34 @@ export function NewClientDialog({ onCreate }: { onCreate: (client: Client) => vo
                 </Select>
               </div>
             </div>
+            {clientPackages.length > 0 && (
+              <div className="grid gap-2">
+                <Label>Package template</Label>
+                <Select
+                  value={CUSTOM}
+                  onValueChange={(v) => {
+                    if (v === CUSTOM) return;
+                    const pkg = clientPackages.find((p) => p.id === v);
+                    if (!pkg) return;
+                    setPackageType(pkg.type);
+                    setPackagePrice(String(pkg.defaultPrice));
+                    setPackageName(pkg.name);
+                  }}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Start from a template (optional)" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value={CUSTOM}>Custom</SelectItem>
+                    {clientPackages.map((p) => (
+                      <SelectItem key={p.id} value={p.id}>
+                        {p.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
                 <Label htmlFor="client-package-type">Package type</Label>

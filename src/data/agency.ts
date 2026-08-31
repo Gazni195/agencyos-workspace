@@ -1,9 +1,9 @@
 // Data layer for AgencyOS.
 // Structured to mirror future Supabase/ERPNext tables — swap these arrays for queries later.
-// Record arrays start empty (no seeded sample data); a few small arrays are
-// kept as fixed configuration/vocabulary (e.g. `departments`) since the UI
-// needs them to render its structure (filters, dropdowns) even with zero
-// records.
+// Record arrays start empty (no seeded sample data). Admin-configurable
+// vocabulary (departments, designations, leave types, client packages,
+// roles) lives in @/data/workspace.ts / useSettingsStore instead of here —
+// it's not fixed application config, it's data the admin manages.
 
 export type EmployeeStatus = "active" | "on-leave" | "probation" | "offboarding";
 
@@ -12,7 +12,7 @@ export type Employee = {
   name: string;
   initials: string;
   role: string;
-  department: "Creative" | "Media" | "Strategy" | "Engineering" | "Operations" | "Sales";
+  department: string;
   email: string;
   phone: string;
   location: string;
@@ -27,15 +27,6 @@ export type Employee = {
 };
 
 export const employees: Employee[] = [];
-
-export const departments = [
-  "Creative",
-  "Media",
-  "Strategy",
-  "Engineering",
-  "Operations",
-  "Sales",
-] as const;
 
 export type AttendanceRecord = {
   id: string;
@@ -55,7 +46,7 @@ export const attendanceTrend: { day: string; present: number; remote: number; ab
 export type LeaveRequest = {
   id: string;
   employeeId: string;
-  type: "Annual" | "Sick" | "Parental" | "Unpaid" | "Study";
+  type: string;
   from: string;
   to: string;
   days: number;

@@ -1,5 +1,6 @@
 import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
 import { PageHeader } from "@/components/common/PageHeader";
+import { RequireModuleAccess } from "@/components/common/RequireModuleAccess";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/settings")({
@@ -11,12 +12,17 @@ export const Route = createFileRoute("/settings")({
       { property: "og:description", content: "Configure your AgencyOS workspace settings." },
     ],
   }),
-  component: SettingsLayout,
+  component: () => (
+    <RequireModuleAccess module="Settings">
+      <SettingsLayout />
+    </RequireModuleAccess>
+  ),
 });
 
 const tabs = [
   { label: "Organization", to: "/settings" },
   { label: "Roles & Permissions", to: "/settings/roles" },
+  { label: "Client Packages", to: "/settings/client-packages" },
   { label: "Integrations", to: "/settings/integrations" },
   { label: "Workflows", to: "/settings/workflows" },
   { label: "Notifications", to: "/settings/notifications" },

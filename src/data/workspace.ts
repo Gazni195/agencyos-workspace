@@ -1,5 +1,6 @@
 // Mock data layer for Inbox, Assets and Settings modules.
 // Local-state only — mirrors future backend shapes.
+import type { PackageType } from "@/data/crm";
 
 export type Message = {
   id: string;
@@ -72,12 +73,74 @@ export const assetFolders: AssetFolder[] = [
 export const assetFiles: AssetFile[] = [];
 
 // ---------------- Settings module ----------------
+//
+// Everything below is admin-configurable vocabulary — Departments,
+// Designations, Client Packages, Roles, Leave Types, Attendance Policies —
+// rather than fixed application code. It's exposed through useSettingsStore
+// (mutable) and read live by every form that used to hardcode these lists
+// (Employee create/edit, Client create/edit, Leave filters, etc).
 
-export type Department = { id: string; name: string; head: string; headcount: number };
+export type Department = { id: string; name: string; head: string };
 export const departmentsSeed: Department[] = [];
 
 export type Designation = { id: string; title: string; department: string; level: string };
 export const designationsSeed: Designation[] = [];
+
+export type ClientPackage = {
+  id: string;
+  name: string;
+  type: PackageType;
+  defaultPrice: number;
+};
+export const clientPackagesSeed: ClientPackage[] = [];
+
+export type LeaveType = {
+  id: string;
+  name: string;
+  annualAllowance: number;
+  carryOver: boolean;
+  color: string;
+};
+export const leaveTypesSeed: LeaveType[] = [
+  { id: "lt-annual", name: "Annual", annualAllowance: 20, carryOver: true, color: "chart-1" },
+  { id: "lt-sick", name: "Sick", annualAllowance: 10, carryOver: false, color: "chart-2" },
+  { id: "lt-parental", name: "Parental", annualAllowance: 90, carryOver: false, color: "chart-3" },
+  { id: "lt-unpaid", name: "Unpaid", annualAllowance: 0, carryOver: false, color: "chart-4" },
+  { id: "lt-study", name: "Study", annualAllowance: 5, carryOver: false, color: "chart-5" },
+];
+
+export type AttendancePolicy = {
+  id: string;
+  label: string;
+  description: string;
+  enabled: boolean;
+};
+export const attendancePoliciesSeed: AttendancePolicy[] = [
+  {
+    id: "pol-1",
+    label: "Auto-flag late check-in after grace period",
+    description: "Marks an employee late if they check in more than 15 minutes after start time.",
+    enabled: true,
+  },
+  {
+    id: "pol-2",
+    label: "Allow remote check-in",
+    description: "Employees can clock in from outside office geofence.",
+    enabled: true,
+  },
+  {
+    id: "pol-3",
+    label: "Require manager approval for overtime",
+    description: "Any day over 9 hours needs manager sign-off.",
+    enabled: false,
+  },
+  {
+    id: "pol-4",
+    label: "Auto clock-out after 12 hours",
+    description: "Prevents forgotten sessions from running indefinitely.",
+    enabled: true,
+  },
+];
 
 // Role catalog stays defined (it's the app's fixed vocabulary of access
 // levels, needed for the permission matrix to have rows to render) — only
@@ -116,13 +179,21 @@ export const rolesSeed: Role[] = [
   },
 ];
 
+// One module per real top-level route (matches the sidebar 1:1, Dashboard
+// excluded since it's the shared landing page everyone can see). This is
+// what usePermissions()/RequireModuleAccess check against, so it has to
+// stay in sync with the actual routes, not just be a plausible-looking list.
 export const permissionModules = [
-  "Employees",
-  "Projects",
-  "Finance",
+  "Clients",
   "Leads",
-  "Assets",
+  "Projects",
+  "Tasks",
+  "Operations",
+  "Employees",
+  "Finance",
   "Reports",
+  "Inbox",
+  "Assets",
   "Settings",
 ] as const;
 export type PermissionAction = "view" | "edit" | "delete";
@@ -131,20 +202,40 @@ export type PermissionMatrix = Record<
   Record<(typeof permissionModules)[number], Record<PermissionAction, boolean>>
 >;
 
+type ModuleName = (typeof permissionModules)[number];
+
+// Starting defaults for the five built-in roles — every cell stays editable
+// afterward in Settings -> Roles & Permissions. A role added there later
+// starts with everything off until an admin turns modules on for it.
+const roleDefaultView: Record<string, ModuleName[]> = {
+  "role-admin": [...permissionModules],
+  "role-manager": [...permissionModules],
+  "role-employee": ["Clients", "Leads", "Projects", "Tasks", "Operations", "Inbox", "Assets"],
+  "role-finance": ["Clients", "Projects", "Finance", "Reports"],
+  "role-client": ["Projects"],
+};
+const roleDefaultEdit: Record<string, ModuleName[]> = {
+  "role-admin": [...permissionModules],
+  "role-manager": permissionModules.filter((m) => m !== "Settings"),
+  "role-employee": ["Tasks"],
+  "role-finance": ["Finance"],
+  "role-client": [],
+};
+
 export function defaultPermissionMatrix(): PermissionMatrix {
   const matrix: PermissionMatrix = {};
   for (const role of rolesSeed) {
-    const roleMatrix = (matrix[role.id] = {} as PermissionMatrix[string]);
+    const view = new Set(roleDefaultView[role.id] ?? []);
+    const edit = new Set(roleDefaultEdit[role.id] ?? []);
+    const roleMatrix = {} as PermissionMatrix[string];
     for (const mod of permissionModules) {
-      const isAdmin = role.id === "role-admin";
-      const isManager = role.id === "role-manager";
-      const isClient = role.id === "role-client";
       roleMatrix[mod] = {
-        view: isAdmin || isManager || !isClient || mod === "Projects",
-        edit: isAdmin || (isManager && mod !== "Settings"),
-        delete: isAdmin,
+        view: view.has(mod),
+        edit: edit.has(mod),
+        delete: role.id === "role-admin",
       };
     }
+    matrix[role.id] = roleMatrix;
   }
   return matrix;
 }

@@ -15,9 +15,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { leaveTypes } from "@/data/hr";
 import { useHrStore } from "@/store/hrStore";
 import { useEmployeesStore } from "@/store/employeesStore";
+import { useSettingsStore } from "@/store/settingsStore";
 
 export const Route = createFileRoute("/employees/leave")({
   head: () => ({
@@ -41,6 +41,7 @@ function LeavePage() {
   const setLeaveStatus = useHrStore((s) => s.setLeaveStatus);
   const employees = useEmployeesStore((s) => s.employees);
   const employeeById = (id: string) => employees.find((e) => e.id === id);
+  const leaveTypes = useSettingsStore((s) => s.leaveTypes);
   const [type, setType] = useState("all");
   const [status, setStatus] = useState("all");
 

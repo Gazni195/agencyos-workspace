@@ -49,6 +49,7 @@ export const globalSearchIndex: SearchEntry[] = [
   { label: "Notifications", group: "Inbox", to: "/inbox/notifications" },
   { label: "Organization", group: "Settings", to: "/settings" },
   { label: "Roles & Permissions", group: "Settings", to: "/settings/roles" },
+  { label: "Client Packages", group: "Settings", to: "/settings/client-packages" },
   { label: "Integrations", group: "Settings", to: "/settings/integrations" },
   { label: "Workflows", group: "Settings", to: "/settings/workflows" },
   { label: "Notification Rules", group: "Settings", to: "/settings/notifications" },
@@ -57,6 +58,9 @@ export const globalSearchIndex: SearchEntry[] = [
 export const currentUser = {
   name: "Daniel Reyes",
   initials: "DR",
-  role: "Owner",
+  // The display role name is derived live from useSettingsStore's roles
+  // catalog (see AppShell) rather than hardcoded here — this id just picks
+  // which of those roles this mock user starts as.
+  roleId: "role-admin",
   email: "daniel@agencyos.co",
 };

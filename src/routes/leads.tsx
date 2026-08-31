@@ -1,4 +1,5 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { RequireModuleAccess } from "@/components/common/RequireModuleAccess";
 
 export const Route = createFileRoute("/leads")({
   head: () => ({
@@ -12,5 +13,9 @@ export const Route = createFileRoute("/leads")({
       },
     ],
   }),
-  component: () => <Outlet />,
+  component: () => (
+    <RequireModuleAccess module="Leads">
+      <Outlet />
+    </RequireModuleAccess>
+  ),
 });
