@@ -39,6 +39,8 @@ import { Route as FinanceIndexRouteImport } from './routes/finance.index'
 import { Route as FinanceExpensesRouteImport } from './routes/finance.expenses'
 import { Route as FinanceInvoicesRouteImport } from './routes/finance.invoices'
 import { Route as FinancePaymentsRouteImport } from './routes/finance.payments'
+import { Route as InboxIndexRouteImport } from './routes/inbox.index'
+import { Route as InboxNotificationsRouteImport } from './routes/inbox.notifications'
 import { Route as LeadsIndexRouteImport } from './routes/leads.index'
 import { Route as LeadsLeadIdRouteImport } from './routes/leads.$leadId'
 import { Route as ProjectsIndexRouteImport } from './routes/projects.index'
@@ -203,6 +205,16 @@ const FinancePaymentsRoute = FinancePaymentsRouteImport.update({
   path: '/payments',
   getParentRoute: () => FinanceRoute,
 } as any)
+const InboxIndexRoute = InboxIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => InboxRoute,
+} as any)
+const InboxNotificationsRoute = InboxNotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => InboxRoute,
+} as any)
 const LeadsIndexRoute = LeadsIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -276,7 +288,7 @@ export interface FileRoutesByFullPath {
   '/employees': typeof EmployeesRouteWithChildren
   '/finance': typeof FinanceRouteWithChildren
   '/forgot-password': typeof ForgotPasswordRoute
-  '/inbox': typeof InboxRoute
+  '/inbox': typeof InboxRouteWithChildren
   '/leads': typeof LeadsRouteWithChildren
   '/login': typeof LoginRoute
   '/projects': typeof ProjectsRouteWithChildren
@@ -297,6 +309,7 @@ export interface FileRoutesByFullPath {
   '/finance/expenses': typeof FinanceExpensesRoute
   '/finance/invoices': typeof FinanceInvoicesRoute
   '/finance/payments': typeof FinancePaymentsRoute
+  '/inbox/notifications': typeof InboxNotificationsRoute
   '/leads/$leadId': typeof LeadsLeadIdRoute
   '/projects/$projectId': typeof ProjectsProjectIdRoute
   '/reports/employees': typeof ReportsEmployeesRoute
@@ -309,6 +322,7 @@ export interface FileRoutesByFullPath {
   '/clients/': typeof ClientsIndexRoute
   '/employees/': typeof EmployeesIndexRoute
   '/finance/': typeof FinanceIndexRoute
+  '/inbox/': typeof InboxIndexRoute
   '/leads/': typeof LeadsIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/reports/': typeof ReportsIndexRoute
@@ -318,7 +332,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/assets': typeof AssetsRoute
   '/forgot-password': typeof ForgotPasswordRoute
-  '/inbox': typeof InboxRoute
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
   '/settings': typeof SettingsRoute
@@ -335,6 +348,7 @@ export interface FileRoutesByTo {
   '/finance/expenses': typeof FinanceExpensesRoute
   '/finance/invoices': typeof FinanceInvoicesRoute
   '/finance/payments': typeof FinancePaymentsRoute
+  '/inbox/notifications': typeof InboxNotificationsRoute
   '/leads/$leadId': typeof LeadsLeadIdRoute
   '/projects/$projectId': typeof ProjectsProjectIdRoute
   '/reports/employees': typeof ReportsEmployeesRoute
@@ -347,6 +361,7 @@ export interface FileRoutesByTo {
   '/clients': typeof ClientsIndexRoute
   '/employees': typeof EmployeesIndexRoute
   '/finance': typeof FinanceIndexRoute
+  '/inbox': typeof InboxIndexRoute
   '/leads': typeof LeadsIndexRoute
   '/projects': typeof ProjectsIndexRoute
   '/reports': typeof ReportsIndexRoute
@@ -360,7 +375,7 @@ export interface FileRoutesById {
   '/employees': typeof EmployeesRouteWithChildren
   '/finance': typeof FinanceRouteWithChildren
   '/forgot-password': typeof ForgotPasswordRoute
-  '/inbox': typeof InboxRoute
+  '/inbox': typeof InboxRouteWithChildren
   '/leads': typeof LeadsRouteWithChildren
   '/login': typeof LoginRoute
   '/projects': typeof ProjectsRouteWithChildren
@@ -381,6 +396,7 @@ export interface FileRoutesById {
   '/finance/expenses': typeof FinanceExpensesRoute
   '/finance/invoices': typeof FinanceInvoicesRoute
   '/finance/payments': typeof FinancePaymentsRoute
+  '/inbox/notifications': typeof InboxNotificationsRoute
   '/leads/$leadId': typeof LeadsLeadIdRoute
   '/projects/$projectId': typeof ProjectsProjectIdRoute
   '/reports/employees': typeof ReportsEmployeesRoute
@@ -393,6 +409,7 @@ export interface FileRoutesById {
   '/clients/': typeof ClientsIndexRoute
   '/employees/': typeof EmployeesIndexRoute
   '/finance/': typeof FinanceIndexRoute
+  '/inbox/': typeof InboxIndexRoute
   '/leads/': typeof LeadsIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/reports/': typeof ReportsIndexRoute
@@ -428,6 +445,7 @@ export interface FileRouteTypes {
     | '/finance/expenses'
     | '/finance/invoices'
     | '/finance/payments'
+    | '/inbox/notifications'
     | '/leads/$leadId'
     | '/projects/$projectId'
     | '/reports/employees'
@@ -440,6 +458,7 @@ export interface FileRouteTypes {
     | '/clients/'
     | '/employees/'
     | '/finance/'
+    | '/inbox/'
     | '/leads/'
     | '/projects/'
     | '/reports/'
@@ -449,7 +468,6 @@ export interface FileRouteTypes {
     | '/'
     | '/assets'
     | '/forgot-password'
-    | '/inbox'
     | '/login'
     | '/reset-password'
     | '/settings'
@@ -466,6 +484,7 @@ export interface FileRouteTypes {
     | '/finance/expenses'
     | '/finance/invoices'
     | '/finance/payments'
+    | '/inbox/notifications'
     | '/leads/$leadId'
     | '/projects/$projectId'
     | '/reports/employees'
@@ -478,6 +497,7 @@ export interface FileRouteTypes {
     | '/clients'
     | '/employees'
     | '/finance'
+    | '/inbox'
     | '/leads'
     | '/projects'
     | '/reports'
@@ -511,6 +531,7 @@ export interface FileRouteTypes {
     | '/finance/expenses'
     | '/finance/invoices'
     | '/finance/payments'
+    | '/inbox/notifications'
     | '/leads/$leadId'
     | '/projects/$projectId'
     | '/reports/employees'
@@ -523,6 +544,7 @@ export interface FileRouteTypes {
     | '/clients/'
     | '/employees/'
     | '/finance/'
+    | '/inbox/'
     | '/leads/'
     | '/projects/'
     | '/reports/'
@@ -536,7 +558,7 @@ export interface RootRouteChildren {
   EmployeesRoute: typeof EmployeesRouteWithChildren
   FinanceRoute: typeof FinanceRouteWithChildren
   ForgotPasswordRoute: typeof ForgotPasswordRoute
-  InboxRoute: typeof InboxRoute
+  InboxRoute: typeof InboxRouteWithChildren
   LeadsRoute: typeof LeadsRouteWithChildren
   LoginRoute: typeof LoginRoute
   ProjectsRoute: typeof ProjectsRouteWithChildren
@@ -759,6 +781,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FinancePaymentsRouteImport
       parentRoute: typeof FinanceRoute
     }
+    '/inbox/': {
+      id: '/inbox/'
+      path: '/'
+      fullPath: '/inbox/'
+      preLoaderRoute: typeof InboxIndexRouteImport
+      parentRoute: typeof InboxRoute
+    }
+    '/inbox/notifications': {
+      id: '/inbox/notifications'
+      path: '/notifications'
+      fullPath: '/inbox/notifications'
+      preLoaderRoute: typeof InboxNotificationsRouteImport
+      parentRoute: typeof InboxRoute
+    }
     '/leads/': {
       id: '/leads/'
       path: '/'
@@ -911,6 +947,18 @@ const FinanceRouteChildren: FinanceRouteChildren = {
 const FinanceRouteWithChildren =
   FinanceRoute._addFileChildren(FinanceRouteChildren)
 
+interface InboxRouteChildren {
+  InboxNotificationsRoute: typeof InboxNotificationsRoute
+  InboxIndexRoute: typeof InboxIndexRoute
+}
+
+const InboxRouteChildren: InboxRouteChildren = {
+  InboxNotificationsRoute: InboxNotificationsRoute,
+  InboxIndexRoute: InboxIndexRoute,
+}
+
+const InboxRouteWithChildren = InboxRoute._addFileChildren(InboxRouteChildren)
+
 interface LeadsRouteChildren {
   LeadsLeadIdRoute: typeof LeadsLeadIdRoute
   LeadsIndexRoute: typeof LeadsIndexRoute
@@ -979,7 +1027,7 @@ const rootRouteChildren: RootRouteChildren = {
   EmployeesRoute: EmployeesRouteWithChildren,
   FinanceRoute: FinanceRouteWithChildren,
   ForgotPasswordRoute: ForgotPasswordRoute,
-  InboxRoute: InboxRoute,
+  InboxRoute: InboxRouteWithChildren,
   LeadsRoute: LeadsRouteWithChildren,
   LoginRoute: LoginRoute,
   ProjectsRoute: ProjectsRouteWithChildren,
