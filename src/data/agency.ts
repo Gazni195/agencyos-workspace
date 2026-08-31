@@ -138,48 +138,11 @@ export const timesheets: TimesheetEntry[] = [];
 
 export const revenueTrend: { month: string; revenue: number; costs: number }[] = [];
 
-export const pipeline: { stage: string; value: number }[] = [];
-
-export const clients: {
-  id: string;
-  name: string;
-  industry: string;
-  owner: string;
-  mrr: number;
-  health: string;
-  projects: number;
-}[] = [];
-
-export const projects: {
-  id: string;
-  name: string;
-  client: string;
-  lead: string;
-  progress: number;
-  budget: number;
-  status: string;
-  due: string;
-}[] = [];
-
-export const tasks: {
-  id: string;
-  title: string;
-  project: string;
-  assignee: string;
-  due: string;
-  priority: string;
-  status: string;
-}[] = [];
-
-export const leads: {
-  id: string;
-  company: string;
-  contact: string;
-  stage: string;
-  value: number;
-  owner: string;
-  source: string;
-}[] = [];
+// Note: Clients/Projects/Tasks/Leads/Pipeline/Inbox each have exactly one
+// real data source now — @/data/crm (Clients, Leads), @/data/delivery
+// (Projects, Tasks), and @/data/workspace (Inbox conversations). This file
+// used to keep a second, disconnected copy of each for Finance/Dashboard
+// consumption; those consumers now import the real thing instead.
 
 export const assets: {
   id: string;
@@ -188,15 +151,6 @@ export const assets: {
   assignedTo: string;
   category: string;
   status: string;
-}[] = [];
-
-export const inbox: {
-  id: string;
-  from: string;
-  subject: string;
-  preview: string;
-  time: string;
-  unread: boolean;
 }[] = [];
 
 export const activityFeed: { id: string; who: string; what: string; when: string }[] = [];

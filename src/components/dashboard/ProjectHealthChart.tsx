@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
-import { projects } from "@/data/agency";
+import { deliveryProjects } from "@/data/delivery";
 
 const STATUS_COLORS: Record<string, string> = {
   "on-track": "var(--color-chart-1)",
@@ -9,7 +9,7 @@ const STATUS_COLORS: Record<string, string> = {
 };
 
 export function ProjectHealthChart() {
-  const counts = projects.reduce<Record<string, number>>((acc, p) => {
+  const counts = deliveryProjects.reduce<Record<string, number>>((acc, p) => {
     acc[p.status] = (acc[p.status] ?? 0) + 1;
     return acc;
   }, {});

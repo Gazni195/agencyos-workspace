@@ -1,20 +1,21 @@
 // Executive dashboard aggregation. Frontend-only for now — every value is
-// derived from the local mock data layer (src/data). Swapping to ERPNext
-// later means replacing these computations with API calls; the shape
-// returned to components stays the same, so no UI refactor is required.
-import {
-  attendance,
-  clients,
-  employeeName,
-  employees,
-  leads,
-  leaveRequests,
-  money,
-  projects,
-  revenueTrend,
-  tasks,
-} from "@/data/agency";
-import { expenses, invoiceTotal, invoices } from "@/data/finance";
+// derived from the local mock data layer (src/data), but for anything that
+// can be created/edited at runtime (clients, leads, projects, tasks,
+// invoices, expenses, leave requests) this reads the live Zustand store via
+// getState() rather than the static seed export, so newly-created records
+// show up immediately. getDashboardKpis()/getPendingApprovals() are plain
+// functions (not hooks) called fresh on every render of the dashboard, so a
+// getState() snapshot here is always current. Swapping to ERPNext later
+// means replacing these reads with API calls; the shape returned to
+// components stays the same, so no UI refactor is required.
+import { attendance, employeeName, employees, money, revenueTrend } from "@/data/agency";
+import { invoiceTotal } from "@/data/finance";
+import { useClientsStore } from "@/store/clientsStore";
+import { useLeadsStore } from "@/store/leadsStore";
+import { useProjectsStore } from "@/store/projectsStore";
+import { useTasksStore } from "@/store/tasksStore";
+import { useFinanceStore } from "@/store/financeStore";
+import { useHrStore } from "@/store/hrStore";
 
 export type DashboardKpi = {
   id: string;
@@ -31,6 +32,12 @@ function pctChange(curr: number, prev: number) {
 }
 
 export function getDashboardKpis(): DashboardKpi[] {
+  const clients = useClientsStore.getState().clients;
+  const leads = useLeadsStore.getState().leads;
+  const projects = useProjectsStore.getState().projects;
+  const tasks = useTasksStore.getState().tasks;
+  const invoices = useFinanceStore.getState().invoices;
+
   const lastMonth = revenueTrend[revenueTrend.length - 1];
   const prevMonth = revenueTrend[revenueTrend.length - 2];
   const revenue = lastMonth?.revenue ?? 0;
@@ -130,6 +137,9 @@ export type PendingApproval = {
 };
 
 export function getPendingApprovals(): PendingApproval[] {
+  const leaveRequests = useHrStore.getState().leaveRequests;
+  const expenses = useFinanceStore.getState().expenses;
+
   const leaveApprovals: PendingApproval[] = leaveRequests
     .filter((lr) => lr.status === "pending")
     .map((lr) => ({

@@ -1,10 +1,18 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Link } from "@tanstack/react-router";
-import { inbox } from "@/data/agency";
+import { conversations } from "@/data/workspace";
 import { Mail } from "lucide-react";
 
 export function InboxPreview() {
-  const unread = inbox.filter((m) => m.unread);
+  const unread = conversations
+    .filter((c) => c.unread)
+    .map((c) => ({
+      id: c.id,
+      from: c.participants[0]?.name ?? "Unknown",
+      subject: c.subject,
+      preview: c.preview,
+      time: c.time,
+    }));
   return (
     <Card className="surface-card">
       <CardHeader className="flex flex-row items-start justify-between gap-2 space-y-0">

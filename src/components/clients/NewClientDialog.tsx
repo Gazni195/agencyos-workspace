@@ -20,7 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { Client, ClientHealth } from "@/data/crm";
+import type { Client, ClientHealth, PackageType } from "@/data/crm";
 import { owners, initialsOf } from "@/data/crm";
 
 export function NewClientDialog({ onCreate }: { onCreate: (client: Client) => void }) {
@@ -28,7 +28,9 @@ export function NewClientDialog({ onCreate }: { onCreate: (client: Client) => vo
   const [name, setName] = useState("");
   const [industry, setIndustry] = useState("");
   const [owner, setOwner] = useState(owners[0] ?? "");
-  const [mrr, setMrr] = useState("");
+  const [packageType, setPackageType] = useState<PackageType>("monthly");
+  const [packageName, setPackageName] = useState("");
+  const [packagePrice, setPackagePrice] = useState("");
   const [health, setHealth] = useState<ClientHealth>("healthy");
   const [contact, setContact] = useState("");
 
@@ -36,7 +38,9 @@ export function NewClientDialog({ onCreate }: { onCreate: (client: Client) => vo
     setName("");
     setIndustry("");
     setOwner(owners[0] ?? "");
-    setMrr("");
+    setPackageType("monthly");
+    setPackageName("");
+    setPackagePrice("");
     setHealth("healthy");
     setContact("");
   };
@@ -47,12 +51,13 @@ export function NewClientDialog({ onCreate }: { onCreate: (client: Client) => vo
       toast.error("Client name and industry are required.");
       return;
     }
+    const price = Number(packagePrice) || 0;
     const client: Client = {
       id: `cl-${Date.now()}`,
       name: name.trim(),
       industry: industry.trim(),
       owner,
-      mrr: Number(mrr) || 0,
+      mrr: packageType === "monthly" ? price : 0,
       health,
       projects: 0,
       logo: initialsOf(name.trim()),
@@ -60,6 +65,9 @@ export function NewClientDialog({ onCreate }: { onCreate: (client: Client) => vo
       address: "—",
       website: "—",
       notes: contact ? `Primary contact: ${contact}` : "",
+      packageType,
+      packageName: packageName.trim() || "General",
+      packagePrice: price,
     };
     onCreate(client);
     toast.success(`${client.name} added to clients`);
@@ -130,15 +138,40 @@ export function NewClientDialog({ onCreate }: { onCreate: (client: Client) => vo
                 </Select>
               </div>
             </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="grid gap-2">
+                <Label htmlFor="client-package-type">Package type</Label>
+                <Select value={packageType} onValueChange={(v) => setPackageType(v as PackageType)}>
+                  <SelectTrigger id="client-package-type">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="monthly">Monthly recurring</SelectItem>
+                    <SelectItem value="one-time">One-time project</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="client-package-price">
+                  {packageType === "monthly" ? "Monthly price (USD)" : "Project price (USD)"}
+                </Label>
+                <Input
+                  id="client-package-price"
+                  type="number"
+                  min="0"
+                  value={packagePrice}
+                  onChange={(e) => setPackagePrice(e.target.value)}
+                  placeholder="15000"
+                />
+              </div>
+            </div>
             <div className="grid gap-2">
-              <Label htmlFor="client-mrr">Monthly recurring revenue (USD)</Label>
+              <Label htmlFor="client-package-name">Package name</Label>
               <Input
-                id="client-mrr"
-                type="number"
-                min="0"
-                value={mrr}
-                onChange={(e) => setMrr(e.target.value)}
-                placeholder="15000"
+                id="client-package-name"
+                value={packageName}
+                onChange={(e) => setPackageName(e.target.value)}
+                placeholder="e.g. Growth Retainer"
               />
             </div>
             <div className="grid gap-2">

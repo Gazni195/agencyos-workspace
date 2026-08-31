@@ -13,7 +13,15 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useLeadsStore, type StoreLead } from "@/store/leadsStore";
+import type { PackageType } from "@/data/crm";
 
 export function ConvertLeadDialog({
   lead,
@@ -27,18 +35,27 @@ export function ConvertLeadDialog({
   const navigate = useNavigate();
   const convertToClient = useLeadsStore((s) => s.convertToClient);
   const [industry, setIndustry] = useState("");
-  const [mrr, setMrr] = useState("");
+  const [packageType, setPackageType] = useState<PackageType>("monthly");
+  const [packageName, setPackageName] = useState("");
+  const [packagePrice, setPackagePrice] = useState("");
 
   if (!lead) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const client = convertToClient(lead.id, { industry: industry.trim(), mrr: Number(mrr) || 0 });
+    const client = convertToClient(lead.id, {
+      industry: industry.trim(),
+      packageType,
+      packageName: packageName.trim(),
+      packagePrice: Number(packagePrice) || 0,
+    });
     if (!client) return;
     toast.success(`${lead.company} converted to a client`);
     onOpenChange(false);
     setIndustry("");
-    setMrr("");
+    setPackageType("monthly");
+    setPackageName("");
+    setPackagePrice("");
     navigate({ to: "/clients/$clientId", params: { clientId: client.id } });
   };
 
@@ -63,15 +80,40 @@ export function ConvertLeadDialog({
                 placeholder="e.g. Retail"
               />
             </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="grid gap-2">
+                <Label htmlFor="convert-package-type">Package type</Label>
+                <Select value={packageType} onValueChange={(v) => setPackageType(v as PackageType)}>
+                  <SelectTrigger id="convert-package-type">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="monthly">Monthly recurring</SelectItem>
+                    <SelectItem value="one-time">One-time project</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="convert-price">
+                  {packageType === "monthly" ? "Monthly price (USD)" : "Project price (USD)"}
+                </Label>
+                <Input
+                  id="convert-price"
+                  type="number"
+                  min="0"
+                  value={packagePrice}
+                  onChange={(e) => setPackagePrice(e.target.value)}
+                  placeholder="15000"
+                />
+              </div>
+            </div>
             <div className="grid gap-2">
-              <Label htmlFor="convert-mrr">Monthly recurring revenue (USD)</Label>
+              <Label htmlFor="convert-package-name">Package name</Label>
               <Input
-                id="convert-mrr"
-                type="number"
-                min="0"
-                value={mrr}
-                onChange={(e) => setMrr(e.target.value)}
-                placeholder="15000"
+                id="convert-package-name"
+                value={packageName}
+                onChange={(e) => setPackageName(e.target.value)}
+                placeholder="e.g. Growth Retainer"
               />
             </div>
           </div>

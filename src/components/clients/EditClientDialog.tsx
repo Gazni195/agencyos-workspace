@@ -18,7 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { Client, ClientHealth } from "@/data/crm";
+import type { Client, ClientHealth, PackageType } from "@/data/crm";
 import { owners } from "@/data/crm";
 
 export function EditClientDialog({
@@ -37,7 +37,9 @@ export function EditClientDialog({
   const [name, setName] = useState(client.name);
   const [industry, setIndustry] = useState(client.industry);
   const [owner, setOwner] = useState(client.owner);
-  const [mrr, setMrr] = useState(String(client.mrr));
+  const [packageType, setPackageType] = useState<PackageType>(client.packageType);
+  const [packageName, setPackageName] = useState(client.packageName);
+  const [packagePrice, setPackagePrice] = useState(String(client.packagePrice));
   const [health, setHealth] = useState<ClientHealth>(client.health);
   const [website, setWebsite] = useState(client.website);
   const [address, setAddress] = useState(client.address);
@@ -47,7 +49,9 @@ export function EditClientDialog({
     setName(client.name);
     setIndustry(client.industry);
     setOwner(client.owner);
-    setMrr(String(client.mrr));
+    setPackageType(client.packageType);
+    setPackageName(client.packageName);
+    setPackagePrice(String(client.packagePrice));
     setHealth(client.health);
     setWebsite(client.website);
     setAddress(client.address);
@@ -59,14 +63,18 @@ export function EditClientDialog({
       toast.error("Client name and industry are required.");
       return;
     }
+    const price = Number(packagePrice) || 0;
     onSave({
       name: name.trim(),
       industry: industry.trim(),
       owner,
-      mrr: Number(mrr) || 0,
+      mrr: packageType === "monthly" ? price : 0,
       health,
       website: website.trim() || "—",
       address: address.trim() || "—",
+      packageType,
+      packageName: packageName.trim() || "General",
+      packagePrice: price,
     });
     toast.success(`${name.trim()} updated`);
     onOpenChange(false);
@@ -124,14 +132,38 @@ export function EditClientDialog({
                 </Select>
               </div>
             </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="grid gap-2">
+                <Label htmlFor="edit-client-package-type">Package type</Label>
+                <Select value={packageType} onValueChange={(v) => setPackageType(v as PackageType)}>
+                  <SelectTrigger id="edit-client-package-type">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="monthly">Monthly recurring</SelectItem>
+                    <SelectItem value="one-time">One-time project</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="edit-client-package-price">
+                  {packageType === "monthly" ? "Monthly price (USD)" : "Project price (USD)"}
+                </Label>
+                <Input
+                  id="edit-client-package-price"
+                  type="number"
+                  min="0"
+                  value={packagePrice}
+                  onChange={(e) => setPackagePrice(e.target.value)}
+                />
+              </div>
+            </div>
             <div className="grid gap-2">
-              <Label htmlFor="edit-client-mrr">Monthly recurring revenue (USD)</Label>
+              <Label htmlFor="edit-client-package-name">Package name</Label>
               <Input
-                id="edit-client-mrr"
-                type="number"
-                min="0"
-                value={mrr}
-                onChange={(e) => setMrr(e.target.value)}
+                id="edit-client-package-name"
+                value={packageName}
+                onChange={(e) => setPackageName(e.target.value)}
               />
             </div>
             <div className="grid grid-cols-2 gap-4">
