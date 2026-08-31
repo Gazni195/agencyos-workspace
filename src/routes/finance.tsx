@@ -1,5 +1,6 @@
 import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
 import { PageHeader } from "@/components/common/PageHeader";
+import { RequireModuleAccess } from "@/components/common/RequireModuleAccess";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/finance")({
@@ -14,7 +15,11 @@ export const Route = createFileRoute("/finance")({
       },
     ],
   }),
-  component: FinanceLayout,
+  component: () => (
+    <RequireModuleAccess module="Finance">
+      <FinanceLayout />
+    </RequireModuleAccess>
+  ),
 });
 
 const tabs = [

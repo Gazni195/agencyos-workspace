@@ -1,5 +1,6 @@
 import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
 import { PageHeader } from "@/components/common/PageHeader";
+import { RequireModuleAccess } from "@/components/common/RequireModuleAccess";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/tasks")({
@@ -11,7 +12,11 @@ export const Route = createFileRoute("/tasks")({
       { property: "og:description", content: "Plan, track and complete agency tasks in AgencyOS." },
     ],
   }),
-  component: TasksLayout,
+  component: () => (
+    <RequireModuleAccess module="Tasks">
+      <TasksLayout />
+    </RequireModuleAccess>
+  ),
 });
 
 const tabs = [

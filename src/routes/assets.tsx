@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { PageHeader } from "@/components/common/PageHeader";
+import { RequireModuleAccess } from "@/components/common/RequireModuleAccess";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { DrawerPanel } from "@/components/shared/DrawerPanel";
 import { UploadAssetDialog } from "@/components/assets/UploadAssetDialog";
@@ -34,7 +35,11 @@ export const Route = createFileRoute("/assets")({
       { property: "og:description", content: "Organize agency assets and resources in AgencyOS." },
     ],
   }),
-  component: AssetsPage,
+  component: () => (
+    <RequireModuleAccess module="Assets">
+      <AssetsPage />
+    </RequireModuleAccess>
+  ),
 });
 
 const TYPE_ICONS: Record<AssetFile["type"], LucideIcon> = {

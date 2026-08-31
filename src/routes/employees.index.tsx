@@ -35,6 +35,7 @@ import { Label } from "@/components/ui/label";
 import { type Employee, type EmployeeStatus } from "@/data/agency.ts";
 import { useEmployeesStore } from "@/store/employeesStore";
 import { useSettingsStore } from "@/store/settingsStore";
+import { usePermissions } from "@/hooks/usePermissions";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/employees/")({
@@ -56,6 +57,8 @@ function DirectoryPage() {
   const addEmployee = useEmployeesStore((s) => s.addEmployee);
   const departments = useSettingsStore((s) => s.departments);
   const designations = useSettingsStore((s) => s.designations);
+  const { can } = usePermissions();
+  const canEdit = can("Employees", "edit");
   const [query, setQuery] = useState("");
   const [department, setDepartment] = useState<string>(ALL);
   const [status, setStatus] = useState<string>(ALL);
@@ -193,7 +196,11 @@ function DirectoryPage() {
 
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button className="h-10 gap-1.5 rounded-xl">
+            <Button
+              className="h-10 gap-1.5 rounded-xl"
+              disabled={!canEdit}
+              title={canEdit ? undefined : "Your role doesn't have edit access to Employees"}
+            >
               <Plus className="size-4" /> Add employee
             </Button>
           </DialogTrigger>

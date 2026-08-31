@@ -179,13 +179,21 @@ export const rolesSeed: Role[] = [
   },
 ];
 
+// One module per real top-level route (matches the sidebar 1:1, Dashboard
+// excluded since it's the shared landing page everyone can see). This is
+// what usePermissions()/RequireModuleAccess check against, so it has to
+// stay in sync with the actual routes, not just be a plausible-looking list.
 export const permissionModules = [
-  "Employees",
-  "Projects",
-  "Finance",
+  "Clients",
   "Leads",
-  "Assets",
+  "Projects",
+  "Tasks",
+  "Operations",
+  "Employees",
+  "Finance",
   "Reports",
+  "Inbox",
+  "Assets",
   "Settings",
 ] as const;
 export type PermissionAction = "view" | "edit" | "delete";
@@ -194,20 +202,40 @@ export type PermissionMatrix = Record<
   Record<(typeof permissionModules)[number], Record<PermissionAction, boolean>>
 >;
 
+type ModuleName = (typeof permissionModules)[number];
+
+// Starting defaults for the five built-in roles — every cell stays editable
+// afterward in Settings -> Roles & Permissions. A role added there later
+// starts with everything off until an admin turns modules on for it.
+const roleDefaultView: Record<string, ModuleName[]> = {
+  "role-admin": [...permissionModules],
+  "role-manager": [...permissionModules],
+  "role-employee": ["Clients", "Leads", "Projects", "Tasks", "Operations", "Inbox", "Assets"],
+  "role-finance": ["Clients", "Projects", "Finance", "Reports"],
+  "role-client": ["Projects"],
+};
+const roleDefaultEdit: Record<string, ModuleName[]> = {
+  "role-admin": [...permissionModules],
+  "role-manager": permissionModules.filter((m) => m !== "Settings"),
+  "role-employee": ["Tasks"],
+  "role-finance": ["Finance"],
+  "role-client": [],
+};
+
 export function defaultPermissionMatrix(): PermissionMatrix {
   const matrix: PermissionMatrix = {};
   for (const role of rolesSeed) {
-    const roleMatrix = (matrix[role.id] = {} as PermissionMatrix[string]);
+    const view = new Set(roleDefaultView[role.id] ?? []);
+    const edit = new Set(roleDefaultEdit[role.id] ?? []);
+    const roleMatrix = {} as PermissionMatrix[string];
     for (const mod of permissionModules) {
-      const isAdmin = role.id === "role-admin";
-      const isManager = role.id === "role-manager";
-      const isClient = role.id === "role-client";
       roleMatrix[mod] = {
-        view: isAdmin || isManager || !isClient || mod === "Projects",
-        edit: isAdmin || (isManager && mod !== "Settings"),
-        delete: isAdmin,
+        view: view.has(mod),
+        edit: edit.has(mod),
+        delete: role.id === "role-admin",
       };
     }
+    matrix[role.id] = roleMatrix;
   }
   return matrix;
 }

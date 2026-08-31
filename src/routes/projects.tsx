@@ -1,4 +1,5 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { RequireModuleAccess } from "@/components/common/RequireModuleAccess";
 
 export const Route = createFileRoute("/projects")({
   head: () => ({
@@ -9,5 +10,9 @@ export const Route = createFileRoute("/projects")({
       { property: "og:description", content: "Plan and manage agency projects in AgencyOS." },
     ],
   }),
-  component: () => <Outlet />,
+  component: () => (
+    <RequireModuleAccess module="Projects">
+      <Outlet />
+    </RequireModuleAccess>
+  ),
 });

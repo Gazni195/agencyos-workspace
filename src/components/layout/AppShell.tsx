@@ -1,6 +1,6 @@
 import { useState, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
-import { Bell, LogOut, Menu, Search, Settings, User } from "lucide-react";
+import { Bell, LogOut, Menu, Search, Settings, ShieldCheck, User } from "lucide-react";
 import { AppSidebar } from "./AppSidebar";
 import { GlobalSearch } from "./GlobalSearch";
 import { ThemeToggle } from "./ThemeToggle";
@@ -11,16 +11,24 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { currentUser, headerNotifications } from "@/mock";
+import { usePermissions } from "@/hooks/usePermissions";
 
 export function AppShell({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const [notes, setNotes] = useState(headerNotifications);
   const unread = notes.filter((n) => n.unread).length;
+  const { role, roles, roleId, setRole } = usePermissions();
 
   return (
     <div className="min-h-screen bg-background">
@@ -100,7 +108,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                   </Avatar>
                   <div className="hidden leading-tight md:block">
                     <p className="text-sm font-semibold">{currentUser.name}</p>
-                    <p className="text-xs text-muted-foreground">{currentUser.role}</p>
+                    <p className="text-xs text-muted-foreground">{role?.name ?? "No role"}</p>
                   </div>
                 </button>
               </DropdownMenuTrigger>
@@ -120,6 +128,22 @@ export function AppShell({ children }: { children: ReactNode }) {
                     <Settings className="mr-2 size-4" /> Workspace settings
                   </Link>
                 </DropdownMenuItem>
+                <DropdownMenuSub>
+                  <DropdownMenuSubTrigger>
+                    <ShieldCheck className="mr-2 size-4" /> Preview role
+                  </DropdownMenuSubTrigger>
+                  <DropdownMenuPortal>
+                    <DropdownMenuSubContent>
+                      <DropdownMenuRadioGroup value={roleId} onValueChange={setRole}>
+                        {roles.map((r) => (
+                          <DropdownMenuRadioItem key={r.id} value={r.id}>
+                            {r.name}
+                          </DropdownMenuRadioItem>
+                        ))}
+                      </DropdownMenuRadioGroup>
+                    </DropdownMenuSubContent>
+                  </DropdownMenuPortal>
+                </DropdownMenuSub>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
                   <Link to="/login">

@@ -58,6 +58,9 @@ export const globalSearchIndex: SearchEntry[] = [
 export const currentUser = {
   name: "Daniel Reyes",
   initials: "DR",
-  role: "Owner",
+  // The display role name is derived live from useSettingsStore's roles
+  // catalog (see AppShell) rather than hardcoded here — this id just picks
+  // which of those roles this mock user starts as.
+  roleId: "role-admin",
   email: "daniel@agencyos.co",
 };
