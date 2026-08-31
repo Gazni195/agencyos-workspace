@@ -121,11 +121,11 @@ export const leadStageColor: Record<LeadStage, string> = {
   Lost: "bg-destructive/12 text-destructive",
 };
 
-// Owners are the staff who can be assigned an account — sourced from the
-// employee directory, not from existing clients/leads (that would be
-// circular: you could never assign an owner until a client already had
-// one).
-export const owners = employees.map((e) => e.name);
+// Note: account "owners" (who can be assigned a client/lead) come from the
+// live employee directory, not this static seed array — see
+// useEmployeesStore. Consumers should derive owner names from that store
+// rather than importing a static list here, since employees are created at
+// runtime, not seeded.
 export const sources = Array.from(new Set(leads.map((l) => l.source)));
 
 export const initialsOf = (name: string) =>

@@ -21,9 +21,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { Client, ClientHealth, PackageType } from "@/data/crm";
-import { owners, initialsOf } from "@/data/crm";
+import { initialsOf } from "@/data/crm";
+import { useEmployeesStore } from "@/store/employeesStore";
 
 export function NewClientDialog({ onCreate }: { onCreate: (client: Client) => void }) {
+  const employees = useEmployeesStore((s) => s.employees);
+  const owners = employees.map((e) => e.name);
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [industry, setIndustry] = useState("");

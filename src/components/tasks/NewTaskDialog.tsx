@@ -21,13 +21,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { deliveryProjects } from "@/data/delivery";
 import type { DeliveryTask, TaskPriority } from "@/data/delivery";
-import { employees } from "@/data/agency";
+import { useEmployeesStore } from "@/store/employeesStore";
+import { useProjectsStore } from "@/store/projectsStore";
 
 const priorities: TaskPriority[] = ["low", "medium", "high", "urgent"];
 
 export function NewTaskDialog({ onCreate }: { onCreate: (task: DeliveryTask) => void }) {
+  const employees = useEmployeesStore((s) => s.employees);
+  const deliveryProjects = useProjectsStore((s) => s.projects);
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");

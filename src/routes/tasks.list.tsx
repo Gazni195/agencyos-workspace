@@ -9,8 +9,9 @@ import { NewTaskDialog } from "@/components/tasks/NewTaskDialog";
 import { TaskDetailDrawer } from "@/components/tasks/TaskDetailDrawer";
 import { useTaskFilters } from "@/hooks/useTaskFilters";
 import { useTasksStore } from "@/store/tasksStore";
-import { projectById, taskStatusLabels, type DeliveryTask } from "@/data/delivery";
-import { employees } from "@/data/agency";
+import { type DeliveryTask } from "@/data/delivery";
+import { useEmployeesStore } from "@/store/employeesStore";
+import { useProjectsStore } from "@/store/projectsStore";
 
 export const Route = createFileRoute("/tasks/list")({
   head: () => ({
@@ -25,6 +26,9 @@ export const Route = createFileRoute("/tasks/list")({
 function TaskListPage() {
   const tasks = useTasksStore((s) => s.tasks);
   const addTask = useTasksStore((s) => s.addTask);
+  const employees = useEmployeesStore((s) => s.employees);
+  const projects = useProjectsStore((s) => s.projects);
+  const projectById = (id: string) => projects.find((p) => p.id === id);
   const { query, setQuery, filters, filtered, reset } = useTaskFilters(tasks);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const selected = tasks.find((t) => t.id === selectedId) ?? null;

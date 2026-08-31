@@ -48,8 +48,9 @@ import {
   type ProjectStatus,
   type TaskStatus,
 } from "@/data/delivery";
-import { employees, money } from "@/data/agency";
+import { money } from "@/data/agency";
 import { taskStatusLabels } from "@/data/delivery";
+import { useEmployeesStore } from "@/store/employeesStore";
 
 export const Route = createFileRoute("/projects/$projectId")({
   head: () => ({
@@ -87,6 +88,7 @@ function ProjectDetailPage() {
   const allTasks = useTasksStore((s) => s.tasks);
   const tasks = allTasks.filter((t) => t.projectId === projectId);
   const setTaskStatus = useTasksStore((s) => s.setStatus);
+  const employees = useEmployeesStore((s) => s.employees);
 
   const [progressDraft, setProgressDraft] = useState<number | null>(null);
 

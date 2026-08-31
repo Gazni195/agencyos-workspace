@@ -20,10 +20,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { owners, sources } from "@/data/crm";
+import { sources } from "@/data/crm";
 import type { StoreLead } from "@/store/leadsStore";
+import { useEmployeesStore } from "@/store/employeesStore";
 
 export function LeadFormDialog({ onCreate }: { onCreate: (lead: StoreLead) => void }) {
+  const employees = useEmployeesStore((s) => s.employees);
+  const owners = employees.map((e) => e.name);
   const [open, setOpen] = useState(false);
   const [company, setCompany] = useState("");
   const [contact, setContact] = useState("");

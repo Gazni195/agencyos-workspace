@@ -9,14 +9,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-  projectById,
   taskStatuses,
   taskStatusLabels,
   type DeliveryTask,
   type TaskStatus,
 } from "@/data/delivery";
-import { employees } from "@/data/agency";
+import { useEmployeesStore } from "@/store/employeesStore";
 import { useTasksStore } from "@/store/tasksStore";
+import { useProjectsStore } from "@/store/projectsStore";
 import { cn } from "@/lib/utils";
 
 const isOverdue = (due: string) => new Date(due) < new Date(new Date().toDateString());
@@ -35,8 +35,10 @@ export function TaskCard({
   onDragEnd?: (e: React.DragEvent) => void;
 }) {
   const setStatus = useTasksStore((s) => s.setStatus);
+  const employees = useEmployeesStore((s) => s.employees);
   const assignee = employees.find((e) => e.id === task.assigneeId);
-  const project = projectById(task.projectId);
+  const projects = useProjectsStore((s) => s.projects);
+  const project = projects.find((p) => p.id === task.projectId);
   const doneCount = task.checklist.filter((c) => c.done).length;
   const overdue = task.status !== "done" && isOverdue(task.due);
 

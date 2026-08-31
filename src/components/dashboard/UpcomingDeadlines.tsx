@@ -1,10 +1,13 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { StatusBadge } from "@/components/common/StatusBadge";
 import { Link } from "@tanstack/react-router";
-import { deliveryProjects, deliveryTasks } from "@/data/delivery";
+import { useProjectsStore } from "@/store/projectsStore";
+import { useTasksStore } from "@/store/tasksStore";
 import { CalendarClock } from "lucide-react";
 
 export function UpcomingDeadlines() {
+  const deliveryProjects = useProjectsStore((s) => s.projects);
+  const deliveryTasks = useTasksStore((s) => s.tasks);
   const items = [
     ...deliveryProjects.map((p) => ({
       id: p.id,

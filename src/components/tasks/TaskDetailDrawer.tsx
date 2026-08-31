@@ -16,14 +16,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  projectById,
   taskStatuses,
   taskStatusLabels,
   type DeliveryTask,
   type TaskPriority,
   type TaskStatus,
 } from "@/data/delivery";
-import { employees } from "@/data/agency";
+import { useProjectsStore } from "@/store/projectsStore";
+import { useEmployeesStore } from "@/store/employeesStore";
 import { useTasksStore } from "@/store/tasksStore";
 
 const priorities: TaskPriority[] = ["low", "medium", "high", "urgent"];
@@ -41,13 +41,15 @@ export function TaskDetailDrawer({
   const toggleChecklistItem = useTasksStore((s) => s.toggleChecklistItem);
   const addChecklistItem = useTasksStore((s) => s.addChecklistItem);
   const addComment = useTasksStore((s) => s.addComment);
+  const employees = useEmployeesStore((s) => s.employees);
+  const projects = useProjectsStore((s) => s.projects);
 
   const [newChecklistLabel, setNewChecklistLabel] = useState("");
   const [newComment, setNewComment] = useState("");
 
   if (!task) return null;
 
-  const project = projectById(task.projectId);
+  const project = projects.find((p) => p.id === task.projectId);
   const assignee = employees.find((e) => e.id === task.assigneeId);
 
   return (

@@ -23,7 +23,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { timesheetWeeklyHours } from "@/data/hr";
-import { employeeById, timesheets } from "@/data/agency";
+import { timesheets } from "@/data/agency";
+import { useEmployeesStore } from "@/store/employeesStore";
 
 export const Route = createFileRoute("/employees/timesheets")({
   head: () => ({
@@ -38,6 +39,8 @@ export const Route = createFileRoute("/employees/timesheets")({
 });
 
 function TimesheetsPage() {
+  const employees = useEmployeesStore((s) => s.employees);
+  const employeeById = (id: string) => employees.find((e) => e.id === id);
   const totalHours = timesheets.reduce((sum, t) => sum + t.hours, 0);
   const billableHours = timesheets.filter((t) => t.billable).reduce((sum, t) => sum + t.hours, 0);
   const billablePct = totalHours ? Math.round((billableHours / totalHours) * 100) : 0;

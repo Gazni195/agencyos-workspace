@@ -12,15 +12,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  employees,
-  attendance,
-  leaveRequests,
-  timesheets,
-  documents,
-  performance,
-} from "@/data/agency.ts";
+import { attendance, leaveRequests, timesheets, documents, performance } from "@/data/agency.ts";
 import { employeeGoals } from "@/data/hr.ts";
+import { useEmployeesStore } from "@/store/employeesStore";
 
 export const Route = createFileRoute("/employees/$employeeId")({
   head: ({ params }) => ({
@@ -36,6 +30,7 @@ export const Route = createFileRoute("/employees/$employeeId")({
 
 function EmployeeProfilePage() {
   const { employeeId } = Route.useParams();
+  const employees = useEmployeesStore((s) => s.employees);
   const employee = employees.find((e) => e.id === employeeId);
 
   if (!employee) {

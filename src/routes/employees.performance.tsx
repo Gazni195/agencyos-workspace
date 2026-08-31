@@ -14,7 +14,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { employeeGoals } from "@/data/hr";
-import { employeeById, performance, performanceByDept } from "@/data/agency";
+import { performance, performanceByDept } from "@/data/agency";
+import { useEmployeesStore } from "@/store/employeesStore";
 
 export const Route = createFileRoute("/employees/performance")({
   head: () => ({
@@ -32,6 +33,8 @@ export const Route = createFileRoute("/employees/performance")({
 });
 
 function PerformancePage() {
+  const employees = useEmployeesStore((s) => s.employees);
+  const employeeById = (id: string) => employees.find((e) => e.id === id);
   const average = Math.round(
     employeeGoals.reduce((sum, goal) => sum + goal.progress, 0) / (employeeGoals.length || 1),
   );

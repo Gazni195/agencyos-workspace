@@ -8,7 +8,7 @@
 // getState() snapshot here is always current. Swapping to ERPNext later
 // means replacing these reads with API calls; the shape returned to
 // components stays the same, so no UI refactor is required.
-import { attendance, employeeName, employees, money, revenueTrend } from "@/data/agency";
+import { attendance, money, revenueTrend } from "@/data/agency";
 import { invoiceTotal } from "@/data/finance";
 import { useClientsStore } from "@/store/clientsStore";
 import { useLeadsStore } from "@/store/leadsStore";
@@ -16,6 +16,7 @@ import { useProjectsStore } from "@/store/projectsStore";
 import { useTasksStore } from "@/store/tasksStore";
 import { useFinanceStore } from "@/store/financeStore";
 import { useHrStore } from "@/store/hrStore";
+import { useEmployeesStore } from "@/store/employeesStore";
 
 export type DashboardKpi = {
   id: string;
@@ -37,6 +38,7 @@ export function getDashboardKpis(): DashboardKpi[] {
   const projects = useProjectsStore.getState().projects;
   const tasks = useTasksStore.getState().tasks;
   const invoices = useFinanceStore.getState().invoices;
+  const employees = useEmployeesStore.getState().employees;
 
   const lastMonth = revenueTrend[revenueTrend.length - 1];
   const prevMonth = revenueTrend[revenueTrend.length - 2];
@@ -139,6 +141,8 @@ export type PendingApproval = {
 export function getPendingApprovals(): PendingApproval[] {
   const leaveRequests = useHrStore.getState().leaveRequests;
   const expenses = useFinanceStore.getState().expenses;
+  const employees = useEmployeesStore.getState().employees;
+  const employeeName = (id: string) => employees.find((e) => e.id === id)?.name ?? "Unknown";
 
   const leaveApprovals: PendingApproval[] = leaveRequests
     .filter((lr) => lr.status === "pending")

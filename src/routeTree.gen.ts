@@ -18,6 +18,7 @@ import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as InboxRouteImport } from './routes/inbox'
 import { Route as LeadsRouteImport } from './routes/leads'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as OperationsRouteImport } from './routes/operations'
 import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as ReportsRouteImport } from './routes/reports'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
@@ -43,6 +44,10 @@ import { Route as InboxIndexRouteImport } from './routes/inbox.index'
 import { Route as InboxNotificationsRouteImport } from './routes/inbox.notifications'
 import { Route as LeadsIndexRouteImport } from './routes/leads.index'
 import { Route as LeadsLeadIdRouteImport } from './routes/leads.$leadId'
+import { Route as OperationsIndexRouteImport } from './routes/operations.index'
+import { Route as OperationsClientsRouteImport } from './routes/operations.clients'
+import { Route as OperationsDeliverablesRouteImport } from './routes/operations.deliverables'
+import { Route as OperationsWorkloadRouteImport } from './routes/operations.workload'
 import { Route as ProjectsIndexRouteImport } from './routes/projects.index'
 import { Route as ProjectsProjectIdRouteImport } from './routes/projects.$projectId'
 import { Route as ReportsIndexRouteImport } from './routes/reports.index'
@@ -103,6 +108,11 @@ const LeadsRoute = LeadsRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OperationsRoute = OperationsRouteImport.update({
+  id: '/operations',
+  path: '/operations',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProjectsRoute = ProjectsRouteImport.update({
@@ -230,6 +240,26 @@ const LeadsLeadIdRoute = LeadsLeadIdRouteImport.update({
   path: '/$leadId',
   getParentRoute: () => LeadsRoute,
 } as any)
+const OperationsIndexRoute = OperationsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => OperationsRoute,
+} as any)
+const OperationsClientsRoute = OperationsClientsRouteImport.update({
+  id: '/clients',
+  path: '/clients',
+  getParentRoute: () => OperationsRoute,
+} as any)
+const OperationsDeliverablesRoute = OperationsDeliverablesRouteImport.update({
+  id: '/deliverables',
+  path: '/deliverables',
+  getParentRoute: () => OperationsRoute,
+} as any)
+const OperationsWorkloadRoute = OperationsWorkloadRouteImport.update({
+  id: '/workload',
+  path: '/workload',
+  getParentRoute: () => OperationsRoute,
+} as any)
 const ProjectsIndexRoute = ProjectsIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -321,6 +351,7 @@ export interface FileRoutesByFullPath {
   '/inbox': typeof InboxRouteWithChildren
   '/leads': typeof LeadsRouteWithChildren
   '/login': typeof LoginRoute
+  '/operations': typeof OperationsRouteWithChildren
   '/projects': typeof ProjectsRouteWithChildren
   '/reports': typeof ReportsRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
@@ -341,6 +372,9 @@ export interface FileRoutesByFullPath {
   '/finance/payments': typeof FinancePaymentsRoute
   '/inbox/notifications': typeof InboxNotificationsRoute
   '/leads/$leadId': typeof LeadsLeadIdRoute
+  '/operations/clients': typeof OperationsClientsRoute
+  '/operations/deliverables': typeof OperationsDeliverablesRoute
+  '/operations/workload': typeof OperationsWorkloadRoute
   '/projects/$projectId': typeof ProjectsProjectIdRoute
   '/reports/employees': typeof ReportsEmployeesRoute
   '/reports/finance': typeof ReportsFinanceRoute
@@ -358,6 +392,7 @@ export interface FileRoutesByFullPath {
   '/finance/': typeof FinanceIndexRoute
   '/inbox/': typeof InboxIndexRoute
   '/leads/': typeof LeadsIndexRoute
+  '/operations/': typeof OperationsIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/reports/': typeof ReportsIndexRoute
   '/settings/': typeof SettingsIndexRoute
@@ -384,6 +419,9 @@ export interface FileRoutesByTo {
   '/finance/payments': typeof FinancePaymentsRoute
   '/inbox/notifications': typeof InboxNotificationsRoute
   '/leads/$leadId': typeof LeadsLeadIdRoute
+  '/operations/clients': typeof OperationsClientsRoute
+  '/operations/deliverables': typeof OperationsDeliverablesRoute
+  '/operations/workload': typeof OperationsWorkloadRoute
   '/projects/$projectId': typeof ProjectsProjectIdRoute
   '/reports/employees': typeof ReportsEmployeesRoute
   '/reports/finance': typeof ReportsFinanceRoute
@@ -401,6 +439,7 @@ export interface FileRoutesByTo {
   '/finance': typeof FinanceIndexRoute
   '/inbox': typeof InboxIndexRoute
   '/leads': typeof LeadsIndexRoute
+  '/operations': typeof OperationsIndexRoute
   '/projects': typeof ProjectsIndexRoute
   '/reports': typeof ReportsIndexRoute
   '/settings': typeof SettingsIndexRoute
@@ -417,6 +456,7 @@ export interface FileRoutesById {
   '/inbox': typeof InboxRouteWithChildren
   '/leads': typeof LeadsRouteWithChildren
   '/login': typeof LoginRoute
+  '/operations': typeof OperationsRouteWithChildren
   '/projects': typeof ProjectsRouteWithChildren
   '/reports': typeof ReportsRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
@@ -437,6 +477,9 @@ export interface FileRoutesById {
   '/finance/payments': typeof FinancePaymentsRoute
   '/inbox/notifications': typeof InboxNotificationsRoute
   '/leads/$leadId': typeof LeadsLeadIdRoute
+  '/operations/clients': typeof OperationsClientsRoute
+  '/operations/deliverables': typeof OperationsDeliverablesRoute
+  '/operations/workload': typeof OperationsWorkloadRoute
   '/projects/$projectId': typeof ProjectsProjectIdRoute
   '/reports/employees': typeof ReportsEmployeesRoute
   '/reports/finance': typeof ReportsFinanceRoute
@@ -454,6 +497,7 @@ export interface FileRoutesById {
   '/finance/': typeof FinanceIndexRoute
   '/inbox/': typeof InboxIndexRoute
   '/leads/': typeof LeadsIndexRoute
+  '/operations/': typeof OperationsIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/reports/': typeof ReportsIndexRoute
   '/settings/': typeof SettingsIndexRoute
@@ -471,6 +515,7 @@ export interface FileRouteTypes {
     | '/inbox'
     | '/leads'
     | '/login'
+    | '/operations'
     | '/projects'
     | '/reports'
     | '/reset-password'
@@ -491,6 +536,9 @@ export interface FileRouteTypes {
     | '/finance/payments'
     | '/inbox/notifications'
     | '/leads/$leadId'
+    | '/operations/clients'
+    | '/operations/deliverables'
+    | '/operations/workload'
     | '/projects/$projectId'
     | '/reports/employees'
     | '/reports/finance'
@@ -508,6 +556,7 @@ export interface FileRouteTypes {
     | '/finance/'
     | '/inbox/'
     | '/leads/'
+    | '/operations/'
     | '/projects/'
     | '/reports/'
     | '/settings/'
@@ -534,6 +583,9 @@ export interface FileRouteTypes {
     | '/finance/payments'
     | '/inbox/notifications'
     | '/leads/$leadId'
+    | '/operations/clients'
+    | '/operations/deliverables'
+    | '/operations/workload'
     | '/projects/$projectId'
     | '/reports/employees'
     | '/reports/finance'
@@ -551,6 +603,7 @@ export interface FileRouteTypes {
     | '/finance'
     | '/inbox'
     | '/leads'
+    | '/operations'
     | '/projects'
     | '/reports'
     | '/settings'
@@ -566,6 +619,7 @@ export interface FileRouteTypes {
     | '/inbox'
     | '/leads'
     | '/login'
+    | '/operations'
     | '/projects'
     | '/reports'
     | '/reset-password'
@@ -586,6 +640,9 @@ export interface FileRouteTypes {
     | '/finance/payments'
     | '/inbox/notifications'
     | '/leads/$leadId'
+    | '/operations/clients'
+    | '/operations/deliverables'
+    | '/operations/workload'
     | '/projects/$projectId'
     | '/reports/employees'
     | '/reports/finance'
@@ -603,6 +660,7 @@ export interface FileRouteTypes {
     | '/finance/'
     | '/inbox/'
     | '/leads/'
+    | '/operations/'
     | '/projects/'
     | '/reports/'
     | '/settings/'
@@ -619,6 +677,7 @@ export interface RootRouteChildren {
   InboxRoute: typeof InboxRouteWithChildren
   LeadsRoute: typeof LeadsRouteWithChildren
   LoginRoute: typeof LoginRoute
+  OperationsRoute: typeof OperationsRouteWithChildren
   ProjectsRoute: typeof ProjectsRouteWithChildren
   ReportsRoute: typeof ReportsRouteWithChildren
   ResetPasswordRoute: typeof ResetPasswordRoute
@@ -690,6 +749,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/operations': {
+      id: '/operations'
+      path: '/operations'
+      fullPath: '/operations'
+      preLoaderRoute: typeof OperationsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/projects': {
@@ -866,6 +932,34 @@ declare module '@tanstack/react-router' {
       fullPath: '/leads/$leadId'
       preLoaderRoute: typeof LeadsLeadIdRouteImport
       parentRoute: typeof LeadsRoute
+    }
+    '/operations/': {
+      id: '/operations/'
+      path: '/'
+      fullPath: '/operations/'
+      preLoaderRoute: typeof OperationsIndexRouteImport
+      parentRoute: typeof OperationsRoute
+    }
+    '/operations/clients': {
+      id: '/operations/clients'
+      path: '/clients'
+      fullPath: '/operations/clients'
+      preLoaderRoute: typeof OperationsClientsRouteImport
+      parentRoute: typeof OperationsRoute
+    }
+    '/operations/deliverables': {
+      id: '/operations/deliverables'
+      path: '/deliverables'
+      fullPath: '/operations/deliverables'
+      preLoaderRoute: typeof OperationsDeliverablesRouteImport
+      parentRoute: typeof OperationsRoute
+    }
+    '/operations/workload': {
+      id: '/operations/workload'
+      path: '/workload'
+      fullPath: '/operations/workload'
+      preLoaderRoute: typeof OperationsWorkloadRouteImport
+      parentRoute: typeof OperationsRoute
     }
     '/projects/': {
       id: '/projects/'
@@ -1064,6 +1158,24 @@ const LeadsRouteChildren: LeadsRouteChildren = {
 
 const LeadsRouteWithChildren = LeadsRoute._addFileChildren(LeadsRouteChildren)
 
+interface OperationsRouteChildren {
+  OperationsClientsRoute: typeof OperationsClientsRoute
+  OperationsDeliverablesRoute: typeof OperationsDeliverablesRoute
+  OperationsWorkloadRoute: typeof OperationsWorkloadRoute
+  OperationsIndexRoute: typeof OperationsIndexRoute
+}
+
+const OperationsRouteChildren: OperationsRouteChildren = {
+  OperationsClientsRoute: OperationsClientsRoute,
+  OperationsDeliverablesRoute: OperationsDeliverablesRoute,
+  OperationsWorkloadRoute: OperationsWorkloadRoute,
+  OperationsIndexRoute: OperationsIndexRoute,
+}
+
+const OperationsRouteWithChildren = OperationsRoute._addFileChildren(
+  OperationsRouteChildren,
+)
+
 interface ProjectsRouteChildren {
   ProjectsProjectIdRoute: typeof ProjectsProjectIdRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
@@ -1143,6 +1255,7 @@ const rootRouteChildren: RootRouteChildren = {
   InboxRoute: InboxRouteWithChildren,
   LeadsRoute: LeadsRouteWithChildren,
   LoginRoute: LoginRoute,
+  OperationsRoute: OperationsRouteWithChildren,
   ProjectsRoute: ProjectsRouteWithChildren,
   ReportsRoute: ReportsRouteWithChildren,
   ResetPasswordRoute: ResetPasswordRoute,
