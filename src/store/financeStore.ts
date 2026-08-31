@@ -11,7 +11,7 @@ import {
   type ExpenseCategory,
   type ExpenseStatus,
 } from "@/data/finance";
-import { currentUser } from "@/mock";
+import { getCurrentUser } from "@/hooks/useCurrentUser";
 
 type FinanceState = {
   invoices: Invoice[];
@@ -83,7 +83,7 @@ export const useFinanceStore = create<FinanceState>((set, get) => ({
       date: new Date().toISOString().slice(0, 10),
       amount,
       status: "pending",
-      submittedBy: currentUser.name,
+      submittedBy: getCurrentUser().name,
       ...(clientId ? { clientId } : {}),
       ...(projectId ? { projectId } : {}),
     };

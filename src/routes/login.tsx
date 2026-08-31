@@ -17,6 +17,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { AuthLayout } from "@/components/layout/AuthLayout";
+import { useAuthStore } from "@/store/authStore";
+import { useSessionStore } from "@/store/sessionStore";
+import { useEmployeesStore } from "@/store/employeesStore";
+import { resolveIdentityByEmail } from "@/lib/identity";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -39,6 +43,9 @@ type LoginValues = z.infer<typeof loginSchema>;
 function LoginPage() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const login = useAuthStore((s) => s.login);
+  const setRole = useSessionStore((s) => s.setRole);
+  const employees = useEmployeesStore((s) => s.employees);
 
   const form = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
@@ -47,7 +54,23 @@ function LoginPage() {
 
   const onSubmit = async (values: LoginValues) => {
     await new Promise((resolve) => setTimeout(resolve, 600));
-    toast.success("Welcome back", { description: `Signed in as ${values.email}` });
+    // There's no backend here to verify a password against, so this can
+    // only check that the email belongs to a known identity — the demo
+    // owner account or a real employee added in Employees → Add employee.
+    // Any non-empty password is accepted for a recognized email; that's an
+    // honest limitation of not having auth infrastructure yet, not a
+    // pretend security check.
+    const identity = resolveIdentityByEmail(values.email, employees);
+    if (!identity) {
+      form.setError("email", {
+        message:
+          "No account found for that email. Try daniel@agencyos.co, or add an employee first.",
+      });
+      return;
+    }
+    login(identity.email, values.remember);
+    setRole(identity.roleId);
+    toast.success("Welcome back", { description: `Signed in as ${identity.name}` });
     navigate({ to: "/" });
   };
 
@@ -147,6 +170,11 @@ function LoginPage() {
           Verify your email
         </Link>{" "}
         to finish setup.
+      </p>
+      <p className="mt-3 rounded-lg bg-muted/50 p-3 text-center text-xs text-muted-foreground">
+        Demo workspace: sign in as <span className="font-medium">daniel@agencyos.co</span> (any
+        password), or add an employee first in Employees → Add employee and sign in with their
+        email.
       </p>
     </AuthLayout>
   );

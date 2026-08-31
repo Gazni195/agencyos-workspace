@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from "react";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { Bell, LogOut, Menu, Search, Settings, ShieldCheck, User } from "lucide-react";
 import { AppSidebar } from "./AppSidebar";
 import { GlobalSearch } from "./GlobalSearch";
@@ -21,14 +21,19 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { currentUser, headerNotifications } from "@/mock";
+import { headerNotifications } from "@/mock";
 import { usePermissions } from "@/hooks/usePermissions";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { useAuthStore } from "@/store/authStore";
 
 export function AppShell({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const [notes, setNotes] = useState(headerNotifications);
   const unread = notes.filter((n) => n.unread).length;
   const { role, roles, roleId, setRole } = usePermissions();
+  const currentUser = useCurrentUser();
+  const logout = useAuthStore((s) => s.logout);
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-background">
@@ -145,10 +150,13 @@ export function AppShell({ children }: { children: ReactNode }) {
                   </DropdownMenuPortal>
                 </DropdownMenuSub>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <Link to="/login">
-                    <LogOut className="mr-2 size-4" /> Sign out
-                  </Link>
+                <DropdownMenuItem
+                  onSelect={() => {
+                    logout();
+                    navigate({ to: "/login" });
+                  }}
+                >
+                  <LogOut className="mr-2 size-4" /> Sign out
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

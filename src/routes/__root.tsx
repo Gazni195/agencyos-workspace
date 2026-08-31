@@ -3,17 +3,20 @@ import {
   Outlet,
   Link,
   createRootRouteWithContext,
+  useNavigate,
   useRouter,
   useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { Loader2 } from "lucide-react";
+import { useEffect, useState, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AppShell } from "../components/layout/AppShell";
 import { Toaster } from "../components/ui/sonner";
+import { useAuthStore } from "../store/authStore";
 
 function NotFoundComponent() {
   return (
@@ -130,21 +133,55 @@ function RootShell({ children }: { children: ReactNode }) {
 
 const AUTH_ROUTES = ["/login", "/forgot-password", "/reset-password", "/verify-email"];
 
+// Neutral placeholder shown instead of the real app while we don't yet
+// know if the visitor is signed in — during SSR (no localStorage/
+// sessionStorage on the server, so auth state is unknowable there) and
+// for the brief moment on the client before the redirect effect below
+// runs. Deliberately renders no nav, no data, nothing module-specific:
+// there's no server session to gate on (frontend-only app, see
+// authStore), so the one thing we can guarantee without one is that an
+// unauthenticated visitor is never shown a frame of real app content.
+function AuthCheckingScreen() {
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-background">
+      <Loader2 className="size-6 animate-spin text-muted-foreground" />
+    </div>
+  );
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const pathname = useRouterState({ select: (r) => r.location.pathname });
   const isAuthRoute = AUTH_ROUTES.includes(pathname);
+  const navigate = useNavigate();
+  const email = useAuthStore((s) => s.email);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
+
+  useEffect(() => {
+    if (!mounted) return;
+    if (!isAuthRoute && !email) {
+      navigate({ to: "/login", replace: true });
+    } else if (pathname === "/login" && email) {
+      navigate({ to: "/", replace: true });
+    }
+  }, [mounted, isAuthRoute, pathname, email, navigate]);
+
+  const showApp = isAuthRoute || (mounted && !!email);
 
   return (
     <QueryClientProvider client={queryClient}>
       {isAuthRoute ? (
         // Auth pages render standalone, without the app sidebar/header chrome.
         <Outlet />
-      ) : (
+      ) : showApp ? (
         <AppShell>
           {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
           <Outlet />
         </AppShell>
+      ) : (
+        <AuthCheckingScreen />
       )}
       <Toaster />
     </QueryClientProvider>
