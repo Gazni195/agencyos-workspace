@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Switch } from "@/components/ui/switch";
-import { useSettingsStore } from "@/store/settingsStore";
-import { notificationEvents } from "@/data/workspace";
+import { Switch } from "@/shared/frontend/components/ui/switch";
+import { useSettingsStore } from "@/modules/settings/frontend/store/settingsStore";
+import { notificationEvents } from "@/modules/settings/types";
 
 export const Route = createFileRoute("/settings/notifications")({
   head: () => ({

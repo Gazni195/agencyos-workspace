@@ -10,20 +10,23 @@ import {
   Users,
   Wallet,
 } from "lucide-react";
-import { PageHeader } from "@/components/common/PageHeader";
-import { KpiCard } from "@/components/common/KpiCard";
-import { RevenueChart } from "@/components/dashboard/RevenueChart";
-import { PipelineChart } from "@/components/dashboard/PipelineChart";
-import { ProjectHealthChart } from "@/components/dashboard/ProjectHealthChart";
-import { TeamUtilizationChart } from "@/components/dashboard/TeamUtilizationChart";
-import { AttendanceSnapshot } from "@/components/dashboard/AttendanceSnapshot";
-import { RecentActivity } from "@/components/dashboard/RecentActivity";
-import { UpcomingDeadlines } from "@/components/dashboard/UpcomingDeadlines";
-import { PendingApprovals } from "@/components/dashboard/PendingApprovals";
-import { InboxPreview } from "@/components/dashboard/InboxPreview";
-import { QuickActions } from "@/components/dashboard/QuickActions";
-import { getDashboardKpis, type DashboardKpi } from "@/services/dashboardService";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { PageHeader } from "@/shared/frontend/components/PageHeader";
+import { KpiCard } from "@/shared/frontend/components/KpiCard";
+import { RevenueChart } from "@/modules/dashboard/frontend/components/RevenueChart";
+import { PipelineChart } from "@/modules/dashboard/frontend/components/PipelineChart";
+import { ProjectHealthChart } from "@/modules/dashboard/frontend/components/ProjectHealthChart";
+import { TeamUtilizationChart } from "@/modules/dashboard/frontend/components/TeamUtilizationChart";
+import { AttendanceSnapshot } from "@/modules/dashboard/frontend/components/AttendanceSnapshot";
+import { RecentActivity } from "@/modules/dashboard/frontend/components/RecentActivity";
+import { UpcomingDeadlines } from "@/modules/dashboard/frontend/components/UpcomingDeadlines";
+import { PendingApprovals } from "@/modules/dashboard/frontend/components/PendingApprovals";
+import { InboxPreview } from "@/modules/dashboard/frontend/components/InboxPreview";
+import { QuickActions } from "@/modules/dashboard/frontend/components/QuickActions";
+import {
+  getDashboardKpis,
+  type DashboardKpi,
+} from "@/modules/dashboard/frontend/services/dashboardService";
+import { useCurrentUser } from "@/shared/frontend/hooks/useCurrentUser";
 
 export const Route = createFileRoute("/")({
   head: () => ({

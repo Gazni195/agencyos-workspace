@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { CheckCircle2, Loader2, MailQuestion, RotateCw } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { AuthLayout } from "@/components/layout/AuthLayout";
-import { currentUser } from "@/mock";
+import { Button } from "@/shared/frontend/components/ui/button";
+import { AuthLayout } from "@/modules/auth/frontend/components/AuthLayout";
+import { currentUser } from "@/shared/frontend/config/appData";
 
 export const Route = createFileRoute("/verify-email")({
   head: () => ({

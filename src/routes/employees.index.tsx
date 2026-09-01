@@ -1,12 +1,12 @@
 import { useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Users, UserCheck, CalendarClock, Gauge, Plus } from "lucide-react";
-import { KpiCard } from "@/components/common/KpiCard";
-import { StatusBadge } from "@/components/common/StatusBadge";
-import { DataToolbar } from "@/components/common/DataToolbar";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Progress } from "@/components/ui/progress";
-import { Button } from "@/components/ui/button";
+import { KpiCard } from "@/shared/frontend/components/KpiCard";
+import { StatusBadge } from "@/shared/frontend/components/StatusBadge";
+import { DataToolbar } from "@/shared/frontend/components/DataToolbar";
+import { Avatar, AvatarFallback } from "@/shared/frontend/components/ui/avatar";
+import { Progress } from "@/shared/frontend/components/ui/progress";
+import { Button } from "@/shared/frontend/components/ui/button";
 import {
   Table,
   TableBody,
@@ -14,14 +14,14 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@/shared/frontend/components/ui/table";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@/shared/frontend/components/ui/select";
 import {
   Dialog,
   DialogContent,
@@ -29,13 +29,13 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { type Employee, type EmployeeStatus } from "@/data/agency.ts";
-import { useEmployeesStore } from "@/store/employeesStore";
-import { useSettingsStore } from "@/store/settingsStore";
-import { usePermissions } from "@/hooks/usePermissions";
+} from "@/shared/frontend/components/ui/dialog";
+import { Input } from "@/shared/frontend/components/ui/input";
+import { Label } from "@/shared/frontend/components/ui/label";
+import { type Employee, type EmployeeStatus } from "@/modules/employees/types";
+import { useEmployeesStore } from "@/modules/employees/frontend/store/employeesStore";
+import { useSettingsStore } from "@/modules/settings/frontend/store/settingsStore";
+import { usePermissions } from "@/shared/frontend/hooks/usePermissions";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/employees/")({

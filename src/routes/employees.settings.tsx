@@ -2,15 +2,18 @@ import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { BellRing, CalendarCog, ShieldCheck, Trash2 } from "lucide-react";
-import { KpiCard } from "@/components/common/KpiCard";
-import { PageHeader } from "@/components/common/PageHeader";
-import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
-import { DeleteConfirmDialog } from "@/components/shared/DeleteConfirmDialog";
-import { EditIconButton } from "@/components/settings/OrganizationDialogs";
-import { NewLeaveTypeDialog, EditLeaveTypeDialog } from "@/components/settings/LeaveTypeDialogs";
-import { useSettingsStore } from "@/store/settingsStore";
-import { notificationEvents, workflowEvents } from "@/data/workspace";
+import { KpiCard } from "@/shared/frontend/components/KpiCard";
+import { PageHeader } from "@/shared/frontend/components/PageHeader";
+import { Button } from "@/shared/frontend/components/ui/button";
+import { Switch } from "@/shared/frontend/components/ui/switch";
+import { DeleteConfirmDialog } from "@/shared/frontend/components/DeleteConfirmDialog";
+import { EditIconButton } from "@/modules/settings/frontend/components/OrganizationDialogs";
+import {
+  NewLeaveTypeDialog,
+  EditLeaveTypeDialog,
+} from "@/modules/settings/frontend/components/LeaveTypeDialogs";
+import { useSettingsStore } from "@/modules/settings/frontend/store/settingsStore";
+import { notificationEvents, workflowEvents } from "@/modules/settings/types";
 
 export const Route = createFileRoute("/employees/settings")({
   head: () => ({

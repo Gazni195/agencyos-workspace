@@ -2,14 +2,14 @@ import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Trash2 } from "lucide-react";
 import { toast } from "sonner";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { DeleteConfirmDialog } from "@/components/shared/DeleteConfirmDialog";
-import { EditIconButton } from "@/components/settings/OrganizationDialogs";
+import { Badge } from "@/shared/frontend/components/ui/badge";
+import { Button } from "@/shared/frontend/components/ui/button";
+import { DeleteConfirmDialog } from "@/shared/frontend/components/DeleteConfirmDialog";
+import { EditIconButton } from "@/modules/settings/frontend/components/OrganizationDialogs";
 import {
   NewClientPackageDialog,
   EditClientPackageDialog,
-} from "@/components/settings/ClientPackageDialogs";
+} from "@/modules/settings/frontend/components/ClientPackageDialogs";
 import {
   Table,
   TableBody,
@@ -17,9 +17,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { useSettingsStore } from "@/store/settingsStore";
-import { money } from "@/data/agency";
+} from "@/shared/frontend/components/ui/table";
+import { useSettingsStore } from "@/modules/settings/frontend/store/settingsStore";
+import { money } from "@/shared/frontend/utils/money";
 
 export const Route = createFileRoute("/settings/client-packages")({
   head: () => ({

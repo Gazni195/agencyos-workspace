@@ -12,15 +12,15 @@ import {
   ListChecks,
   Users as UsersIcon,
 } from "lucide-react";
-import { PageHeader } from "@/components/common/PageHeader";
-import { StatusBadge } from "@/components/common/StatusBadge";
-import { EmptyState } from "@/components/shared/EmptyState";
-import { BudgetBurnChart } from "@/components/projects/BudgetBurnChart";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Progress } from "@/components/ui/progress";
-import { Slider } from "@/components/ui/slider";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { PageHeader } from "@/shared/frontend/components/PageHeader";
+import { StatusBadge } from "@/shared/frontend/components/StatusBadge";
+import { EmptyState } from "@/shared/frontend/components/EmptyState";
+import { BudgetBurnChart } from "@/modules/projects/frontend/components/BudgetBurnChart";
+import { Avatar, AvatarFallback } from "@/shared/frontend/components/ui/avatar";
+import { Progress } from "@/shared/frontend/components/ui/progress";
+import { Slider } from "@/shared/frontend/components/ui/slider";
+import { Badge } from "@/shared/frontend/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/frontend/components/ui/tabs";
 import {
   Table,
   TableBody,
@@ -28,16 +28,16 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@/shared/frontend/components/ui/table";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { useProjectsStore } from "@/store/projectsStore";
-import { useTasksStore } from "@/store/tasksStore";
+} from "@/shared/frontend/components/ui/select";
+import { useProjectsStore } from "@/modules/projects/frontend/store/projectsStore";
+import { useTasksStore } from "@/modules/tasks/frontend/store/tasksStore";
 import {
   budgetBurn,
   deliverableStatuses,
@@ -45,21 +45,20 @@ import {
   milestones,
   projectAllocations,
   projectFilesByProject,
-  taskStatuses,
   type DeliverableStatus,
   type ProjectStatus,
-  type TaskStatus,
-} from "@/data/delivery";
-import { money } from "@/data/agency";
-import { taskStatusLabels } from "@/data/delivery";
-import { useEmployeesStore } from "@/store/employeesStore";
-import { useClientsStore } from "@/store/clientsStore";
-import { useDeliverablesStore } from "@/store/deliverablesStore";
-import { useActivityStore } from "@/store/activityStore";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
-import { NewDeliverableDialog } from "@/components/projects/NewDeliverableDialog";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+} from "@/modules/projects/types";
+import { taskStatuses, type TaskStatus } from "@/modules/tasks/types";
+import { money } from "@/shared/frontend/utils/money";
+import { taskStatusLabels } from "@/modules/tasks/types";
+import { useEmployeesStore } from "@/modules/employees/frontend/store/employeesStore";
+import { useClientsStore } from "@/modules/clients/frontend/store/clientsStore";
+import { useDeliverablesStore } from "@/modules/projects/frontend/store/deliverablesStore";
+import { useActivityStore } from "@/shared/frontend/store/activityStore";
+import { useCurrentUser } from "@/shared/frontend/hooks/useCurrentUser";
+import { NewDeliverableDialog } from "@/modules/projects/frontend/components/NewDeliverableDialog";
+import { Input } from "@/shared/frontend/components/ui/input";
+import { Button } from "@/shared/frontend/components/ui/button";
 
 export const Route = createFileRoute("/projects/$projectId")({
   head: () => ({

@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "sonner";
 import { Check, Eye, EyeOff, Loader2, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/frontend/components/ui/button";
 import {
   Form,
   FormControl,
@@ -13,10 +13,10 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { AuthLayout } from "@/components/layout/AuthLayout";
-import { cn } from "@/lib/utils";
+} from "@/shared/frontend/components/ui/form";
+import { Input } from "@/shared/frontend/components/ui/input";
+import { AuthLayout } from "@/modules/auth/frontend/components/AuthLayout";
+import { cn } from "@/shared/frontend/utils/utils";
 
 export const Route = createFileRoute("/reset-password")({
   head: () => ({

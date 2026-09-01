@@ -6,9 +6,9 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { useSettingsStore } from "@/store/settingsStore";
-import { approverOptions, workflowEvents } from "@/data/workspace";
+} from "@/shared/frontend/components/ui/select";
+import { useSettingsStore } from "@/modules/settings/frontend/store/settingsStore";
+import { approverOptions, workflowEvents } from "@/modules/settings/types";
 
 export const Route = createFileRoute("/settings/workflows")({
   head: () => ({

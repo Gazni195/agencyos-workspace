@@ -13,14 +13,14 @@ import {
   subMonths,
 } from "date-fns";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { SearchBar } from "@/components/shared/SearchBar";
-import { FilterBar } from "@/components/shared/FilterBar";
-import { Button } from "@/components/ui/button";
-import { NewTaskDialog } from "@/components/tasks/NewTaskDialog";
-import { TaskDetailDrawer } from "@/components/tasks/TaskDetailDrawer";
-import { useTaskFilters } from "@/hooks/useTaskFilters";
-import { useTasksStore } from "@/store/tasksStore";
-import { cn } from "@/lib/utils";
+import { SearchBar } from "@/shared/frontend/components/SearchBar";
+import { FilterBar } from "@/shared/frontend/components/FilterBar";
+import { Button } from "@/shared/frontend/components/ui/button";
+import { NewTaskDialog } from "@/modules/tasks/frontend/components/NewTaskDialog";
+import { TaskDetailDrawer } from "@/modules/tasks/frontend/components/TaskDetailDrawer";
+import { useTaskFilters } from "@/modules/tasks/frontend/hooks/useTaskFilters";
+import { useTasksStore } from "@/modules/tasks/frontend/store/tasksStore";
+import { cn } from "@/shared/frontend/utils/utils";
 
 export const Route = createFileRoute("/tasks/calendar")({
   head: () => ({

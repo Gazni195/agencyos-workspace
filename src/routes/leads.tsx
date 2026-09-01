@@ -1,5 +1,5 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
-import { RequireModuleAccess } from "@/components/common/RequireModuleAccess";
+import { RequireModuleAccess } from "@/shared/frontend/components/RequireModuleAccess";
 
 export const Route = createFileRoute("/leads")({
   head: () => ({

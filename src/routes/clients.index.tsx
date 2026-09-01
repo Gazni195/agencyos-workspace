@@ -1,19 +1,20 @@
 import { useMemo, useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { LayoutGrid, List as ListIcon } from "lucide-react";
-import { PageHeader } from "@/components/common/PageHeader";
-import { StatusBadge } from "@/components/common/StatusBadge";
-import { SearchBar } from "@/components/shared/SearchBar";
-import { FilterBar, type FilterDef } from "@/components/shared/FilterBar";
-import { DataTable, type Column } from "@/components/shared/DataTable";
-import { ClientCard } from "@/components/clients/ClientCard";
-import { ClientRowActions } from "@/components/clients/ClientRowActions";
-import { NewClientDialog } from "@/components/clients/NewClientDialog";
-import { Button } from "@/components/ui/button";
-import { useClientsStore } from "@/store/clientsStore";
-import { useProjectsStore } from "@/store/projectsStore";
-import { money, type Client } from "@/data/crm";
-import { cn } from "@/lib/utils";
+import { PageHeader } from "@/shared/frontend/components/PageHeader";
+import { StatusBadge } from "@/shared/frontend/components/StatusBadge";
+import { SearchBar } from "@/shared/frontend/components/SearchBar";
+import { FilterBar, type FilterDef } from "@/shared/frontend/components/FilterBar";
+import { DataTable, type Column } from "@/shared/frontend/components/DataTable";
+import { ClientCard } from "@/modules/clients/frontend/components/ClientCard";
+import { ClientRowActions } from "@/modules/clients/frontend/components/ClientRowActions";
+import { NewClientDialog } from "@/modules/clients/frontend/components/NewClientDialog";
+import { Button } from "@/shared/frontend/components/ui/button";
+import { useClientsStore } from "@/modules/clients/frontend/store/clientsStore";
+import { useProjectsStore } from "@/modules/projects/frontend/store/projectsStore";
+import { type Client } from "@/modules/clients/types";
+import { money } from "@/shared/frontend/utils/money";
+import { cn } from "@/shared/frontend/utils/utils";
 
 export const Route = createFileRoute("/clients/")({
   head: () => ({

@@ -1,10 +1,10 @@
 import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { AlertTriangle, FileText, FolderOpen } from "lucide-react";
-import { KpiCard } from "@/components/common/KpiCard";
-import { PageHeader } from "@/components/common/PageHeader";
-import { StatusBadge } from "@/components/common/StatusBadge";
-import { FilterBar, type FilterDef } from "@/components/shared/FilterBar";
+import { KpiCard } from "@/shared/frontend/components/KpiCard";
+import { PageHeader } from "@/shared/frontend/components/PageHeader";
+import { StatusBadge } from "@/shared/frontend/components/StatusBadge";
+import { FilterBar, type FilterDef } from "@/shared/frontend/components/FilterBar";
 import {
   Table,
   TableBody,
@@ -12,9 +12,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { documents, type EmployeeDocument } from "@/data/agency";
-import { useEmployeesStore } from "@/store/employeesStore";
+} from "@/shared/frontend/components/ui/table";
+import { documents, type EmployeeDocument } from "@/modules/employees/types";
+import { useEmployeesStore } from "@/modules/employees/frontend/store/employeesStore";
 
 export const Route = createFileRoute("/employees/documents")({
   head: () => ({
