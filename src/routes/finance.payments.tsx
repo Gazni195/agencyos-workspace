@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { AlertTriangle, CalendarClock, CheckCircle2, Wallet } from "lucide-react";
-import { KpiCard } from "@/components/common/KpiCard";
-import { PageHeader } from "@/components/common/PageHeader";
+import { KpiCard } from "@/shared/frontend/components/KpiCard";
+import { PageHeader } from "@/shared/frontend/components/PageHeader";
 import {
   Table,
   TableBody,
@@ -10,12 +10,12 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { EmptyState } from "@/components/shared/EmptyState";
-import { useFinanceStore } from "@/store/financeStore";
-import { invoiceTotal } from "@/data/finance";
-import { money } from "@/data/agency";
-import { useClientsStore } from "@/store/clientsStore";
+} from "@/shared/frontend/components/ui/table";
+import { EmptyState } from "@/shared/frontend/components/EmptyState";
+import { useFinanceStore } from "@/modules/finance/frontend/store/financeStore";
+import { invoiceTotal } from "@/modules/finance/types";
+import { money } from "@/shared/frontend/utils/money";
+import { useClientsStore } from "@/modules/clients/frontend/store/clientsStore";
 
 export const Route = createFileRoute("/finance/payments")({
   head: () => ({

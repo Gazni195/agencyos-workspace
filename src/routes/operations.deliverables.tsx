@@ -2,15 +2,15 @@ import { useMemo } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { Check, X } from "lucide-react";
-import { StatusBadge } from "@/components/common/StatusBadge";
-import { DataTable, type Column } from "@/components/shared/DataTable";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { useDeliverablesStore } from "@/store/deliverablesStore";
-import { useEmployeesStore } from "@/store/employeesStore";
-import { useProjectsStore } from "@/store/projectsStore";
-import { useClientsStore } from "@/store/clientsStore";
-import { type Deliverable } from "@/data/delivery";
+import { StatusBadge } from "@/shared/frontend/components/StatusBadge";
+import { DataTable, type Column } from "@/shared/frontend/components/DataTable";
+import { Button } from "@/shared/frontend/components/ui/button";
+import { Avatar, AvatarFallback } from "@/shared/frontend/components/ui/avatar";
+import { useDeliverablesStore } from "@/modules/projects/frontend/store/deliverablesStore";
+import { useEmployeesStore } from "@/modules/employees/frontend/store/employeesStore";
+import { useProjectsStore } from "@/modules/projects/frontend/store/projectsStore";
+import { useClientsStore } from "@/modules/clients/frontend/store/clientsStore";
+import { type Deliverable } from "@/modules/projects/types";
 
 export const Route = createFileRoute("/operations/deliverables")({
   head: () => ({

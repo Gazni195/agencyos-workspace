@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Award, Gauge, Target } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { KpiCard } from "@/components/common/KpiCard";
-import { PageHeader } from "@/components/common/PageHeader";
-import { StatusBadge } from "@/components/common/StatusBadge";
-import { Progress } from "@/components/ui/progress";
+import { KpiCard } from "@/shared/frontend/components/KpiCard";
+import { PageHeader } from "@/shared/frontend/components/PageHeader";
+import { StatusBadge } from "@/shared/frontend/components/StatusBadge";
+import { Progress } from "@/shared/frontend/components/ui/progress";
 import {
   Table,
   TableBody,
@@ -12,10 +12,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { employeeGoals } from "@/data/hr";
-import { performance, performanceByDept } from "@/data/agency";
-import { useEmployeesStore } from "@/store/employeesStore";
+} from "@/shared/frontend/components/ui/table";
+import { employeeGoals } from "@/modules/employees/types";
+import { performance, performanceByDept } from "@/modules/employees/types";
+import { useEmployeesStore } from "@/modules/employees/frontend/store/employeesStore";
 
 export const Route = createFileRoute("/employees/performance")({
   head: () => ({

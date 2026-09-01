@@ -1,9 +1,9 @@
 import { Fragment } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { CalendarCheck, Clock3, UserCheck, UserX } from "lucide-react";
-import { KpiCard } from "@/components/common/KpiCard";
-import { PageHeader } from "@/components/common/PageHeader";
-import { StatusBadge } from "@/components/common/StatusBadge";
+import { KpiCard } from "@/shared/frontend/components/KpiCard";
+import { PageHeader } from "@/shared/frontend/components/PageHeader";
+import { StatusBadge } from "@/shared/frontend/components/StatusBadge";
 import {
   Table,
   TableBody,
@@ -11,13 +11,13 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+} from "@/shared/frontend/components/ui/table";
+import { Avatar, AvatarFallback } from "@/shared/frontend/components/ui/avatar";
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { attendance, attendanceTrend } from "@/data/agency";
-import { generateMonthCalendar, monthLabel, type DayStatus } from "@/data/hr";
-import { useEmployeesStore } from "@/store/employeesStore";
-import { cn } from "@/lib/utils";
+import { attendance, attendanceTrend } from "@/modules/employees/types";
+import { generateMonthCalendar, monthLabel, type DayStatus } from "@/modules/employees/types";
+import { useEmployeesStore } from "@/modules/employees/frontend/store/employeesStore";
+import { cn } from "@/shared/frontend/utils/utils";
 
 export const Route = createFileRoute("/employees/attendance")({
   head: () => ({

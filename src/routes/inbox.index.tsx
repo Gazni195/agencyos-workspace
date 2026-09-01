@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Search, Send, Star, Users } from "lucide-react";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { EmptyState } from "@/components/shared/EmptyState";
-import { cn } from "@/lib/utils";
-import { useInboxStore } from "@/store/inboxStore";
-import type { Conversation } from "@/data/workspace";
+import { Avatar, AvatarFallback } from "@/shared/frontend/components/ui/avatar";
+import { Badge } from "@/shared/frontend/components/ui/badge";
+import { Button } from "@/shared/frontend/components/ui/button";
+import { Input } from "@/shared/frontend/components/ui/input";
+import { Textarea } from "@/shared/frontend/components/ui/textarea";
+import { EmptyState } from "@/shared/frontend/components/EmptyState";
+import { cn } from "@/shared/frontend/utils/utils";
+import { useInboxStore } from "@/modules/inbox/frontend/store/inboxStore";
+import type { Conversation } from "@/modules/inbox/types";
 
 export const Route = createFileRoute("/inbox/")({
   component: MessagesPage,

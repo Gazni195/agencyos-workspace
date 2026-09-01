@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Plug } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { useSettingsStore } from "@/store/settingsStore";
+import { Badge } from "@/shared/frontend/components/ui/badge";
+import { Button } from "@/shared/frontend/components/ui/button";
+import { useSettingsStore } from "@/modules/settings/frontend/store/settingsStore";
 
 export const Route = createFileRoute("/settings/integrations")({
   head: () => ({
