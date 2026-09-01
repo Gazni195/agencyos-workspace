@@ -37,5 +37,3 @@ export function generateMonthCalendar(seed: number, daysInMonth = 30): DayStatus
 }
 
 export const monthLabel = "August 2026";
-
-export const timesheetWeeklyHours: { week: string; billable: number; nonBillable: number }[] = [];

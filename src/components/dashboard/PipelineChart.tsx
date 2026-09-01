@@ -1,10 +1,12 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { money } from "@/data/agency";
-import { leadStages, leads } from "@/data/crm";
+import { leadStages } from "@/data/crm";
+import { useLeadsStore } from "@/store/leadsStore";
 import { Link } from "@tanstack/react-router";
 
 export function PipelineChart() {
+  const leads = useLeadsStore((s) => s.leads);
   const pipeline = leadStages
     .filter((stage) => stage !== "Won" && stage !== "Lost")
     .map((stage) => ({

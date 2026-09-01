@@ -22,7 +22,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { timesheetWeeklyHours } from "@/data/hr";
 import { useEmployeesStore } from "@/store/employeesStore";
 import { useHrStore } from "@/store/hrStore";
 import { useProjectsStore } from "@/store/projectsStore";
@@ -42,6 +41,36 @@ export const Route = createFileRoute("/employees/timesheets")({
   component: TimesheetsPage,
 });
 
+// Groups by the Monday of each entry's week — data/hr.ts's
+// timesheetWeeklyHours used to be a static, permanently-empty snapshot
+// (same bug class fixed for finance/reports aggregates in an earlier
+// phase); real timesheet entries already carry real dates via
+// hrStore.addTimesheet, so this can be honestly computed live instead.
+function weekStartOf(dateStr: string) {
+  const d = new Date(dateStr);
+  const day = d.getDay();
+  const diff = (day === 0 ? -6 : 1) - day;
+  d.setDate(d.getDate() + diff);
+  return d.toISOString().slice(0, 10);
+}
+
+function computeWeeklyHours(timesheets: { date: string; hours: number; billable: boolean }[]) {
+  const weeks = new Map<string, { billable: number; nonBillable: number }>();
+  for (const t of timesheets) {
+    const key = weekStartOf(t.date);
+    const entry = weeks.get(key) ?? { billable: 0, nonBillable: 0 };
+    if (t.billable) entry.billable += t.hours;
+    else entry.nonBillable += t.hours;
+    weeks.set(key, entry);
+  }
+  return Array.from(weeks.entries())
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([key, v]) => ({
+      week: new Date(key).toLocaleDateString("en-US", { month: "short", day: "numeric" }),
+      ...v,
+    }));
+}
+
 function TimesheetsPage() {
   const employees = useEmployeesStore((s) => s.employees);
   const employeeById = (id: string) => employees.find((e) => e.id === id);
@@ -59,6 +88,7 @@ function TimesheetsPage() {
   const billableHours = timesheets.filter((t) => t.billable).reduce((sum, t) => sum + t.hours, 0);
   const billablePct = totalHours ? Math.round((billableHours / totalHours) * 100) : 0;
   const pendingApproval = timesheets.filter((t) => t.status === "submitted").length;
+  const timesheetWeeklyHours = computeWeeklyHours(timesheets);
 
   return (
     <section className="mx-auto max-w-7xl">
