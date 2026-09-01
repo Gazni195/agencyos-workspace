@@ -24,6 +24,11 @@ export type Employee = {
   utilization: number;
   leaveBalance: number;
   skills: string[];
+  // FK into workspace.ts's rolesSeed / useSettingsStore roles — the
+  // permission role this employee signs in as (see usePermissions,
+  // src/lib/identity.ts). Distinct from `role` above, which is just a job
+  // title/designation string and has no bearing on access control.
+  roleId: string;
 };
 
 export const employees: Employee[] = [];

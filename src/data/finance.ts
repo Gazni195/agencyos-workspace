@@ -1,8 +1,10 @@
 // Finance & Reports data layer for AgencyOS.
-import { revenueTrend } from "@/data/agency";
-import { clients } from "@/data/crm";
-import { deliveryProjects as projects } from "@/data/delivery";
-
+//
+// Live aggregates (expense category mix, receivables aging, project
+// budget/status, client revenue/retention, revenue & margin trend) are NOT
+// defined here — they're computed from real store data in
+// src/services/financeReportsService.ts, since deriving them once at import
+// time from these seed arrays (which stay empty) would freeze them forever.
 export type InvoiceStatus = "paid" | "sent" | "overdue" | "draft";
 
 export type InvoiceLineItem = {
@@ -56,34 +58,18 @@ export type Expense = {
 
 export const expenses: Expense[] = [];
 
-export const expenseCategoryTotals = () => {
-  const totals = new Map<string, number>();
-  for (const e of expenses) totals.set(e.category, (totals.get(e.category) ?? 0) + e.amount);
-  return Array.from(totals, ([category, amount]) => ({ category, amount }));
-};
-
 export type AgingBucket = "0-30" | "31-60" | "61-90" | "90+";
 
-export const agingByClient: {
-  client: string;
-  "0-30": number;
-  "31-60": number;
-  "61-90": number;
-  "90+": number;
-}[] = [];
-
-export const agingSummary = () => {
-  const totals: Record<AgingBucket, number> = { "0-30": 0, "31-60": 0, "61-90": 0, "90+": 0 };
-  for (const row of agingByClient) {
-    totals["0-30"] += row["0-30"];
-    totals["31-60"] += row["31-60"];
-    totals["61-90"] += row["61-90"];
-    totals["90+"] += row["90+"];
-  }
-  return totals;
-};
-
 // ---------- Reports module aggregates ----------
+//
+// attendanceTrend/departmentAttendance are deliberately left out of Phase F:
+// they derive from src/data/agency.ts's `attendance` array, which has no
+// creation path anywhere in the app (no clock-in/clock-out or attendance
+// entry flow exists), unlike invoices/expenses/clients/projects below which
+// are all created through real UI. Wiring these to "live" data with nothing
+// that can ever populate it would just be the same frozen-data bug in a new
+// shape, so the Reports > Employees attendance chart stays on this
+// permanently-empty seed rather than pretending to be live.
 
 export const attendanceTrend: { week: string; present: number; late: number; absent: number }[] =
   [];
@@ -94,39 +80,3 @@ export const departmentAttendance: {
   avgHours: number;
   lateArrivals: number;
 }[] = [];
-
-export const projectStatusDistribution = [
-  { status: "On Track", value: projects.filter((p) => p.status === "on-track").length },
-  { status: "At Risk", value: projects.filter((p) => p.status === "at-risk").length },
-  { status: "Delayed", value: projects.filter((p) => p.status === "delayed").length },
-];
-
-export const projectBudgetActual = projects.map((p) => ({
-  name: p.name,
-  budget: p.budget,
-  actual: Math.round(p.budget * (0.55 + (p.progress / 100) * 0.5)),
-}));
-
-export const onTimeDeliveryRate = 0;
-
-export const clientRevenue = clients.map((c) => ({ client: c.name, revenue: c.mrr * 12 }));
-
-export const clientHealthDistribution = [
-  { health: "Healthy", value: clients.filter((c) => c.health === "healthy").length },
-  { health: "At Risk", value: clients.filter((c) => c.health === "at-risk").length },
-  { health: "Churn Risk", value: clients.filter((c) => c.health === "churn-risk").length },
-];
-
-export const clientRetention = clients.map((c) => ({
-  client: c.name,
-  tenureMonths: [18, 26, 9, 12, 14][clients.indexOf(c)] ?? 12,
-  renewalProbability: c.health === "healthy" ? 92 : c.health === "at-risk" ? 61 : 34,
-  mrr: c.mrr,
-}));
-
-export const financialTrend = revenueTrend.map((r) => ({
-  ...r,
-  margin: Math.round(((r.revenue - r.costs) / r.revenue) * 1000) / 10,
-}));
-
-export const receivablesTrend: { month: string; receivables: number }[] = [];

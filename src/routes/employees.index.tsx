@@ -57,6 +57,7 @@ function DirectoryPage() {
   const addEmployee = useEmployeesStore((s) => s.addEmployee);
   const departments = useSettingsStore((s) => s.departments);
   const designations = useSettingsStore((s) => s.designations);
+  const roles = useSettingsStore((s) => s.roles);
   const { can } = usePermissions();
   const canEdit = can("Employees", "edit");
   const [query, setQuery] = useState("");
@@ -72,7 +73,9 @@ function DirectoryPage() {
     email: "",
     manager: "",
     employmentType: "Full-time",
+    roleId: "",
   });
+  const defaultRoleId = () => roles.find((r) => r.id === "role-employee")?.id ?? roles[0]?.id ?? "";
 
   const filtered = useMemo(() => {
     return employeeList.filter((e) => {
@@ -123,6 +126,7 @@ function DirectoryPage() {
       utilization: 0,
       leaveBalance: 0,
       skills: [],
+      roleId: form.roleId || defaultRoleId(),
     };
     addEmployee(newEmployee);
     setOpen(false);
@@ -133,6 +137,7 @@ function DirectoryPage() {
       email: "",
       manager: "",
       employmentType: "Full-time",
+      roleId: "",
     });
     toast.success(`${newEmployee.name} added to the directory`);
   }
@@ -297,6 +302,28 @@ function DirectoryPage() {
                   onChange={(e) => setForm({ ...form, manager: e.target.value })}
                   placeholder="Daniel Reyes"
                 />
+              </div>
+              <div className="grid gap-1.5">
+                <Label htmlFor="emp-access-role">Access role</Label>
+                <Select
+                  value={form.roleId || defaultRoleId()}
+                  onValueChange={(v) => setForm({ ...form, roleId: v })}
+                >
+                  <SelectTrigger id="emp-access-role">
+                    <SelectValue placeholder="Select access role" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {roles.map((r) => (
+                      <SelectItem key={r.id} value={r.id}>
+                        {r.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <p className="text-xs text-muted-foreground">
+                  Controls what this employee can see and edit once they sign in — set in Settings →
+                  Roles &amp; Permissions.
+                </p>
               </div>
             </div>
             <DialogFooter>

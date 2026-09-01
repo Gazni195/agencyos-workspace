@@ -1,9 +1,10 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Link } from "@tanstack/react-router";
-import { conversations } from "@/data/workspace";
+import { useInboxStore } from "@/store/inboxStore";
 import { Mail } from "lucide-react";
 
 export function InboxPreview() {
+  const conversations = useInboxStore((s) => s.conversations);
   const unread = conversations
     .filter((c) => c.unread)
     .map((c) => ({

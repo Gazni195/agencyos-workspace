@@ -43,7 +43,6 @@ import {
   deliverableStatuses,
   deliverableStatusLabels,
   milestones,
-  projectActivity,
   projectAllocations,
   projectFilesByProject,
   taskStatuses,
@@ -56,7 +55,11 @@ import { taskStatusLabels } from "@/data/delivery";
 import { useEmployeesStore } from "@/store/employeesStore";
 import { useClientsStore } from "@/store/clientsStore";
 import { useDeliverablesStore } from "@/store/deliverablesStore";
+import { useActivityStore } from "@/store/activityStore";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { NewDeliverableDialog } from "@/components/projects/NewDeliverableDialog";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/projects/$projectId")({
   head: () => ({
@@ -100,8 +103,12 @@ function ProjectDetailPage() {
   const addDeliverable = useDeliverablesStore((s) => s.addDeliverable);
   const setDeliverableStatus = useDeliverablesStore((s) => s.setStatus);
   const deliverables = allDeliverables.filter((d) => d.projectId === projectId);
+  const projectActivity = useActivityStore((s) => s.projectActivity);
+  const addProjectActivity = useActivityStore((s) => s.addProjectActivity);
+  const currentUser = useCurrentUser();
 
   const [progressDraft, setProgressDraft] = useState<number | null>(null);
+  const [updateText, setUpdateText] = useState("");
 
   if (!project) {
     return (
@@ -133,6 +140,18 @@ function ProjectDetailPage() {
   const remaining = project.budget - project.spend;
   const progress = progressDraft ?? project.progress;
   const clientName = clients.find((c) => c.id === project.clientId)?.name ?? "Unknown client";
+
+  function handleAddUpdate() {
+    if (!updateText.trim()) return;
+    addProjectActivity({
+      id: `pa-${project!.id}-update-${Date.now()}`,
+      projectId: project!.id,
+      who: currentUser.name,
+      what: updateText.trim(),
+      when: new Date().toISOString().slice(0, 10),
+    });
+    setUpdateText("");
+  }
 
   return (
     <section className="mx-auto max-w-7xl">
@@ -204,6 +223,20 @@ function ProjectDetailPage() {
 
               <div className="mt-6 border-t border-border pt-4">
                 <p className="mb-3 text-sm font-semibold">Recent activity</p>
+                <div className="mb-3 flex gap-2">
+                  <Input
+                    value={updateText}
+                    onChange={(e) => setUpdateText(e.target.value)}
+                    placeholder="Post an update…"
+                    className="h-9"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") handleAddUpdate();
+                    }}
+                  />
+                  <Button size="sm" onClick={handleAddUpdate} disabled={!updateText.trim()}>
+                    Post
+                  </Button>
+                </div>
                 {activity.length === 0 ? (
                   <p className="text-sm text-muted-foreground">No activity logged yet.</p>
                 ) : (

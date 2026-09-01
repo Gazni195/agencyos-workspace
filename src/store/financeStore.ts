@@ -5,13 +5,17 @@ import { create } from "zustand";
 import {
   invoices as seedInvoices,
   expenses as seedExpenses,
+  invoiceTotal,
   type Invoice,
   type InvoiceStatus,
   type Expense,
   type ExpenseCategory,
   type ExpenseStatus,
 } from "@/data/finance";
-import { currentUser } from "@/mock";
+import { money } from "@/data/agency";
+import { getCurrentUser } from "@/hooks/useCurrentUser";
+import { useActivityStore } from "./activityStore";
+import { useInboxStore } from "./inboxStore";
 
 type FinanceState = {
   invoices: Invoice[];
@@ -61,8 +65,17 @@ export const useFinanceStore = create<FinanceState>((set, get) => ({
       ],
     };
     set((s) => ({ invoices: [invoice, ...s.invoices] }));
+    useActivityStore.getState().addClientActivity({
+      id: `ca-${clientId}-invoice-${invoice.id}`,
+      clientId,
+      type: "invoice",
+      title: `Invoice ${invoice.number} issued`,
+      description: `${money(invoiceTotal(invoice))} billed.`,
+      who: getCurrentUser().name,
+      when: today,
+    });
   },
-  setInvoiceStatus: (id, status) =>
+  setInvoiceStatus: (id, status) => {
     set((s) => ({
       invoices: s.invoices.map((inv) =>
         inv.id === id
@@ -73,9 +86,24 @@ export const useFinanceStore = create<FinanceState>((set, get) => ({
             }
           : inv,
       ),
-    })),
+    }));
+    if (status === "paid") {
+      const invoice = get().invoices.find((inv) => inv.id === id);
+      if (invoice) {
+        useInboxStore.getState().addNotification({
+          id: `nt-invoice-paid-${id}`,
+          icon: "system",
+          title: "Invoice paid",
+          detail: `${invoice.number} (${money(invoiceTotal(invoice))}) was marked paid.`,
+          time: "Just now",
+          read: false,
+        });
+      }
+    }
+  },
   expenses: seedExpenses,
   addExpense: (vendor, amount, category = "Software", clientId, projectId) => {
+    const submittedBy = getCurrentUser().name;
     const expense: Expense = {
       id: `ex-${Date.now()}`,
       vendor,
@@ -83,12 +111,34 @@ export const useFinanceStore = create<FinanceState>((set, get) => ({
       date: new Date().toISOString().slice(0, 10),
       amount,
       status: "pending",
-      submittedBy: currentUser.name,
+      submittedBy,
       ...(clientId ? { clientId } : {}),
       ...(projectId ? { projectId } : {}),
     };
     set((s) => ({ expenses: [expense, ...s.expenses] }));
+    useInboxStore.getState().addNotification({
+      id: `nt-expense-${expense.id}`,
+      icon: "approval",
+      title: "Expense needs approval",
+      detail: `${vendor} — ${money(amount)} submitted by ${submittedBy}.`,
+      time: "Just now",
+      read: false,
+    });
   },
-  setExpenseStatus: (id, status) =>
-    set((s) => ({ expenses: s.expenses.map((e) => (e.id === id ? { ...e, status } : e)) })),
+  setExpenseStatus: (id, status) => {
+    set((s) => ({ expenses: s.expenses.map((e) => (e.id === id ? { ...e, status } : e)) }));
+    if (status === "approved" || status === "rejected") {
+      const expense = get().expenses.find((e) => e.id === id);
+      if (expense) {
+        useInboxStore.getState().addNotification({
+          id: `nt-expense-${id}-${status}`,
+          icon: "approval",
+          title: status === "approved" ? "Expense approved" : "Expense rejected",
+          detail: `${expense.vendor} — ${money(expense.amount)} was ${status}.`,
+          time: "Just now",
+          read: false,
+        });
+      }
+    }
+  },
 }));

@@ -16,15 +16,16 @@ import {
   YAxis,
 } from "recharts";
 import { KpiCard } from "@/components/common/KpiCard";
-import {
-  agingByClient,
-  agingSummary,
-  expenseCategoryTotals,
-  financialTrend,
-  invoiceTotal,
-} from "@/data/finance";
+import { invoiceTotal } from "@/data/finance";
 import { money } from "@/data/agency";
 import { useFinanceStore } from "@/store/financeStore";
+import {
+  computeAgingByClient,
+  computeAgingSummary,
+  computeExpenseCategoryTotals,
+  computeFinancialTrend,
+} from "@/services/financeReportsService";
+import { useClientsStore } from "@/store/clientsStore";
 
 export const Route = createFileRoute("/finance/")({
   head: () => ({
@@ -49,6 +50,7 @@ const AGING_KEYS = ["0-30", "31-60", "61-90", "90+"] as const;
 function FinanceRevenuePage() {
   const invoices = useFinanceStore((s) => s.invoices);
   const expenses = useFinanceStore((s) => s.expenses);
+  const clients = useClientsStore((s) => s.clients);
 
   const revenue = invoices
     .filter((i) => i.status === "paid")
@@ -63,8 +65,10 @@ function FinanceRevenuePage() {
   const margin = revenue ? Math.round((profit / revenue) * 1000) / 10 : 0;
   const overdueCount = invoices.filter((i) => i.status === "overdue").length;
 
-  const aging = agingSummary();
-  const categoryTotals = expenseCategoryTotals();
+  const agingByClient = computeAgingByClient(invoices, clients);
+  const aging = computeAgingSummary(agingByClient);
+  const categoryTotals = computeExpenseCategoryTotals(expenses);
+  const financialTrend = computeFinancialTrend(invoices, expenses);
 
   return (
     <div>

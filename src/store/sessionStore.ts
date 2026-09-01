@@ -1,10 +1,11 @@
-// Stand-in for a real session until Phase G wires up backend auth. There is
-// no login/logout that changes this today — AUTH_ROUTES in __root.tsx just
-// swap the page chrome. What this store gives the rest of the app is a
-// single source of truth for "which role is currently active", so the
-// permission matrix in Settings -> Roles & Permissions has something real
-// to gate against right now (see usePermissions / RequireModuleAccess)
-// instead of being a display-only settings screen.
+// Single source of truth for "which permission role is currently active"
+// (see usePermissions / RequireModuleAccess). Since Phase G, real login
+// (src/routes/login.tsx) sets this from the signed-in identity's actual
+// role on every sign-in — it's no longer just a placeholder default. The
+// "Preview role" switcher in AppShell's header still overrides it in the
+// same running session, on purpose: it's how anyone can see the RBAC
+// matrix from Settings -> Roles & Permissions actually working without
+// needing a second account to sign in as.
 import { create } from "zustand";
 import { currentUser } from "@/mock/dashboard";
 

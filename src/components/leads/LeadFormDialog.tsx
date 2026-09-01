@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -20,13 +20,26 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { sources } from "@/data/crm";
 import type { StoreLead } from "@/store/leadsStore";
+import { useLeadsStore } from "@/store/leadsStore";
 import { useEmployeesStore } from "@/store/employeesStore";
+
+// A curated starting vocabulary — data/crm.ts's `sources` used to be
+// derived once, at import time, from the (permanently empty) static leads
+// seed, so this dropdown had zero options no matter how many real leads
+// existed (same bug fixed for reports.leads.tsx in an earlier phase, missed
+// here). Union it with whatever sources are actually in use so the list
+// stays real once leads start using something outside this starter set.
+const DEFAULT_SOURCES = ["Referral", "Inbound", "Outbound", "Event", "Partner", "Website"];
 
 export function LeadFormDialog({ onCreate }: { onCreate: (lead: StoreLead) => void }) {
   const employees = useEmployeesStore((s) => s.employees);
   const owners = employees.map((e) => e.name);
+  const leads = useLeadsStore((s) => s.leads);
+  const sources = useMemo(
+    () => Array.from(new Set([...DEFAULT_SOURCES, ...leads.map((l) => l.source)])),
+    [leads],
+  );
   const [open, setOpen] = useState(false);
   const [company, setCompany] = useState("");
   const [contact, setContact] = useState("");

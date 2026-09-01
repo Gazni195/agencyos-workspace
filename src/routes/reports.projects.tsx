@@ -23,8 +23,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ExportCsvButton } from "@/components/reports/ExportCsvButton";
-import { onTimeDeliveryRate, projectBudgetActual, projectStatusDistribution } from "@/data/finance";
 import { money } from "@/data/agency";
+import { useProjectsStore } from "@/store/projectsStore";
+import {
+  computeOnTimeDeliveryRate,
+  computeProjectBudgetActual,
+  computeProjectStatusDistribution,
+} from "@/services/financeReportsService";
 
 export const Route = createFileRoute("/reports/projects")({
   head: () => ({
@@ -43,6 +48,11 @@ const STATUS_COLORS: Record<string, string> = {
 };
 
 function ProjectsReportPage() {
+  const projects = useProjectsStore((s) => s.projects);
+  const projectStatusDistribution = computeProjectStatusDistribution(projects);
+  const projectBudgetActual = computeProjectBudgetActual(projects);
+  const onTimeDeliveryRate = computeOnTimeDeliveryRate(projects);
+
   const totalProjects = projectStatusDistribution.reduce((s, d) => s + d.value, 0);
   const totalBudget = projectBudgetActual.reduce((s, p) => s + p.budget, 0);
   const totalActual = projectBudgetActual.reduce((s, p) => s + p.actual, 0);

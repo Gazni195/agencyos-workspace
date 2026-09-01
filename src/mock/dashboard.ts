@@ -1,16 +1,7 @@
-// Frontend-only mock data for the app shell (header notifications,
-// global search) and current-user identity.
-// Replace these with API/ERPNext calls in a later phase.
-
-export type NotificationItem = {
-  id: string;
-  title: string;
-  body: string;
-  when: string;
-  unread: boolean;
-};
-
-export const headerNotifications: NotificationItem[] = [];
+// Frontend-only mock data for the app shell (global search) and
+// current-user identity. Replace these with API/ERPNext calls in a later
+// phase. Header/inbox notifications are real now — see inboxStore.ts and
+// its producers across the other stores, not static data here.
 
 export type SearchEntry = { label: string; group: string; to: string };
 

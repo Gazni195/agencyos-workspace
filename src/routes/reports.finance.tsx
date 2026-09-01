@@ -25,8 +25,15 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ExportCsvButton } from "@/components/reports/ExportCsvButton";
-import { agingByClient, agingSummary, expenseCategoryTotals, financialTrend } from "@/data/finance";
 import { money } from "@/data/agency";
+import { useFinanceStore } from "@/store/financeStore";
+import { useClientsStore } from "@/store/clientsStore";
+import {
+  computeAgingByClient,
+  computeAgingSummary,
+  computeExpenseCategoryTotals,
+  computeFinancialTrend,
+} from "@/services/financeReportsService";
 
 export const Route = createFileRoute("/reports/finance")({
   head: () => ({
@@ -47,7 +54,13 @@ const CATEGORY_COLORS = [
 ];
 
 function FinanceReportPage() {
-  const aging = agingSummary();
+  const invoices = useFinanceStore((s) => s.invoices);
+  const expenses = useFinanceStore((s) => s.expenses);
+  const clients = useClientsStore((s) => s.clients);
+
+  const agingByClient = computeAgingByClient(invoices, clients);
+  const aging = computeAgingSummary(agingByClient);
+  const financialTrend = computeFinancialTrend(invoices, expenses);
   const agingChartData = [
     { bucket: "0-30", amount: aging["0-30"] },
     { bucket: "31-60", amount: aging["31-60"] },
@@ -57,7 +70,7 @@ function FinanceReportPage() {
   const totalReceivables = agingChartData.reduce((s, b) => s + b.amount, 0);
   const overdue = aging["90+"];
 
-  const categoryTotals = expenseCategoryTotals();
+  const categoryTotals = computeExpenseCategoryTotals(expenses);
   const totalExpenses = categoryTotals.reduce((s, c) => s + c.amount, 0);
 
   const avgMargin = financialTrend.length

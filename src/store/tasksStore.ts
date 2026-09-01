@@ -9,6 +9,8 @@ import {
   type TaskComment,
   type TaskStatus,
 } from "@/data/delivery";
+import { useEmployeesStore } from "./employeesStore";
+import { useInboxStore } from "./inboxStore";
 
 type TasksState = {
   tasks: DeliveryTask[];
@@ -22,7 +24,22 @@ type TasksState = {
 
 export const useTasksStore = create<TasksState>((set) => ({
   tasks: deliveryTasks,
-  addTask: (task) => set((s) => ({ tasks: [task, ...s.tasks] })),
+  addTask: (task) => {
+    set((s) => ({ tasks: [task, ...s.tasks] }));
+    if (task.assigneeId) {
+      const assignee = useEmployeesStore.getState().employees.find((e) => e.id === task.assigneeId);
+      if (assignee) {
+        useInboxStore.getState().addNotification({
+          id: `nt-task-${task.id}`,
+          icon: "task",
+          title: "Task assigned",
+          detail: `"${task.title}" was assigned to ${assignee.name}.`,
+          time: "Just now",
+          read: false,
+        });
+      }
+    }
+  },
   updateTask: (id, patch) =>
     set((s) => ({ tasks: s.tasks.map((t) => (t.id === id ? { ...t, ...patch } : t)) })),
   setStatus: (id, status) =>

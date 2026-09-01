@@ -12,7 +12,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ExportCsvButton } from "@/components/reports/ExportCsvButton";
-import { leadStages, leads, money, sources } from "@/data/crm";
+import { leadStages, money } from "@/data/crm";
+import { useLeadsStore } from "@/store/leadsStore";
 
 export const Route = createFileRoute("/reports/leads")({
   head: () => ({
@@ -25,6 +26,9 @@ export const Route = createFileRoute("/reports/leads")({
 });
 
 function LeadsReportPage() {
+  const leads = useLeadsStore((s) => s.leads);
+  const sources = useMemo(() => Array.from(new Set(leads.map((l) => l.source))), [leads]);
+
   const byStage = useMemo(
     () =>
       leadStages.map((stage) => {
@@ -35,7 +39,7 @@ function LeadsReportPage() {
           value: stageLeads.reduce((s, l) => s + l.value, 0),
         };
       }),
-    [],
+    [leads],
   );
 
   const won = leads.filter((l) => l.stage === "Won");
@@ -60,7 +64,7 @@ function LeadsReportPage() {
           };
         })
         .sort((a, b) => b.value - a.value),
-    [],
+    [leads, sources],
   );
 
   const byOwner = useMemo(
@@ -78,7 +82,7 @@ function LeadsReportPage() {
         })
         .filter((o) => o.count > 0)
         .sort((a, b) => b.value - a.value),
-    [],
+    [leads],
   );
 
   return (

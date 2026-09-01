@@ -23,7 +23,7 @@ import { PendingApprovals } from "@/components/dashboard/PendingApprovals";
 import { InboxPreview } from "@/components/dashboard/InboxPreview";
 import { QuickActions } from "@/components/dashboard/QuickActions";
 import { getDashboardKpis, type DashboardKpi } from "@/services/dashboardService";
-import { currentUser } from "@/mock";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -51,6 +51,7 @@ const kpiIcons: Record<DashboardKpi["id"], LucideIcon> = {
 
 function Index() {
   const kpis = getDashboardKpis();
+  const currentUser = useCurrentUser();
 
   return (
     <div>

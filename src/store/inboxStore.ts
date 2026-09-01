@@ -22,6 +22,7 @@ type InboxState = {
   notifications: Notification[];
   markNotificationRead: (id: string) => void;
   markAllNotificationsRead: () => void;
+  addNotification: (notification: Notification) => void;
 };
 
 export const useInboxStore = create<InboxState>((set) => ({
@@ -62,4 +63,6 @@ export const useInboxStore = create<InboxState>((set) => ({
     })),
   markAllNotificationsRead: () =>
     set((s) => ({ notifications: s.notifications.map((n) => ({ ...n, read: true })) })),
+  addNotification: (notification) =>
+    set((s) => ({ notifications: [notification, ...s.notifications] })),
 }));

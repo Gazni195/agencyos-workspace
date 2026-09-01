@@ -9,6 +9,7 @@ import {
   MapPin,
   Pencil,
   Phone,
+  Plus,
   Receipt,
   StickyNote,
   Trash2,
@@ -32,8 +33,20 @@ import {
 import { useClientsStore } from "@/store/clientsStore";
 import { useProjectsStore } from "@/store/projectsStore";
 import { useDeliverablesStore } from "@/store/deliverablesStore";
-import { clientContacts, clientActivity, clientDocuments, money } from "@/data/crm";
+import { useActivityStore } from "@/store/activityStore";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { clientContacts, clientDocuments, money } from "@/data/crm";
 import { toast } from "sonner";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 export const Route = createFileRoute("/clients/$clientId")({
   head: () => ({
@@ -69,9 +82,14 @@ function ClientDetailPage() {
   const removeClient = useClientsStore((s) => s.removeClient);
   const projects = useProjectsStore((s) => s.projects);
   const allDeliverables = useDeliverablesStore((s) => s.deliverables);
+  const clientActivity = useActivityStore((s) => s.clientActivity);
+  const addClientActivity = useActivityStore((s) => s.addClientActivity);
+  const currentUser = useCurrentUser();
 
   const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const [noteOpen, setNoteOpen] = useState(false);
+  const [noteText, setNoteText] = useState("");
 
   if (!client) {
     return (
@@ -94,6 +112,22 @@ function ClientDetailPage() {
   const activity = [...clientActivity.filter((a) => a.clientId === client.id)].sort((a, b) =>
     b.when.localeCompare(a.when),
   );
+
+  function handleAddNote() {
+    if (!noteText.trim()) return;
+    addClientActivity({
+      id: `ca-${client!.id}-note-${Date.now()}`,
+      clientId: client!.id,
+      type: "note",
+      title: "Note added",
+      description: noteText.trim(),
+      who: currentUser.name,
+      when: new Date().toISOString().slice(0, 10),
+    });
+    setNoteText("");
+    setNoteOpen(false);
+    toast.success("Note added to the timeline");
+  }
   const documents = clientDocuments.filter((d) => d.clientId === client.id);
   const clientProjects = projects.filter((p) => p.clientId === client.id);
   const activeProjectCount = clientProjects.filter((p) => p.status !== "completed").length;
@@ -283,6 +317,38 @@ function ClientDetailPage() {
         </TabsContent>
 
         <TabsContent value="timeline" className="mt-5">
+          <div className="mb-4 flex justify-end">
+            <Dialog open={noteOpen} onOpenChange={setNoteOpen}>
+              <DialogTrigger asChild>
+                <Button size="sm" className="gap-1.5">
+                  <Plus className="size-3.5" /> Add note
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Add a note</DialogTitle>
+                </DialogHeader>
+                <div className="grid gap-1.5">
+                  <Label htmlFor="client-note">Note</Label>
+                  <Textarea
+                    id="client-note"
+                    value={noteText}
+                    onChange={(e) => setNoteText(e.target.value)}
+                    placeholder="What's the update on this account?"
+                    rows={4}
+                  />
+                </div>
+                <DialogFooter>
+                  <Button variant="outline" onClick={() => setNoteOpen(false)}>
+                    Cancel
+                  </Button>
+                  <Button onClick={handleAddNote} disabled={!noteText.trim()}>
+                    Add to timeline
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          </div>
           {activity.length === 0 ? (
             <div className="surface-card p-6">
               <EmptyState
