@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { Plus, Trash2, Users } from "lucide-react";
-import { Badge } from "@/shared/frontend/components/ui/badge";
-import { Button } from "@/shared/frontend/components/ui/button";
-import { Checkbox } from "@/shared/frontend/components/ui/checkbox";
-import { Input } from "@/shared/frontend/components/ui/input";
-import { Label } from "@/shared/frontend/components/ui/label";
-import { Textarea } from "@/shared/frontend/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Dialog,
   DialogContent,
@@ -15,8 +15,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/shared/frontend/components/ui/dialog";
-import { DeleteConfirmDialog } from "@/shared/frontend/components/DeleteConfirmDialog";
+} from "@/components/ui/dialog";
+import { DeleteConfirmDialog } from "@/components/shared/DeleteConfirmDialog";
 import {
   Table,
   TableBody,
@@ -24,10 +24,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/shared/frontend/components/ui/table";
-import { cn } from "@/shared/frontend/utils/utils";
-import { useSettingsStore } from "@/modules/settings/frontend/store/settingsStore";
-import { permissionModules, type PermissionAction } from "@/modules/settings/types";
+} from "@/components/ui/table";
+import { cn } from "@/lib/utils";
+import { useSettingsStore } from "@/store/settingsStore";
+import { permissionModules, type PermissionAction } from "@/data/workspace";
 
 export const Route = createFileRoute("/settings/roles")({
   head: () => ({

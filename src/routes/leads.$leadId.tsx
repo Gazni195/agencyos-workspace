@@ -2,23 +2,22 @@ import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { ArrowLeft, ArrowRightCircle, Mail, Phone, Send } from "lucide-react";
-import { PageHeader } from "@/shared/frontend/components/PageHeader";
-import { EmptyState } from "@/shared/frontend/components/EmptyState";
-import { ConvertLeadDialog } from "@/modules/leads/frontend/components/ConvertLeadDialog";
-import { Badge } from "@/shared/frontend/components/ui/badge";
-import { Button } from "@/shared/frontend/components/ui/button";
-import { Textarea } from "@/shared/frontend/components/ui/textarea";
+import { PageHeader } from "@/components/common/PageHeader";
+import { EmptyState } from "@/components/shared/EmptyState";
+import { ConvertLeadDialog } from "@/components/leads/ConvertLeadDialog";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/shared/frontend/components/ui/select";
-import { leadStageColor, leadStages, type LeadStage } from "@/modules/leads/types";
-import { money } from "@/shared/frontend/utils/money";
-import { useLeadsStore } from "@/modules/leads/frontend/store/leadsStore";
-import { cn } from "@/shared/frontend/utils/utils";
+} from "@/components/ui/select";
+import { leadStageColor, leadStages, money, type LeadStage } from "@/data/crm";
+import { useLeadsStore } from "@/store/leadsStore";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/leads/$leadId")({
   head: () => ({

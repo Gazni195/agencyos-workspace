@@ -15,7 +15,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { KpiCard } from "@/shared/frontend/components/KpiCard";
+import { KpiCard } from "@/components/common/KpiCard";
 import {
   Table,
   TableBody,
@@ -23,18 +23,18 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/shared/frontend/components/ui/table";
-import { ExportCsvButton } from "@/modules/reports/frontend/components/ExportCsvButton";
-import { money } from "@/shared/frontend/utils/money";
-import { useFinanceStore } from "@/modules/finance/frontend/store/financeStore";
-import { useClientsStore } from "@/modules/clients/frontend/store/clientsStore";
+} from "@/components/ui/table";
+import { ExportCsvButton } from "@/components/reports/ExportCsvButton";
+import { money } from "@/data/agency";
+import { useFinanceStore } from "@/store/financeStore";
+import { useClientsStore } from "@/store/clientsStore";
 import {
   computeClientHealthDistribution,
   computeClientRetention,
   computeClientRevenue,
   computeFinancialTrend,
   computeReceivablesTrend,
-} from "@/modules/reports/frontend/services/financeReportsService";
+} from "@/services/financeReportsService";
 
 export const Route = createFileRoute("/reports/")({
   head: () => ({

@@ -5,8 +5,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "sonner";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
-import { Button } from "@/shared/frontend/components/ui/button";
-import { Checkbox } from "@/shared/frontend/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
   FormControl,
@@ -14,13 +14,13 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/shared/frontend/components/ui/form";
-import { Input } from "@/shared/frontend/components/ui/input";
-import { AuthLayout } from "@/modules/auth/frontend/components/AuthLayout";
-import { useAuthStore } from "@/modules/auth/frontend/store/authStore";
-import { useSessionStore } from "@/modules/auth/frontend/store/sessionStore";
-import { useEmployeesStore } from "@/modules/employees/frontend/store/employeesStore";
-import { resolveIdentityByEmail } from "@/shared/frontend/utils/identity";
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { AuthLayout } from "@/components/layout/AuthLayout";
+import { useAuthStore } from "@/store/authStore";
+import { useSessionStore } from "@/store/sessionStore";
+import { useEmployeesStore } from "@/store/employeesStore";
+import { resolveIdentityByEmail } from "@/lib/identity";
 
 export const Route = createFileRoute("/login")({
   head: () => ({

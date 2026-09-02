@@ -13,10 +13,10 @@ import { Loader2 } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import { reportLovableError } from "@/shared/frontend/utils/lovable-error-reporting";
-import { AppShell } from "@/shared/frontend/components/layout/AppShell";
-import { Toaster } from "@/shared/frontend/components/ui/sonner";
-import { useAuthStore } from "@/modules/auth/frontend/store/authStore";
+import { reportLovableError } from "../lib/lovable-error-reporting";
+import { AppShell } from "../components/layout/AppShell";
+import { Toaster } from "../components/ui/sonner";
+import { useAuthStore } from "../store/authStore";
 
 function NotFoundComponent() {
   return (

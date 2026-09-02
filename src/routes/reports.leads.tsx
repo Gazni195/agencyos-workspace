@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Percent, PiggyBank, Target, Trophy } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { KpiCard } from "@/shared/frontend/components/KpiCard";
+import { KpiCard } from "@/components/common/KpiCard";
 import {
   Table,
   TableBody,
@@ -10,11 +10,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/shared/frontend/components/ui/table";
-import { ExportCsvButton } from "@/modules/reports/frontend/components/ExportCsvButton";
-import { leadStages } from "@/modules/leads/types";
-import { money } from "@/shared/frontend/utils/money";
-import { useLeadsStore } from "@/modules/leads/frontend/store/leadsStore";
+} from "@/components/ui/table";
+import { ExportCsvButton } from "@/components/reports/ExportCsvButton";
+import { leadStages, money } from "@/data/crm";
+import { useLeadsStore } from "@/store/leadsStore";
 
 export const Route = createFileRoute("/reports/leads")({
   head: () => ({

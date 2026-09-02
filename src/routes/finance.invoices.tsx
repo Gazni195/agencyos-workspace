@@ -1,29 +1,29 @@
 import { useCallback, useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { PageHeader } from "@/shared/frontend/components/PageHeader";
-import { StatusBadge } from "@/shared/frontend/components/StatusBadge";
-import { SearchBar } from "@/shared/frontend/components/SearchBar";
-import { FilterBar, type FilterDef } from "@/shared/frontend/components/FilterBar";
-import { DataTable, type Column } from "@/shared/frontend/components/DataTable";
-import { DrawerPanel } from "@/shared/frontend/components/DrawerPanel";
+import { PageHeader } from "@/components/common/PageHeader";
+import { StatusBadge } from "@/components/common/StatusBadge";
+import { SearchBar } from "@/components/shared/SearchBar";
+import { FilterBar, type FilterDef } from "@/components/shared/FilterBar";
+import { DataTable, type Column } from "@/components/shared/DataTable";
+import { DrawerPanel } from "@/components/shared/DrawerPanel";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/shared/frontend/components/ui/select";
-import { InvoiceFormDialog } from "@/modules/finance/frontend/components/InvoiceFormDialog";
-import { useFinanceStore } from "@/modules/finance/frontend/store/financeStore";
+} from "@/components/ui/select";
+import { InvoiceFormDialog } from "@/components/finance/InvoiceFormDialog";
+import { useFinanceStore } from "@/store/financeStore";
 import {
   invoiceSubtotal,
   invoiceTax,
   invoiceTotal,
   type Invoice,
   type InvoiceStatus,
-} from "@/modules/finance/types";
-import { money } from "@/shared/frontend/utils/money";
-import { useClientsStore } from "@/modules/clients/frontend/store/clientsStore";
+} from "@/data/finance";
+import { money } from "@/data/agency";
+import { useClientsStore } from "@/store/clientsStore";
 
 export const Route = createFileRoute("/finance/invoices")({
   head: () => ({

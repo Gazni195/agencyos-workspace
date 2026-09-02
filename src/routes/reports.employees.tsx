@@ -10,7 +10,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { KpiCard } from "@/shared/frontend/components/KpiCard";
+import { KpiCard } from "@/components/common/KpiCard";
 import {
   Table,
   TableBody,
@@ -18,10 +18,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/shared/frontend/components/ui/table";
-import { ExportCsvButton } from "@/modules/reports/frontend/components/ExportCsvButton";
-import { attendanceTrend, departmentAttendance } from "@/modules/reports/types";
-import { performanceByDept } from "@/modules/employees/types";
+} from "@/components/ui/table";
+import { ExportCsvButton } from "@/components/reports/ExportCsvButton";
+import { attendanceTrend, departmentAttendance } from "@/data/finance";
+import { performanceByDept } from "@/data/agency";
 
 export const Route = createFileRoute("/reports/employees")({
   head: () => ({

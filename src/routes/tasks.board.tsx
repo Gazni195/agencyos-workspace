@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { SearchBar } from "@/shared/frontend/components/SearchBar";
-import { FilterBar } from "@/shared/frontend/components/FilterBar";
-import { TaskBoard } from "@/modules/tasks/frontend/components/TaskBoard";
-import { TaskDetailDrawer } from "@/modules/tasks/frontend/components/TaskDetailDrawer";
-import { NewTaskDialog } from "@/modules/tasks/frontend/components/NewTaskDialog";
-import { useTaskFilters } from "@/modules/tasks/frontend/hooks/useTaskFilters";
-import { useTasksStore } from "@/modules/tasks/frontend/store/tasksStore";
+import { SearchBar } from "@/components/shared/SearchBar";
+import { FilterBar } from "@/components/shared/FilterBar";
+import { TaskBoard } from "@/components/tasks/TaskBoard";
+import { TaskDetailDrawer } from "@/components/tasks/TaskDetailDrawer";
+import { NewTaskDialog } from "@/components/tasks/NewTaskDialog";
+import { useTaskFilters } from "@/hooks/useTaskFilters";
+import { useTasksStore } from "@/store/tasksStore";
 
 export const Route = createFileRoute("/tasks/board")({
   head: () => ({

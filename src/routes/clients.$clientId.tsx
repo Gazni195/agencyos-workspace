@@ -15,13 +15,13 @@ import {
   Trash2,
   Users as UsersIcon,
 } from "lucide-react";
-import { PageHeader } from "@/shared/frontend/components/PageHeader";
-import { StatusBadge } from "@/shared/frontend/components/StatusBadge";
-import { EmptyState } from "@/shared/frontend/components/EmptyState";
-import { DeleteConfirmDialog } from "@/shared/frontend/components/DeleteConfirmDialog";
-import { EditClientDialog } from "@/modules/clients/frontend/components/EditClientDialog";
-import { Button } from "@/shared/frontend/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/frontend/components/ui/tabs";
+import { PageHeader } from "@/components/common/PageHeader";
+import { StatusBadge } from "@/components/common/StatusBadge";
+import { EmptyState } from "@/components/shared/EmptyState";
+import { DeleteConfirmDialog } from "@/components/shared/DeleteConfirmDialog";
+import { EditClientDialog } from "@/components/clients/EditClientDialog";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Table,
   TableBody,
@@ -29,14 +29,13 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/shared/frontend/components/ui/table";
-import { useClientsStore } from "@/modules/clients/frontend/store/clientsStore";
-import { useProjectsStore } from "@/modules/projects/frontend/store/projectsStore";
-import { useDeliverablesStore } from "@/modules/projects/frontend/store/deliverablesStore";
-import { useActivityStore } from "@/shared/frontend/store/activityStore";
-import { useCurrentUser } from "@/shared/frontend/hooks/useCurrentUser";
-import { clientContacts, clientDocuments } from "@/modules/clients/types";
-import { money } from "@/shared/frontend/utils/money";
+} from "@/components/ui/table";
+import { useClientsStore } from "@/store/clientsStore";
+import { useProjectsStore } from "@/store/projectsStore";
+import { useDeliverablesStore } from "@/store/deliverablesStore";
+import { useActivityStore } from "@/store/activityStore";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { clientContacts, clientDocuments, money } from "@/data/crm";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -45,9 +44,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/shared/frontend/components/ui/dialog";
-import { Label } from "@/shared/frontend/components/ui/label";
-import { Textarea } from "@/shared/frontend/components/ui/textarea";
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 export const Route = createFileRoute("/clients/$clientId")({
   head: () => ({

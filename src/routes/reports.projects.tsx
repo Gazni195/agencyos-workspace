@@ -13,7 +13,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { KpiCard } from "@/shared/frontend/components/KpiCard";
+import { KpiCard } from "@/components/common/KpiCard";
 import {
   Table,
   TableBody,
@@ -21,15 +21,15 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/shared/frontend/components/ui/table";
-import { ExportCsvButton } from "@/modules/reports/frontend/components/ExportCsvButton";
-import { money } from "@/shared/frontend/utils/money";
-import { useProjectsStore } from "@/modules/projects/frontend/store/projectsStore";
+} from "@/components/ui/table";
+import { ExportCsvButton } from "@/components/reports/ExportCsvButton";
+import { money } from "@/data/agency";
+import { useProjectsStore } from "@/store/projectsStore";
 import {
   computeOnTimeDeliveryRate,
   computeProjectBudgetActual,
   computeProjectStatusDistribution,
-} from "@/modules/reports/frontend/services/financeReportsService";
+} from "@/services/financeReportsService";
 
 export const Route = createFileRoute("/reports/projects")({
   head: () => ({

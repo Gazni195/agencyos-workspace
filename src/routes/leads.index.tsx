@@ -1,19 +1,18 @@
 import { useMemo, useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { KanbanSquare, List as ListIcon } from "lucide-react";
-import { PageHeader } from "@/shared/frontend/components/PageHeader";
-import { SearchBar } from "@/shared/frontend/components/SearchBar";
-import { FilterBar, type FilterDef } from "@/shared/frontend/components/FilterBar";
-import { DataTable, type Column } from "@/shared/frontend/components/DataTable";
-import { Button } from "@/shared/frontend/components/ui/button";
-import { Badge } from "@/shared/frontend/components/ui/badge";
-import { PipelineBoard } from "@/modules/leads/frontend/components/PipelineBoard";
-import { LeadFormDialog } from "@/modules/leads/frontend/components/LeadFormDialog";
-import { ConvertLeadDialog } from "@/modules/leads/frontend/components/ConvertLeadDialog";
-import { leadStageColor, leadStages } from "@/modules/leads/types";
-import { money } from "@/shared/frontend/utils/money";
-import { useLeadsStore, type StoreLead } from "@/modules/leads/frontend/store/leadsStore";
-import { cn } from "@/shared/frontend/utils/utils";
+import { PageHeader } from "@/components/common/PageHeader";
+import { SearchBar } from "@/components/shared/SearchBar";
+import { FilterBar, type FilterDef } from "@/components/shared/FilterBar";
+import { DataTable, type Column } from "@/components/shared/DataTable";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { PipelineBoard } from "@/components/leads/PipelineBoard";
+import { LeadFormDialog } from "@/components/leads/LeadFormDialog";
+import { ConvertLeadDialog } from "@/components/leads/ConvertLeadDialog";
+import { leadStageColor, leadStages, money } from "@/data/crm";
+import { useLeadsStore, type StoreLead } from "@/store/leadsStore";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/leads/")({
   head: () => ({

@@ -1,17 +1,17 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { SearchBar } from "@/shared/frontend/components/SearchBar";
-import { FilterBar } from "@/shared/frontend/components/FilterBar";
-import { DataTable, type Column } from "@/shared/frontend/components/DataTable";
-import { StatusBadge } from "@/shared/frontend/components/StatusBadge";
-import { Avatar, AvatarFallback } from "@/shared/frontend/components/ui/avatar";
-import { NewTaskDialog } from "@/modules/tasks/frontend/components/NewTaskDialog";
-import { TaskDetailDrawer } from "@/modules/tasks/frontend/components/TaskDetailDrawer";
-import { useTaskFilters } from "@/modules/tasks/frontend/hooks/useTaskFilters";
-import { useTasksStore } from "@/modules/tasks/frontend/store/tasksStore";
-import { type DeliveryTask } from "@/modules/tasks/types";
-import { useEmployeesStore } from "@/modules/employees/frontend/store/employeesStore";
-import { useProjectsStore } from "@/modules/projects/frontend/store/projectsStore";
+import { SearchBar } from "@/components/shared/SearchBar";
+import { FilterBar } from "@/components/shared/FilterBar";
+import { DataTable, type Column } from "@/components/shared/DataTable";
+import { StatusBadge } from "@/components/common/StatusBadge";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { NewTaskDialog } from "@/components/tasks/NewTaskDialog";
+import { TaskDetailDrawer } from "@/components/tasks/TaskDetailDrawer";
+import { useTaskFilters } from "@/hooks/useTaskFilters";
+import { useTasksStore } from "@/store/tasksStore";
+import { type DeliveryTask } from "@/data/delivery";
+import { useEmployeesStore } from "@/store/employeesStore";
+import { useProjectsStore } from "@/store/projectsStore";
 
 export const Route = createFileRoute("/tasks/list")({
   head: () => ({

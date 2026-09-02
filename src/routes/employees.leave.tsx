@@ -2,11 +2,11 @@ import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { CalendarDays, CheckCircle2, Clock3, X } from "lucide-react";
-import { KpiCard } from "@/shared/frontend/components/KpiCard";
-import { PageHeader } from "@/shared/frontend/components/PageHeader";
-import { StatusBadge } from "@/shared/frontend/components/StatusBadge";
-import { FilterBar, type FilterDef } from "@/shared/frontend/components/FilterBar";
-import { Button } from "@/shared/frontend/components/ui/button";
+import { KpiCard } from "@/components/common/KpiCard";
+import { PageHeader } from "@/components/common/PageHeader";
+import { StatusBadge } from "@/components/common/StatusBadge";
+import { FilterBar, type FilterDef } from "@/components/shared/FilterBar";
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -14,10 +14,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/shared/frontend/components/ui/table";
-import { useHrStore } from "@/modules/employees/frontend/store/hrStore";
-import { useEmployeesStore } from "@/modules/employees/frontend/store/employeesStore";
-import { useSettingsStore } from "@/modules/settings/frontend/store/settingsStore";
+} from "@/components/ui/table";
+import { useHrStore } from "@/store/hrStore";
+import { useEmployeesStore } from "@/store/employeesStore";
+import { useSettingsStore } from "@/store/settingsStore";
 
 export const Route = createFileRoute("/employees/leave")({
   head: () => ({

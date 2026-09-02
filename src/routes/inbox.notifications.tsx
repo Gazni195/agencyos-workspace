@@ -1,11 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AtSign, Bell, CalendarCheck, CheckCircle2, ListTodo, Server } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { Button } from "@/shared/frontend/components/ui/button";
-import { EmptyState } from "@/shared/frontend/components/EmptyState";
-import { cn } from "@/shared/frontend/utils/utils";
-import { useInboxStore } from "@/modules/inbox/frontend/store/inboxStore";
-import type { Notification } from "@/modules/inbox/types";
+import { Button } from "@/components/ui/button";
+import { EmptyState } from "@/components/shared/EmptyState";
+import { cn } from "@/lib/utils";
+import { useInboxStore } from "@/store/inboxStore";
+import type { Notification } from "@/data/workspace";
 
 export const Route = createFileRoute("/inbox/notifications")({
   component: NotificationsPage,

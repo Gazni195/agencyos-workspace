@@ -1,9 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Mail, Phone, MapPin, ArrowLeft, Briefcase, DollarSign, CalendarDays } from "lucide-react";
-import { Avatar, AvatarFallback } from "@/shared/frontend/components/ui/avatar";
-import { Button } from "@/shared/frontend/components/ui/button";
-import { StatusBadge } from "@/shared/frontend/components/StatusBadge";
-import { Progress } from "@/shared/frontend/components/ui/progress";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { StatusBadge } from "@/components/common/StatusBadge";
+import { Progress } from "@/components/ui/progress";
 import {
   Table,
   TableBody,
@@ -11,12 +11,12 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/shared/frontend/components/ui/table";
-import { attendance, leaveRequests, documents, performance } from "@/modules/employees/types";
-import { employeeGoals } from "@/modules/employees/types";
-import { useEmployeesStore } from "@/modules/employees/frontend/store/employeesStore";
-import { useHrStore } from "@/modules/employees/frontend/store/hrStore";
-import { useProjectsStore } from "@/modules/projects/frontend/store/projectsStore";
+} from "@/components/ui/table";
+import { attendance, leaveRequests, documents, performance } from "@/data/agency.ts";
+import { employeeGoals } from "@/data/hr.ts";
+import { useEmployeesStore } from "@/store/employeesStore";
+import { useHrStore } from "@/store/hrStore";
+import { useProjectsStore } from "@/store/projectsStore";
 
 export const Route = createFileRoute("/employees/$employeeId")({
   head: ({ params }) => ({

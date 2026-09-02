@@ -10,10 +10,10 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { KpiCard } from "@/shared/frontend/components/KpiCard";
-import { PageHeader } from "@/shared/frontend/components/PageHeader";
-import { StatusBadge } from "@/shared/frontend/components/StatusBadge";
-import { Badge } from "@/shared/frontend/components/ui/badge";
+import { KpiCard } from "@/components/common/KpiCard";
+import { PageHeader } from "@/components/common/PageHeader";
+import { StatusBadge } from "@/components/common/StatusBadge";
+import { Badge } from "@/components/ui/badge";
 import {
   Table,
   TableBody,
@@ -21,13 +21,13 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/shared/frontend/components/ui/table";
-import { useEmployeesStore } from "@/modules/employees/frontend/store/employeesStore";
-import { useHrStore } from "@/modules/employees/frontend/store/hrStore";
-import { useProjectsStore } from "@/modules/projects/frontend/store/projectsStore";
-import { useTasksStore } from "@/modules/tasks/frontend/store/tasksStore";
-import { useClientsStore } from "@/modules/clients/frontend/store/clientsStore";
-import { TimesheetFormDialog } from "@/modules/employees/frontend/components/TimesheetFormDialog";
+} from "@/components/ui/table";
+import { useEmployeesStore } from "@/store/employeesStore";
+import { useHrStore } from "@/store/hrStore";
+import { useProjectsStore } from "@/store/projectsStore";
+import { useTasksStore } from "@/store/tasksStore";
+import { useClientsStore } from "@/store/clientsStore";
+import { TimesheetFormDialog } from "@/components/employees/TimesheetFormDialog";
 
 export const Route = createFileRoute("/employees/timesheets")({
   head: () => ({

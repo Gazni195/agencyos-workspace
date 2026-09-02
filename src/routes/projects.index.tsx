@@ -1,17 +1,17 @@
 import { useCallback, useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { LayoutGrid, List as ListIcon } from "lucide-react";
-import { PageHeader } from "@/shared/frontend/components/PageHeader";
-import { SearchBar } from "@/shared/frontend/components/SearchBar";
-import { FilterBar, type FilterDef } from "@/shared/frontend/components/FilterBar";
-import { EmptyState } from "@/shared/frontend/components/EmptyState";
-import { ProjectCard } from "@/modules/projects/frontend/components/ProjectCard";
-import { NewProjectDialog } from "@/modules/projects/frontend/components/NewProjectDialog";
-import { Button } from "@/shared/frontend/components/ui/button";
-import { useProjectsStore } from "@/modules/projects/frontend/store/projectsStore";
-import { useClientsStore } from "@/modules/clients/frontend/store/clientsStore";
-import { money } from "@/shared/frontend/utils/money";
-import { cn } from "@/shared/frontend/utils/utils";
+import { PageHeader } from "@/components/common/PageHeader";
+import { SearchBar } from "@/components/shared/SearchBar";
+import { FilterBar, type FilterDef } from "@/components/shared/FilterBar";
+import { EmptyState } from "@/components/shared/EmptyState";
+import { ProjectCard } from "@/components/projects/ProjectCard";
+import { NewProjectDialog } from "@/components/projects/NewProjectDialog";
+import { Button } from "@/components/ui/button";
+import { useProjectsStore } from "@/store/projectsStore";
+import { useClientsStore } from "@/store/clientsStore";
+import { money } from "@/data/agency";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/projects/")({
   head: () => ({

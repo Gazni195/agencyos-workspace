@@ -1,12 +1,12 @@
 import { useMemo } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { StatusBadge } from "@/shared/frontend/components/StatusBadge";
-import { DataTable, type Column } from "@/shared/frontend/components/DataTable";
-import { useClientsStore } from "@/modules/clients/frontend/store/clientsStore";
-import { useProjectsStore } from "@/modules/projects/frontend/store/projectsStore";
-import { useTasksStore } from "@/modules/tasks/frontend/store/tasksStore";
-import { useDeliverablesStore } from "@/modules/projects/frontend/store/deliverablesStore";
-import type { Client } from "@/modules/clients/types";
+import { StatusBadge } from "@/components/common/StatusBadge";
+import { DataTable, type Column } from "@/components/shared/DataTable";
+import { useClientsStore } from "@/store/clientsStore";
+import { useProjectsStore } from "@/store/projectsStore";
+import { useTasksStore } from "@/store/tasksStore";
+import { useDeliverablesStore } from "@/store/deliverablesStore";
+import type { Client } from "@/data/crm";
 
 export const Route = createFileRoute("/operations/clients")({
   head: () => ({

@@ -1,11 +1,11 @@
 import { useMemo } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { Avatar, AvatarFallback } from "@/shared/frontend/components/ui/avatar";
-import { DataTable, type Column } from "@/shared/frontend/components/DataTable";
-import { useTasksStore } from "@/modules/tasks/frontend/store/tasksStore";
-import { useEmployeesStore } from "@/modules/employees/frontend/store/employeesStore";
-import type { Employee } from "@/modules/employees/types";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { DataTable, type Column } from "@/components/shared/DataTable";
+import { useTasksStore } from "@/store/tasksStore";
+import { useEmployeesStore } from "@/store/employeesStore";
+import type { Employee } from "@/data/agency";
 
 export const Route = createFileRoute("/operations/workload")({
   head: () => ({

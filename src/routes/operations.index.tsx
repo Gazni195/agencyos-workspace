@@ -1,12 +1,12 @@
 import { useMemo } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AlertTriangle, CheckCircle2, Clock, Eye } from "lucide-react";
-import { KpiCard } from "@/shared/frontend/components/KpiCard";
-import { StatusBadge } from "@/shared/frontend/components/StatusBadge";
-import { DataTable, type Column } from "@/shared/frontend/components/DataTable";
-import { useTasksStore } from "@/modules/tasks/frontend/store/tasksStore";
-import { useProjectsStore } from "@/modules/projects/frontend/store/projectsStore";
-import { type DeliveryTask } from "@/modules/tasks/types";
+import { KpiCard } from "@/components/common/KpiCard";
+import { StatusBadge } from "@/components/common/StatusBadge";
+import { DataTable, type Column } from "@/components/shared/DataTable";
+import { useTasksStore } from "@/store/tasksStore";
+import { useProjectsStore } from "@/store/projectsStore";
+import { type DeliveryTask } from "@/data/delivery";
 
 export const Route = createFileRoute("/operations/")({
   head: () => ({

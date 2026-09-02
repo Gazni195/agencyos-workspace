@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Building2, Briefcase, Users, Trash2 } from "lucide-react";
-import { KpiCard } from "@/shared/frontend/components/KpiCard";
-import { Badge } from "@/shared/frontend/components/ui/badge";
-import { Button } from "@/shared/frontend/components/ui/button";
-import { DeleteConfirmDialog } from "@/shared/frontend/components/DeleteConfirmDialog";
+import { KpiCard } from "@/components/common/KpiCard";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { DeleteConfirmDialog } from "@/components/shared/DeleteConfirmDialog";
 import {
   Table,
   TableBody,
@@ -12,16 +12,16 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/shared/frontend/components/ui/table";
+} from "@/components/ui/table";
 import {
   EditDepartmentDialog,
   EditDesignationDialog,
   EditIconButton,
   NewDepartmentDialog,
   NewDesignationDialog,
-} from "@/modules/settings/frontend/components/OrganizationDialogs";
-import { useSettingsStore } from "@/modules/settings/frontend/store/settingsStore";
-import { useEmployeesStore } from "@/modules/employees/frontend/store/employeesStore";
+} from "@/components/settings/OrganizationDialogs";
+import { useSettingsStore } from "@/store/settingsStore";
+import { useEmployeesStore } from "@/store/employeesStore";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/settings/")({

@@ -15,17 +15,17 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { KpiCard } from "@/shared/frontend/components/KpiCard";
-import { invoiceTotal } from "@/modules/finance/types";
-import { money } from "@/shared/frontend/utils/money";
-import { useFinanceStore } from "@/modules/finance/frontend/store/financeStore";
+import { KpiCard } from "@/components/common/KpiCard";
+import { invoiceTotal } from "@/data/finance";
+import { money } from "@/data/agency";
+import { useFinanceStore } from "@/store/financeStore";
 import {
   computeAgingByClient,
   computeAgingSummary,
   computeExpenseCategoryTotals,
   computeFinancialTrend,
-} from "@/modules/reports/frontend/services/financeReportsService";
-import { useClientsStore } from "@/modules/clients/frontend/store/clientsStore";
+} from "@/services/financeReportsService";
+import { useClientsStore } from "@/store/clientsStore";
 
 export const Route = createFileRoute("/finance/")({
   head: () => ({

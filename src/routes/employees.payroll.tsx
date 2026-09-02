@@ -10,17 +10,17 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { KpiCard } from "@/shared/frontend/components/KpiCard";
-import { PageHeader } from "@/shared/frontend/components/PageHeader";
-import { StatusBadge } from "@/shared/frontend/components/StatusBadge";
-import { DrawerPanel } from "@/shared/frontend/components/DrawerPanel";
+import { KpiCard } from "@/components/common/KpiCard";
+import { PageHeader } from "@/components/common/PageHeader";
+import { StatusBadge } from "@/components/common/StatusBadge";
+import { DrawerPanel } from "@/components/shared/DrawerPanel";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/shared/frontend/components/ui/select";
+} from "@/components/ui/select";
 import {
   Table,
   TableBody,
@@ -28,11 +28,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/shared/frontend/components/ui/table";
-import { payrollTrend, type PayrollRun } from "@/modules/employees/types";
-import { money } from "@/shared/frontend/utils/money";
-import { useHrStore } from "@/modules/employees/frontend/store/hrStore";
-import { useEmployeesStore } from "@/modules/employees/frontend/store/employeesStore";
+} from "@/components/ui/table";
+import { money, payrollTrend, type PayrollRun } from "@/data/agency";
+import { useHrStore } from "@/store/hrStore";
+import { useEmployeesStore } from "@/store/employeesStore";
 
 export const Route = createFileRoute("/employees/payroll")({
   head: () => ({

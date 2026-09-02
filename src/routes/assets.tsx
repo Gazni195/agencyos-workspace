@@ -13,18 +13,18 @@ import {
   Video,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { PageHeader } from "@/shared/frontend/components/PageHeader";
-import { RequireModuleAccess } from "@/shared/frontend/components/RequireModuleAccess";
-import { EmptyState } from "@/shared/frontend/components/EmptyState";
-import { DrawerPanel } from "@/shared/frontend/components/DrawerPanel";
-import { UploadAssetDialog } from "@/modules/assets/frontend/components/UploadAssetDialog";
-import { Avatar, AvatarFallback } from "@/shared/frontend/components/ui/avatar";
-import { Badge } from "@/shared/frontend/components/ui/badge";
-import { Button } from "@/shared/frontend/components/ui/button";
-import { Input } from "@/shared/frontend/components/ui/input";
-import { cn } from "@/shared/frontend/utils/utils";
-import { useAssetsStore, assetFolders } from "@/modules/assets/frontend/store/assetsStore";
-import type { AssetFile } from "@/modules/assets/types";
+import { PageHeader } from "@/components/common/PageHeader";
+import { RequireModuleAccess } from "@/components/common/RequireModuleAccess";
+import { EmptyState } from "@/components/shared/EmptyState";
+import { DrawerPanel } from "@/components/shared/DrawerPanel";
+import { UploadAssetDialog } from "@/components/assets/UploadAssetDialog";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
+import { useAssetsStore, assetFolders } from "@/store/assetsStore";
+import type { AssetFile } from "@/data/workspace";
 
 export const Route = createFileRoute("/assets")({
   head: () => ({

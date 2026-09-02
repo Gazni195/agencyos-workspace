@@ -1,7 +1,7 @@
 import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
-import { PageHeader } from "@/shared/frontend/components/PageHeader";
-import { RequireModuleAccess } from "@/shared/frontend/components/RequireModuleAccess";
-import { cn } from "@/shared/frontend/utils/utils";
+import { PageHeader } from "@/components/common/PageHeader";
+import { RequireModuleAccess } from "@/components/common/RequireModuleAccess";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/inbox")({
   head: () => ({
