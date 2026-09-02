@@ -1,12 +1,8 @@
-// Client-side auth backed by real Supabase accounts (see
-// supabase/migrations/0001_roles_and_profiles.sql for the schema). Session
-// persistence, password verification, and token refresh are all handled
-// by Supabase's own client under the hood — this store just mirrors its
-// current auth state so the rest of the app can read "am I signed in"
-// synchronously without awaiting a promise on every render.
+// Frontend-only auth for the AgencyOS foundation. The demo account keeps the
+// shell usable until a real auth provider is introduced in a later phase.
 import { create } from "zustand";
-import { supabase } from "@/lib/supabaseClient";
 import { useSessionStore } from "./sessionStore";
+import { currentUser } from "@/mock";
 
 type AuthState = {
   userId: string | null;
@@ -25,43 +21,25 @@ type AuthState = {
 };
 
 export const useAuthStore = create<AuthState>(() => ({
-  userId: null,
-  email: null,
-  initializing: true,
+  userId: "mock-user",
+  email: currentUser.email,
+  initializing: false,
   login: async (email, password) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    return { error: error?.message ?? null };
+    if (!email || !password) return { error: "Enter your email and password." };
+    useAuthStore.setState({ userId: "mock-user", email, initializing: false });
+    useSessionStore.getState().loadProfile("mock-user", email);
+    return { error: null };
   },
   signUp: async (email, password, fullName) => {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: { data: { full_name: fullName } },
-    });
-    if (error) return { error: error.message, needsEmailConfirmation: false };
-    // Supabase returns a user with no session when email confirmation is
-    // required (the default) — session is null until they click the
-    // confirmation link, at which point they still need to sign in.
-    return { error: null, needsEmailConfirmation: !data.session };
+    if (!email || !password || !fullName) {
+      return { error: "Complete all fields to create your account.", needsEmailConfirmation: false };
+    }
+    useAuthStore.setState({ userId: "mock-user", email, initializing: false });
+    useSessionStore.getState().loadProfile("mock-user", email, fullName);
+    return { error: null, needsEmailConfirmation: false };
   },
   logout: async () => {
-    await supabase.auth.signOut();
+    useAuthStore.setState({ userId: null, email: null, initializing: false });
+    useSessionStore.getState().clear();
   },
 }));
-
-// Keep this store (and sessionStore's profile/permissions) in sync with
-// Supabase's own session — fires once on load with whatever session exists
-// in localStorage (or null), then again on every sign-in/sign-out.
-supabase.auth.onAuthStateChange((_event, session) => {
-  const user = session?.user ?? null;
-  useAuthStore.setState({
-    userId: user?.id ?? null,
-    email: user?.email ?? null,
-    initializing: false,
-  });
-  if (user) {
-    void useSessionStore.getState().loadProfile(user.id);
-  } else {
-    useSessionStore.getState().clear();
-  }
-});
