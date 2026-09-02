@@ -16,6 +16,12 @@ dist-ssr
 .nitro
 *.local
 
+# Secrets — real Supabase keys and any other credentials go in .env, never
+# committed. .env.example documents which variables are needed.
+.env
+.env.local
+.env.*.local
+
 # Wrangler / Cloudflare
 .wrangler/
 .dev.vars
