@@ -17,7 +17,7 @@ backend in — it does not change any runtime behavior.
   `inboxStore`, `assetsStore`, `settingsStore`), each seeded once from the
   data layer, mutated in place, never persisted or synced.
 - **Fetching**: `@tanstack/react-query` is already a dependency and its
-  `QueryClientProvider` already wraps the whole app in `src/frontend/routes/__root.tsx`
+  `QueryClientProvider` already wraps the whole app in `src/routes/__root.tsx`
   — but nothing calls `useQuery`/`useMutation` anywhere yet. It's installed
   and idle, which makes it the natural landing spot for real API calls
   rather than a new library choice.

@@ -1,6 +1,6 @@
 // Single source of truth for "which permission role is currently active"
 // (see usePermissions / RequireModuleAccess). Since Phase G, real login
-// (src/frontend/routes/login.tsx) sets this from the signed-in identity's actual
+// (src/routes/login.tsx) sets this from the signed-in identity's actual
 // role on every sign-in — it's no longer just a placeholder default. The
 // "Preview role" switcher in AppShell's header still overrides it in the
 // same running session, on purpose: it's how anyone can see the RBAC
