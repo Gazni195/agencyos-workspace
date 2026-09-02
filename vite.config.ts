@@ -11,5 +11,9 @@ export default defineConfig({
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this
     server: { entry: "server" },
+    // File-based routing lives under src/frontend/routes so the whole
+    // frontend — modules, shared, and routing — sits inside one top-level
+    // directory, matching the AgencyOS module-based architecture.
+    router: { routesDirectory: "frontend/routes" },
   },
 });
