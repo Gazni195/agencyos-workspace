@@ -17,6 +17,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AppShell } from "../components/layout/AppShell";
 import { Toaster } from "../components/ui/sonner";
 import { useAuthStore } from "../store/authStore";
+import { useSessionStore } from "../store/sessionStore";
 
 function NotFoundComponent() {
   return (
@@ -134,13 +135,14 @@ function RootShell({ children }: { children: ReactNode }) {
 const AUTH_ROUTES = ["/login", "/forgot-password", "/reset-password", "/verify-email"];
 
 // Neutral placeholder shown instead of the real app while we don't yet
-// know if the visitor is signed in — during SSR (no localStorage/
-// sessionStorage on the server, so auth state is unknowable there) and
-// for the brief moment on the client before the redirect effect below
-// runs. Deliberately renders no nav, no data, nothing module-specific:
-// there's no server session to gate on (frontend-only app, see
-// authStore), so the one thing we can guarantee without one is that an
-// unauthenticated visitor is never shown a frame of real app content.
+// know if the visitor is signed in — during SSR (no localStorage on the
+// server, so Supabase's session is unknowable there), and on the client
+// until Supabase's own async session check resolves (authStore.initializing)
+// and, once signed in, until that account's profile/role has loaded from
+// the database. Deliberately renders no nav, no data, nothing
+// module-specific, so an unauthenticated visitor is never shown a frame of
+// real app content and a signed-in one is never shown a frame with no name/
+// role yet.
 function AuthCheckingScreen() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background">
@@ -155,20 +157,27 @@ function RootComponent() {
   const isAuthRoute = AUTH_ROUTES.includes(pathname);
   const navigate = useNavigate();
   const email = useAuthStore((s) => s.email);
+  const initializing = useAuthStore((s) => s.initializing);
+  const profile = useSessionStore((s) => s.profile);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
 
+  const authKnown = mounted && !initializing;
+
   useEffect(() => {
-    if (!mounted) return;
+    if (!authKnown) return;
     if (!isAuthRoute && !email) {
       navigate({ to: "/login", replace: true });
     } else if (pathname === "/login" && email) {
       navigate({ to: "/", replace: true });
     }
-  }, [mounted, isAuthRoute, pathname, email, navigate]);
+  }, [authKnown, isAuthRoute, pathname, email, navigate]);
 
-  const showApp = isAuthRoute || (mounted && !!email);
+  // Once signed in, also wait for that account's profile/role to load
+  // (sessionStore) before showing the app — otherwise the header/sidebar
+  // would render for a frame with no name and no permissions to gate on.
+  const showApp = isAuthRoute || (authKnown && !!email && !!profile);
 
   return (
     <QueryClientProvider client={queryClient}>

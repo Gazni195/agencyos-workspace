@@ -18,9 +18,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { AuthLayout } from "@/components/layout/AuthLayout";
 import { useAuthStore } from "@/store/authStore";
-import { useSessionStore } from "@/store/sessionStore";
-import { useEmployeesStore } from "@/store/employeesStore";
-import { resolveIdentityByEmail } from "@/lib/identity";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -32,149 +29,259 @@ export const Route = createFileRoute("/login")({
   component: LoginPage,
 });
 
-const loginSchema = z.object({
+const signInSchema = z.object({
   email: z.string().min(1, "Email is required").email("Enter a valid email address"),
   password: z.string().min(1, "Password is required"),
   remember: z.boolean(),
 });
 
-type LoginValues = z.infer<typeof loginSchema>;
+const signUpSchema = z.object({
+  fullName: z.string().min(1, "Full name is required"),
+  email: z.string().min(1, "Email is required").email("Enter a valid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+  remember: z.boolean(),
+});
+
+type SignInValues = z.infer<typeof signInSchema>;
+type SignUpValues = z.infer<typeof signUpSchema>;
 
 function LoginPage() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [mode, setMode] = useState<"signin" | "signup">("signin");
   const login = useAuthStore((s) => s.login);
-  const setRole = useSessionStore((s) => s.setRole);
-  const employees = useEmployeesStore((s) => s.employees);
+  const signUp = useAuthStore((s) => s.signUp);
 
-  const form = useForm<LoginValues>({
-    resolver: zodResolver(loginSchema),
+  const signInForm = useForm<SignInValues>({
+    resolver: zodResolver(signInSchema),
     defaultValues: { email: "", password: "", remember: true },
   });
+  const signUpForm = useForm<SignUpValues>({
+    resolver: zodResolver(signUpSchema),
+    defaultValues: { fullName: "", email: "", password: "", remember: true },
+  });
 
-  const onSubmit = async (values: LoginValues) => {
-    await new Promise((resolve) => setTimeout(resolve, 600));
-    // There's no backend here to verify a password against, so this can
-    // only check that the email belongs to a known identity — the demo
-    // owner account or a real employee added in Employees → Add employee.
-    // Any non-empty password is accepted for a recognized email; that's an
-    // honest limitation of not having auth infrastructure yet, not a
-    // pretend security check.
-    const identity = resolveIdentityByEmail(values.email, employees);
-    if (!identity) {
-      form.setError("email", {
-        message:
-          "No account found for that email. Try daniel@agencyos.co, or add an employee first.",
-      });
+  const onSignIn = async (values: SignInValues) => {
+    const { error } = await login(values.email, values.password);
+    if (error) {
+      signInForm.setError("password", { message: error });
       return;
     }
-    login(identity.email, values.remember);
-    setRole(identity.roleId);
-    toast.success("Welcome back", { description: `Signed in as ${identity.name}` });
+    toast.success("Welcome back");
+    navigate({ to: "/" });
+  };
+
+  const onSignUp = async (values: SignUpValues) => {
+    const { error, needsEmailConfirmation } = await signUp(
+      values.email,
+      values.password,
+      values.fullName,
+    );
+    if (error) {
+      signUpForm.setError("email", { message: error });
+      return;
+    }
+    if (needsEmailConfirmation) {
+      toast.success("Check your email", {
+        description: "Click the confirmation link, then sign in below.",
+      });
+      setMode("signin");
+      signInForm.setValue("email", values.email);
+      return;
+    }
+    toast.success("Account created", { description: "Welcome to AgencyOS." });
     navigate({ to: "/" });
   };
 
   return (
     <AuthLayout
-      title="Sign in to AgencyOS"
-      description="Enter your credentials to access your agency workspace."
+      title={mode === "signin" ? "Sign in to AgencyOS" : "Create your AgencyOS account"}
+      description={
+        mode === "signin"
+          ? "Enter your credentials to access your agency workspace."
+          : "Set up your account to get started."
+      }
       footer={
-        <>
-          Don&apos;t have an account?{" "}
-          <a href="mailto:sales@agencyos.co" className="font-medium text-primary hover:underline">
-            Contact sales
-          </a>
-        </>
+        mode === "signin" ? (
+          <>
+            Don&apos;t have an account?{" "}
+            <button
+              type="button"
+              onClick={() => setMode("signup")}
+              className="font-medium text-primary hover:underline"
+            >
+              Create one
+            </button>
+          </>
+        ) : (
+          <>
+            Already have an account?{" "}
+            <button
+              type="button"
+              onClick={() => setMode("signin")}
+              className="font-medium text-primary hover:underline"
+            >
+              Sign in
+            </button>
+          </>
+        )
       }
     >
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4" noValidate>
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input
-                    type="email"
-                    placeholder="you@agency.com"
-                    autoComplete="email"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <div className="flex items-center justify-between">
-                  <FormLabel>Password</FormLabel>
-                  <Link
-                    to="/forgot-password"
-                    className="text-xs font-medium text-primary hover:underline"
-                  >
-                    Forgot password?
-                  </Link>
-                </div>
-                <FormControl>
-                  <div className="relative">
+      {mode === "signin" ? (
+        <Form {...signInForm}>
+          <form onSubmit={signInForm.handleSubmit(onSignIn)} className="space-y-4" noValidate>
+            <FormField
+              control={signInForm.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
                     <Input
-                      type={showPassword ? "text" : "password"}
-                      placeholder="••••••••"
-                      autoComplete="current-password"
-                      className="pr-10"
+                      type="email"
+                      placeholder="you@agency.com"
+                      autoComplete="email"
                       {...field}
                     />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword((v) => !v)}
-                      aria-label={showPassword ? "Hide password" : "Show password"}
-                      className="absolute inset-y-0 right-0 flex items-center px-3 text-muted-foreground hover:text-foreground"
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={signInForm.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <div className="flex items-center justify-between">
+                    <FormLabel>Password</FormLabel>
+                    <Link
+                      to="/forgot-password"
+                      className="text-xs font-medium text-primary hover:underline"
                     >
-                      {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
-                    </button>
+                      Forgot password?
+                    </Link>
                   </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="remember"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-center gap-2 space-y-0">
-                <FormControl>
-                  <Checkbox checked={field.value} onCheckedChange={field.onChange} id="remember" />
-                </FormControl>
-                <FormLabel htmlFor="remember" className="cursor-pointer text-sm font-normal">
-                  Keep me signed in for 30 days
-                </FormLabel>
-              </FormItem>
-            )}
-          />
-          <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-            {form.formState.isSubmitting && <Loader2 className="size-4 animate-spin" />}
-            Sign in
-          </Button>
-        </form>
-      </Form>
+                  <FormControl>
+                    <div className="relative">
+                      <Input
+                        type={showPassword ? "text" : "password"}
+                        placeholder="••••••••"
+                        autoComplete="current-password"
+                        className="pr-10"
+                        {...field}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword((v) => !v)}
+                        aria-label={showPassword ? "Hide password" : "Show password"}
+                        className="absolute inset-y-0 right-0 flex items-center px-3 text-muted-foreground hover:text-foreground"
+                      >
+                        {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                      </button>
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={signInForm.control}
+              name="remember"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center gap-2 space-y-0">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                      id="remember"
+                    />
+                  </FormControl>
+                  <FormLabel htmlFor="remember" className="cursor-pointer text-sm font-normal">
+                    Keep me signed in
+                  </FormLabel>
+                </FormItem>
+              )}
+            />
+            <Button type="submit" className="w-full" disabled={signInForm.formState.isSubmitting}>
+              {signInForm.formState.isSubmitting && <Loader2 className="size-4 animate-spin" />}
+              Sign in
+            </Button>
+          </form>
+        </Form>
+      ) : (
+        <Form {...signUpForm}>
+          <form onSubmit={signUpForm.handleSubmit(onSignUp)} className="space-y-4" noValidate>
+            <FormField
+              control={signUpForm.control}
+              name="fullName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Full name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Jordan Rivera" autoComplete="name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={signUpForm.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="email"
+                      placeholder="you@agency.com"
+                      autoComplete="email"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={signUpForm.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <Input
+                        type={showPassword ? "text" : "password"}
+                        placeholder="At least 6 characters"
+                        autoComplete="new-password"
+                        className="pr-10"
+                        {...field}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword((v) => !v)}
+                        aria-label={showPassword ? "Hide password" : "Show password"}
+                        className="absolute inset-y-0 right-0 flex items-center px-3 text-muted-foreground hover:text-foreground"
+                      >
+                        {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                      </button>
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit" className="w-full" disabled={signUpForm.formState.isSubmitting}>
+              {signUpForm.formState.isSubmitting && <Loader2 className="size-4 animate-spin" />}
+              Create account
+            </Button>
+          </form>
+        </Form>
+      )}
       <p className="mt-6 text-center text-xs text-muted-foreground">
-        New team member?{" "}
-        <Link to="/verify-email" className="font-medium text-primary hover:underline">
-          Verify your email
-        </Link>{" "}
-        to finish setup.
-      </p>
-      <p className="mt-3 rounded-lg bg-muted/50 p-3 text-center text-xs text-muted-foreground">
-        Demo workspace: sign in as <span className="font-medium">daniel@agencyos.co</span> (any
-        password), or add an employee first in Employees → Add employee and sign in with their
-        email.
+        New accounts start with standard Employee access — an admin can promote you from Settings →
+        Roles & Permissions afterward.
       </p>
     </AuthLayout>
   );
