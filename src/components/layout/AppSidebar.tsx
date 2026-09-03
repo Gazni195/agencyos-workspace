@@ -133,7 +133,6 @@ export function AppSidebar({ open, onClose }: { open: boolean; onClose: () => vo
             </div>
           ))}
         </nav>
-
       </aside>
     </>
   );

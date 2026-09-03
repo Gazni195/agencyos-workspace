@@ -6,12 +6,16 @@
 import { createClient } from "@supabase/supabase-js";
 import type { Database } from "./supabaseTypes";
 
-const url = import.meta.env["VITE_SUPABASE_URL"];
-const anonKey = import.meta.env["VITE_SUPABASE_ANON_KEY"];
+// Deliberately not named VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY —
+// Lovable reserves that exact prefix for its own native "Lovable Cloud"
+// Supabase integration and refuses to store project env vars under it,
+// which silently breaks a manually-connected project like this one.
+const url = import.meta.env["VITE_AGENCYOS_SUPABASE_URL"];
+const anonKey = import.meta.env["VITE_AGENCYOS_SUPABASE_ANON_KEY"];
 
 if (!url || !anonKey) {
   throw new Error(
-    "Missing VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY. Copy .env.example to .env and fill in your Supabase project's values (Settings -> API).",
+    "Missing VITE_AGENCYOS_SUPABASE_URL / VITE_AGENCYOS_SUPABASE_ANON_KEY. Copy .env.example to .env and fill in your Supabase project's values (Settings -> API).",
   );
 }
 
