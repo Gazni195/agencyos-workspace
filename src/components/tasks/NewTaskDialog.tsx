@@ -21,13 +21,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { DeliveryTask, TaskPriority } from "@/data/delivery";
+import type { TaskPriority } from "@/data/delivery";
 import { useEmployeesStore } from "@/store/employeesStore";
 import { useProjectsStore } from "@/store/projectsStore";
+import type { NewTaskInput } from "@/store/tasksStore";
 
 const priorities: TaskPriority[] = ["low", "medium", "high", "urgent"];
 
-export function NewTaskDialog({ onCreate }: { onCreate: (task: DeliveryTask) => void }) {
+export function NewTaskDialog({ onCreate }: { onCreate: (task: NewTaskInput) => void }) {
   const employees = useEmployeesStore((s) => s.employees);
   const deliveryProjects = useProjectsStore((s) => s.projects);
   const [open, setOpen] = useState(false);
@@ -53,8 +54,7 @@ export function NewTaskDialog({ onCreate }: { onCreate: (task: DeliveryTask) => 
       toast.error("Title, project, assignee and due date are required.");
       return;
     }
-    const task: DeliveryTask = {
-      id: `tk-${Date.now()}`,
+    const task: NewTaskInput = {
       title: title.trim(),
       description: description.trim() || "No description yet.",
       projectId,
@@ -64,8 +64,6 @@ export function NewTaskDialog({ onCreate }: { onCreate: (task: DeliveryTask) => 
       status: "todo",
       tags: [],
       dependencies: [],
-      checklist: [],
-      comments: [],
     };
     onCreate(task);
     toast.success(`${task.title} added`);

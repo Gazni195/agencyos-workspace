@@ -20,6 +20,8 @@ import { useAuthStore } from "../store/authStore";
 import { useSessionStore } from "../store/sessionStore";
 import { useClientsStore } from "../store/clientsStore";
 import { useLeadsStore } from "../store/leadsStore";
+import { useProjectsStore } from "../store/projectsStore";
+import { useTasksStore } from "../store/tasksStore";
 
 function NotFoundComponent() {
   return (
@@ -163,6 +165,8 @@ function RootComponent() {
   const profile = useSessionStore((s) => s.profile);
   const fetchClients = useClientsStore((s) => s.fetchClients);
   const fetchLeads = useLeadsStore((s) => s.fetchLeads);
+  const fetchProjects = useProjectsStore((s) => s.fetchProjects);
+  const fetchTasks = useTasksStore((s) => s.fetchTasks);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
@@ -185,7 +189,9 @@ function RootComponent() {
     if (!profile) return;
     void fetchClients();
     void fetchLeads();
-  }, [profile, fetchClients, fetchLeads]);
+    void fetchProjects();
+    void fetchTasks();
+  }, [profile, fetchClients, fetchLeads, fetchProjects, fetchTasks]);
 
   // Once signed in, also wait for that account's profile/role to load
   // (sessionStore) before showing the app — otherwise the header/sidebar

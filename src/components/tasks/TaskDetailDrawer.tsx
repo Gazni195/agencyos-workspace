@@ -184,7 +184,6 @@ export function TaskDetailDrawer({
               e.preventDefault();
               if (!newChecklistLabel.trim()) return;
               addChecklistItem(task.id, {
-                id: `cl-${task.id}-${Date.now()}`,
                 label: newChecklistLabel.trim(),
                 done: false,
               });
@@ -226,10 +225,8 @@ export function TaskDetailDrawer({
               e.preventDefault();
               if (!newComment.trim()) return;
               addComment(task.id, {
-                id: `cm-${task.id}-${Date.now()}`,
                 author: assignee?.name ?? "You",
                 text: newComment.trim(),
-                when: "Just now",
               });
               setNewComment("");
               toast.success("Comment added");

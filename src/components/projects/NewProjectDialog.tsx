@@ -22,9 +22,10 @@ import {
 } from "@/components/ui/select";
 import { useEmployeesStore } from "@/store/employeesStore";
 import { useClientsStore } from "@/store/clientsStore";
-import type { DeliveryProject, ProjectStatus } from "@/data/delivery";
+import type { ProjectStatus } from "@/data/delivery";
+import type { NewProjectInput } from "@/store/projectsStore";
 
-export function NewProjectDialog({ onCreate }: { onCreate: (project: DeliveryProject) => void }) {
+export function NewProjectDialog({ onCreate }: { onCreate: (project: NewProjectInput) => void }) {
   const clients = useClientsStore((s) => s.clients);
   const employees = useEmployeesStore((s) => s.employees);
   const [open, setOpen] = useState(false);
@@ -50,8 +51,7 @@ export function NewProjectDialog({ onCreate }: { onCreate: (project: DeliveryPro
       return;
     }
     const leadEmployee = employees.find((e) => e.name === lead);
-    const project: DeliveryProject = {
-      id: `pr-${Date.now()}`,
+    const project: NewProjectInput = {
       name: name.trim(),
       clientId,
       lead,
