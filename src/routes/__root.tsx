@@ -18,6 +18,8 @@ import { AppShell } from "../components/layout/AppShell";
 import { Toaster } from "../components/ui/sonner";
 import { useAuthStore } from "../store/authStore";
 import { useSessionStore } from "../store/sessionStore";
+import { useClientsStore } from "../store/clientsStore";
+import { useLeadsStore } from "../store/leadsStore";
 
 function NotFoundComponent() {
   return (
@@ -159,6 +161,8 @@ function RootComponent() {
   const email = useAuthStore((s) => s.email);
   const initializing = useAuthStore((s) => s.initializing);
   const profile = useSessionStore((s) => s.profile);
+  const fetchClients = useClientsStore((s) => s.fetchClients);
+  const fetchLeads = useLeadsStore((s) => s.fetchLeads);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
@@ -173,6 +177,15 @@ function RootComponent() {
       navigate({ to: "/", replace: true });
     }
   }, [authKnown, isAuthRoute, pathname, email, navigate]);
+
+  // Load each wired-up module's real data once we know who's signed in.
+  // Keyed on profile.id so a different account signing in (without a full
+  // page reload) re-fetches rather than showing the previous user's rows.
+  useEffect(() => {
+    if (!profile) return;
+    void fetchClients();
+    void fetchLeads();
+  }, [profile, fetchClients, fetchLeads]);
 
   // Once signed in, also wait for that account's profile/role to load
   // (sessionStore) before showing the app — otherwise the header/sidebar

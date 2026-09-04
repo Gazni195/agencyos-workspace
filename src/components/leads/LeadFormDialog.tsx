@@ -20,7 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { StoreLead } from "@/store/leadsStore";
+import type { NewLeadInput } from "@/store/leadsStore";
 import { useLeadsStore } from "@/store/leadsStore";
 import { useEmployeesStore } from "@/store/employeesStore";
 
@@ -32,7 +32,7 @@ import { useEmployeesStore } from "@/store/employeesStore";
 // stays real once leads start using something outside this starter set.
 const DEFAULT_SOURCES = ["Referral", "Inbound", "Outbound", "Event", "Partner", "Website"];
 
-export function LeadFormDialog({ onCreate }: { onCreate: (lead: StoreLead) => void }) {
+export function LeadFormDialog({ onCreate }: { onCreate: (lead: NewLeadInput) => void }) {
   const employees = useEmployeesStore((s) => s.employees);
   const owners = employees.map((e) => e.name);
   const leads = useLeadsStore((s) => s.leads);
@@ -63,8 +63,7 @@ export function LeadFormDialog({ onCreate }: { onCreate: (lead: StoreLead) => vo
       toast.error("Company and contact name are required.");
       return;
     }
-    const lead: StoreLead = {
-      id: `ld-${Date.now()}`,
+    const lead: NewLeadInput = {
       company: company.trim(),
       contact: contact.trim(),
       email:
@@ -77,7 +76,6 @@ export function LeadFormDialog({ onCreate }: { onCreate: (lead: StoreLead) => vo
       source,
       nextAction: new Date(Date.now() + 7 * 86400000).toISOString().slice(0, 10),
       createdOn: new Date().toISOString().slice(0, 10),
-      notes: [],
     };
     onCreate(lead);
     toast.success(`${lead.company} added to pipeline`);

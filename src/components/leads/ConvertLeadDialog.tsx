@@ -41,9 +41,9 @@ export function ConvertLeadDialog({
 
   if (!lead) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const client = convertToClient(lead.id, {
+    const client = await convertToClient(lead.id, {
       industry: industry.trim(),
       packageType,
       packageName: packageName.trim(),

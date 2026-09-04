@@ -20,14 +20,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { Client, ClientHealth, PackageType } from "@/data/crm";
+import type { ClientHealth, PackageType } from "@/data/crm";
 import { initialsOf } from "@/data/crm";
+import type { NewClientInput } from "@/store/clientsStore";
 import { useEmployeesStore } from "@/store/employeesStore";
 import { useSettingsStore } from "@/store/settingsStore";
 
 const CUSTOM = "custom";
 
-export function NewClientDialog({ onCreate }: { onCreate: (client: Client) => void }) {
+export function NewClientDialog({ onCreate }: { onCreate: (client: NewClientInput) => void }) {
   const employees = useEmployeesStore((s) => s.employees);
   const owners = employees.map((e) => e.name);
   const clientPackages = useSettingsStore((s) => s.clientPackages);
@@ -59,8 +60,7 @@ export function NewClientDialog({ onCreate }: { onCreate: (client: Client) => vo
       return;
     }
     const price = Number(packagePrice) || 0;
-    const client: Client = {
-      id: `cl-${Date.now()}`,
+    const client: NewClientInput = {
       name: name.trim(),
       industry: industry.trim(),
       owner,

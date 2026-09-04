@@ -142,7 +142,6 @@ function LeadDetailPage() {
             e.preventDefault();
             if (!note.trim()) return;
             addNote(lead.id, {
-              id: `n-${lead.id}-${Date.now()}`,
               author: lead.owner,
               when: new Date().toISOString().slice(0, 10),
               text: note.trim(),
