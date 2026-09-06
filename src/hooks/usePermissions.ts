@@ -9,10 +9,11 @@ export function usePermissions() {
   const setRole = useSessionStore((s) => s.setRole);
   const permissionsByRole = useSessionStore((s) => s.permissionsByRole);
   // Role catalog (id/name/description for the "Preview role" switcher) is
-  // still the same fixed list Settings -> Roles & Permissions has always
-  // shown; that screen's own move to real Supabase-backed role management
-  // is a later module. Actual access checks below use the live
-  // Supabase-loaded grid from sessionStore, not this mock.
+  // Supabase-backed too (settingsStore.fetchRoles), so a role added in
+  // Settings shows up here immediately. Actual access checks below still
+  // use sessionStore's own snapshot of role_permissions, loaded once at
+  // sign-in — kept separate so the switcher never depends on Settings
+  // having loaded first.
   const roles = useSettingsStore((s) => s.roles);
   const role = roles.find((r) => r.id === roleId);
 

@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import type { LeaveType } from "@/data/workspace";
+import type { NewLeaveTypeInput } from "@/store/settingsStore";
 
 const colors = ["chart-1", "chart-2", "chart-3", "chart-4", "chart-5"];
 const nextColor = (existing: number) => colors[existing % colors.length] ?? "chart-1";
@@ -23,7 +24,7 @@ export function NewLeaveTypeDialog({
   onCreate,
 }: {
   existingCount: number;
-  onCreate: (t: LeaveType) => void;
+  onCreate: (t: NewLeaveTypeInput) => void;
 }) {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
@@ -42,7 +43,6 @@ export function NewLeaveTypeDialog({
       return;
     }
     onCreate({
-      id: `lt-${Date.now()}`,
       name: name.trim(),
       annualAllowance: Number(annualAllowance),
       carryOver,

@@ -24,6 +24,9 @@ import { useProjectsStore } from "../store/projectsStore";
 import { useTasksStore } from "../store/tasksStore";
 import { useEmployeesStore } from "../store/employeesStore";
 import { useFinanceStore } from "../store/financeStore";
+import { useDeliverablesStore } from "../store/deliverablesStore";
+import { useAssetsStore } from "../store/assetsStore";
+import { useSettingsStore } from "../store/settingsStore";
 
 function NotFoundComponent() {
   return (
@@ -172,6 +175,13 @@ function RootComponent() {
   const fetchEmployees = useEmployeesStore((s) => s.fetchEmployees);
   const fetchInvoices = useFinanceStore((s) => s.fetchInvoices);
   const fetchExpenses = useFinanceStore((s) => s.fetchExpenses);
+  const fetchDeliverables = useDeliverablesStore((s) => s.fetchDeliverables);
+  const fetchAssetFiles = useAssetsStore((s) => s.fetchFiles);
+  const fetchDepartments = useSettingsStore((s) => s.fetchDepartments);
+  const fetchDesignations = useSettingsStore((s) => s.fetchDesignations);
+  const fetchClientPackages = useSettingsStore((s) => s.fetchClientPackages);
+  const fetchLeaveTypes = useSettingsStore((s) => s.fetchLeaveTypes);
+  const fetchRoles = useSettingsStore((s) => s.fetchRoles);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
@@ -199,6 +209,13 @@ function RootComponent() {
     void fetchEmployees();
     void fetchInvoices();
     void fetchExpenses();
+    void fetchDeliverables();
+    void fetchAssetFiles();
+    void fetchDepartments();
+    void fetchDesignations();
+    void fetchClientPackages();
+    void fetchLeaveTypes();
+    void fetchRoles();
   }, [
     profile,
     fetchClients,
@@ -208,6 +225,13 @@ function RootComponent() {
     fetchEmployees,
     fetchInvoices,
     fetchExpenses,
+    fetchDeliverables,
+    fetchAssetFiles,
+    fetchDepartments,
+    fetchDesignations,
+    fetchClientPackages,
+    fetchLeaveTypes,
+    fetchRoles,
   ]);
 
   // Once signed in, also wait for that account's profile/role to load

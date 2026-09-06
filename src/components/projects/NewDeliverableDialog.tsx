@@ -20,9 +20,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { Deliverable } from "@/data/delivery";
 import { useEmployeesStore } from "@/store/employeesStore";
 import { useTasksStore } from "@/store/tasksStore";
+import type { NewDeliverableInput } from "@/store/deliverablesStore";
 
 const NONE = "none";
 
@@ -31,7 +31,7 @@ export function NewDeliverableDialog({
   onCreate,
 }: {
   projectId: string;
-  onCreate: (deliverable: Deliverable) => void;
+  onCreate: (deliverable: NewDeliverableInput) => void;
 }) {
   const employees = useEmployeesStore((s) => s.employees);
   const allTasks = useTasksStore((s) => s.tasks);
@@ -60,8 +60,7 @@ export function NewDeliverableDialog({
       toast.error("Title, type, assignee and due date are required.");
       return;
     }
-    const deliverable: Deliverable = {
-      id: `dl-${Date.now()}`,
+    const deliverable: NewDeliverableInput = {
       projectId,
       title: title.trim(),
       type: type.trim(),

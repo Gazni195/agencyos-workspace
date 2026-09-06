@@ -20,8 +20,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { Department, Designation } from "@/data/workspace";
+import type { NewDepartmentInput, NewDesignationInput } from "@/store/settingsStore";
 
-export function NewDepartmentDialog({ onCreate }: { onCreate: (d: Department) => void }) {
+export function NewDepartmentDialog({ onCreate }: { onCreate: (d: NewDepartmentInput) => void }) {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [head, setHead] = useState("");
@@ -36,7 +37,7 @@ export function NewDepartmentDialog({ onCreate }: { onCreate: (d: Department) =>
       toast.error("Department name is required.");
       return;
     }
-    onCreate({ id: `dept-${Date.now()}`, name: name.trim(), head: head.trim() || "Unassigned" });
+    onCreate({ name: name.trim(), head: head.trim() || "Unassigned" });
     toast.success(`${name.trim()} added`);
     reset();
     setOpen(false);
@@ -156,7 +157,7 @@ export function NewDesignationDialog({
   onCreate,
 }: {
   departments: Department[];
-  onCreate: (d: Designation) => void;
+  onCreate: (d: NewDesignationInput) => void;
 }) {
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
@@ -174,7 +175,7 @@ export function NewDesignationDialog({
       toast.error("Title, department and level are required.");
       return;
     }
-    onCreate({ id: `desig-${Date.now()}`, title: title.trim(), department, level: level.trim() });
+    onCreate({ title: title.trim(), department, level: level.trim() });
     toast.success(`${title.trim()} added`);
     reset();
     setOpen(false);

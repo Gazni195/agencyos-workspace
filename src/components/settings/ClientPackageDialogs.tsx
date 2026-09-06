@@ -21,8 +21,13 @@ import {
 } from "@/components/ui/select";
 import type { PackageType } from "@/data/crm";
 import type { ClientPackage } from "@/data/workspace";
+import type { NewClientPackageInput } from "@/store/settingsStore";
 
-export function NewClientPackageDialog({ onCreate }: { onCreate: (pkg: ClientPackage) => void }) {
+export function NewClientPackageDialog({
+  onCreate,
+}: {
+  onCreate: (pkg: NewClientPackageInput) => void;
+}) {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [type, setType] = useState<PackageType>("monthly");
@@ -40,7 +45,6 @@ export function NewClientPackageDialog({ onCreate }: { onCreate: (pkg: ClientPac
       return;
     }
     onCreate({
-      id: `pkg-${Date.now()}`,
       name: name.trim(),
       type,
       defaultPrice: Number(defaultPrice),

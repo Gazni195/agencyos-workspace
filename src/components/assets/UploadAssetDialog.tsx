@@ -20,10 +20,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { assetFolders } from "@/store/assetsStore";
+import { assetFolders, type NewAssetFileInput } from "@/store/assetsStore";
 import type { AssetFile } from "@/data/workspace";
-
-const CURRENT_USER = { id: "self", name: "Daniel Reyes", initials: "DR" };
+import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { useAuthStore } from "@/store/authStore";
 
 const fileTypes: AssetFile["type"][] = [
   "doc",
@@ -35,7 +35,9 @@ const fileTypes: AssetFile["type"][] = [
   "archive",
 ];
 
-export function UploadAssetDialog({ onUpload }: { onUpload: (file: AssetFile) => void }) {
+export function UploadAssetDialog({ onUpload }: { onUpload: (file: NewAssetFileInput) => void }) {
+  const currentUser = useCurrentUser();
+  const userId = useAuthStore((s) => s.userId);
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [type, setType] = useState<AssetFile["type"]>("doc");
@@ -55,19 +57,17 @@ export function UploadAssetDialog({ onUpload }: { onUpload: (file: AssetFile) =>
       toast.error("File name is required.");
       return;
     }
-    const file: AssetFile = {
-      id: `af-${Date.now()}`,
+    const file: NewAssetFileInput = {
       name: name.trim(),
       type,
       size: "—",
-      ownerId: CURRENT_USER.id,
-      ownerName: CURRENT_USER.name,
-      ownerInitials: CURRENT_USER.initials,
+      ownerId: userId ?? "",
+      ownerName: currentUser.name,
+      ownerInitials: currentUser.initials,
       tags: tags
         .split(",")
         .map((t) => t.trim())
         .filter(Boolean),
-      updated: new Date().toISOString().slice(0, 10),
       shared: false,
       expiring: false,
       folderId,
@@ -76,7 +76,7 @@ export function UploadAssetDialog({ onUpload }: { onUpload: (file: AssetFile) =>
           id: "v1",
           label: "v1",
           date: new Date().toISOString().slice(0, 10),
-          author: CURRENT_USER.name,
+          author: currentUser.name,
         },
       ],
     };

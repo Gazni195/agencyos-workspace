@@ -26,7 +26,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
-import { useSettingsStore } from "@/store/settingsStore";
+import { useSettingsStore, type NewRoleInput } from "@/store/settingsStore";
 import { permissionModules, type PermissionAction } from "@/data/workspace";
 
 export const Route = createFileRoute("/settings/roles")({
@@ -145,11 +145,15 @@ function RolesPage() {
         open={!!deleting}
         onOpenChange={(open) => !open && setDeleteId(null)}
         title={`Delete ${deleting?.name}?`}
-        description="Its permission settings are removed. This does not change anyone's current access until real RBAC enforcement is wired up."
-        onConfirm={() => {
+        description="Its permission settings are removed. This can't be undone, and fails if anyone is still assigned this role."
+        onConfirm={async () => {
           if (!deleting) return;
-          removeRole(deleting.id);
-          toast.success(`${deleting.name} deleted`);
+          const result = await removeRole(deleting.id);
+          if (result.ok) {
+            toast.success(`${deleting.name} deleted`);
+          } else {
+            toast.error(`Couldn't delete ${deleting.name} — reassign anyone using it first.`);
+          }
           setDeleteId(null);
         }}
       />
@@ -157,11 +161,7 @@ function RolesPage() {
   );
 }
 
-function NewRoleDialog({
-  onCreate,
-}: {
-  onCreate: (role: { id: string; name: string; users: number; description: string }) => void;
-}) {
+function NewRoleDialog({ onCreate }: { onCreate: (role: NewRoleInput) => void }) {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -177,9 +177,7 @@ function NewRoleDialog({
       return;
     }
     onCreate({
-      id: `role-${Date.now()}`,
       name: name.trim(),
-      users: 0,
       description: description.trim() || "No description yet.",
     });
     toast.success(`${name.trim()} added`);
