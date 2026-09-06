@@ -23,6 +23,7 @@ import { useLeadsStore } from "../store/leadsStore";
 import { useProjectsStore } from "../store/projectsStore";
 import { useTasksStore } from "../store/tasksStore";
 import { useEmployeesStore } from "../store/employeesStore";
+import { useFinanceStore } from "../store/financeStore";
 
 function NotFoundComponent() {
   return (
@@ -169,6 +170,8 @@ function RootComponent() {
   const fetchProjects = useProjectsStore((s) => s.fetchProjects);
   const fetchTasks = useTasksStore((s) => s.fetchTasks);
   const fetchEmployees = useEmployeesStore((s) => s.fetchEmployees);
+  const fetchInvoices = useFinanceStore((s) => s.fetchInvoices);
+  const fetchExpenses = useFinanceStore((s) => s.fetchExpenses);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
@@ -194,7 +197,18 @@ function RootComponent() {
     void fetchProjects();
     void fetchTasks();
     void fetchEmployees();
-  }, [profile, fetchClients, fetchLeads, fetchProjects, fetchTasks, fetchEmployees]);
+    void fetchInvoices();
+    void fetchExpenses();
+  }, [
+    profile,
+    fetchClients,
+    fetchLeads,
+    fetchProjects,
+    fetchTasks,
+    fetchEmployees,
+    fetchInvoices,
+    fetchExpenses,
+  ]);
 
   // Once signed in, also wait for that account's profile/role to load
   // (sessionStore) before showing the app — otherwise the header/sidebar
