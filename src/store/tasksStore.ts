@@ -122,12 +122,9 @@ export const useTasksStore = create<TasksState>((set, get) => ({
         .employees.find((e) => e.id === created.assigneeId);
       if (assignee) {
         useInboxStore.getState().addNotification({
-          id: `nt-task-${created.id}`,
           icon: "task",
           title: "Task assigned",
           detail: `"${created.title}" was assigned to ${assignee.name}.`,
-          time: "Just now",
-          read: false,
         });
       }
     }

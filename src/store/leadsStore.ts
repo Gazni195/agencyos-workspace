@@ -119,12 +119,9 @@ export const useLeadsStore = create<LeadsState>((set, get) => ({
     const created = fromRow(data as LeadRow);
     set((s) => ({ leads: [created, ...s.leads] }));
     useInboxStore.getState().addNotification({
-      id: `nt-lead-${created.id}`,
       icon: "task",
       title: "New lead",
       detail: `${created.company} (${created.source}) was added to the pipeline.`,
-      time: "Just now",
-      read: false,
     });
     return created;
   },
@@ -198,12 +195,9 @@ export const useLeadsStore = create<LeadsState>((set, get) => ({
       when: new Date().toISOString().slice(0, 10),
     });
     useInboxStore.getState().addNotification({
-      id: `nt-lead-won-${lead.id}`,
       icon: "task",
       title: "Lead won",
       detail: `${lead.company} converted to a client.`,
-      time: "Just now",
-      read: false,
     });
 
     await get().updateLead(id, { stage: "Won", convertedClientId: created.id });

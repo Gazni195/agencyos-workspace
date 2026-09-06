@@ -27,6 +27,7 @@ import { useFinanceStore } from "../store/financeStore";
 import { useDeliverablesStore } from "../store/deliverablesStore";
 import { useAssetsStore } from "../store/assetsStore";
 import { useSettingsStore } from "../store/settingsStore";
+import { useInboxStore } from "../store/inboxStore";
 
 function NotFoundComponent() {
   return (
@@ -182,6 +183,8 @@ function RootComponent() {
   const fetchClientPackages = useSettingsStore((s) => s.fetchClientPackages);
   const fetchLeaveTypes = useSettingsStore((s) => s.fetchLeaveTypes);
   const fetchRoles = useSettingsStore((s) => s.fetchRoles);
+  const fetchConversations = useInboxStore((s) => s.fetchConversations);
+  const fetchNotifications = useInboxStore((s) => s.fetchNotifications);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
@@ -216,6 +219,8 @@ function RootComponent() {
     void fetchClientPackages();
     void fetchLeaveTypes();
     void fetchRoles();
+    void fetchConversations();
+    void fetchNotifications();
   }, [
     profile,
     fetchClients,
@@ -232,6 +237,8 @@ function RootComponent() {
     fetchClientPackages,
     fetchLeaveTypes,
     fetchRoles,
+    fetchConversations,
+    fetchNotifications,
   ]);
 
   // Once signed in, also wait for that account's profile/role to load

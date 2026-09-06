@@ -205,12 +205,9 @@ export const useFinanceStore = create<FinanceState>((set, get) => ({
       const invoice = get().invoices.find((inv) => inv.id === id);
       if (invoice) {
         useInboxStore.getState().addNotification({
-          id: `nt-invoice-paid-${id}`,
           icon: "system",
           title: "Invoice paid",
           detail: `${invoice.number} (${money(invoiceTotal(invoice))}) was marked paid.`,
-          time: "Just now",
-          read: false,
         });
       }
     }
@@ -238,12 +235,9 @@ export const useFinanceStore = create<FinanceState>((set, get) => ({
     const expense = expenseFromRow(data as ExpenseRow);
     set((s) => ({ expenses: [expense, ...s.expenses] }));
     useInboxStore.getState().addNotification({
-      id: `nt-expense-${expense.id}`,
       icon: "approval",
       title: "Expense needs approval",
       detail: `${vendor} — ${money(amount)} submitted by ${submittedBy}.`,
-      time: "Just now",
-      read: false,
     });
   },
   setExpenseStatus: async (id, status) => {
@@ -257,12 +251,9 @@ export const useFinanceStore = create<FinanceState>((set, get) => ({
       const expense = get().expenses.find((e) => e.id === id);
       if (expense) {
         useInboxStore.getState().addNotification({
-          id: `nt-expense-${id}-${status}`,
           icon: "approval",
           title: status === "approved" ? "Expense approved" : "Expense rejected",
           detail: `${expense.vendor} — ${money(expense.amount)} was ${status}.`,
-          time: "Just now",
-          read: false,
         });
       }
     }

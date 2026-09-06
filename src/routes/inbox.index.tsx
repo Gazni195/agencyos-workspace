@@ -7,15 +7,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { EmptyState } from "@/components/shared/EmptyState";
+import { NewConversationDialog } from "@/components/inbox/NewConversationDialog";
 import { cn } from "@/lib/utils";
 import { useInboxStore } from "@/store/inboxStore";
+import { useSessionStore } from "@/store/sessionStore";
 import type { Conversation } from "@/data/workspace";
 
 export const Route = createFileRoute("/inbox/")({
   component: MessagesPage,
 });
-
-const CURRENT_USER = { id: "self", name: "Daniel Reyes", initials: "DR" };
 
 const folders = [
   { id: "all", label: "All" },
@@ -31,6 +31,8 @@ function MessagesPage() {
   const markConversationRead = useInboxStore((s) => s.markConversationRead);
   const toggleStar = useInboxStore((s) => s.toggleStar);
   const sendMessage = useInboxStore((s) => s.sendMessage);
+  const createConversation = useInboxStore((s) => s.createConversation);
+  const selfId = useSessionStore((s) => s.profile?.id);
 
   const [selectedId, setSelectedId] = useState<string | null>(conversations[0]?.id ?? null);
   const [folder, setFolder] = useState<FolderId>("all");
@@ -58,7 +60,7 @@ function MessagesPage() {
 
   const handleSend = () => {
     if (!selected || !draft.trim()) return;
-    sendMessage(selected.id, draft.trim(), CURRENT_USER);
+    sendMessage(selected.id, draft.trim());
     setDraft("");
   };
 
@@ -66,13 +68,21 @@ function MessagesPage() {
     <div className="grid gap-4 lg:grid-cols-[340px_1fr]">
       <div className="surface-card flex max-h-[calc(100vh-13rem)] min-h-[28rem] flex-col overflow-hidden">
         <div className="space-y-3 border-b border-border p-3">
-          <div className="relative">
-            <Search className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search conversations…"
-              className="pl-8"
+          <div className="flex items-center gap-2">
+            <div className="relative flex-1">
+              <Search className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search conversations…"
+                className="pl-8"
+              />
+            </div>
+            <NewConversationDialog
+              onCreate={async (input) => {
+                const created = await createConversation(input);
+                if (created) setSelectedId(created.id);
+              }}
             />
           </div>
           <div className="flex flex-wrap items-center gap-1.5">
@@ -184,7 +194,7 @@ function MessagesPage() {
             </div>
             <div className="flex-1 space-y-4 overflow-y-auto p-4">
               {selected.messages.map((m) => {
-                const isSelf = m.authorId === CURRENT_USER.id;
+                const isSelf = m.authorId === selfId;
                 return (
                   <div key={m.id} className={cn("flex gap-2.5", isSelf && "flex-row-reverse")}>
                     <Avatar className="size-8 shrink-0">

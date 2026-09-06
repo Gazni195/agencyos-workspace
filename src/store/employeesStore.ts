@@ -110,12 +110,9 @@ export const useEmployeesStore = create<EmployeesState>((set) => ({
     const created = fromRow(data as EmployeeRow);
     set((s) => ({ employees: [created, ...s.employees] }));
     useInboxStore.getState().addNotification({
-      id: `nt-employee-${created.id}`,
       icon: "system",
       title: "New employee added",
       detail: `${created.name} joined as ${created.role}.`,
-      time: "Just now",
-      read: false,
     });
     return created;
   },
