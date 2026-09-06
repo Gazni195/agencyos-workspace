@@ -33,7 +33,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { type Employee, type EmployeeStatus } from "@/data/agency.ts";
-import { useEmployeesStore } from "@/store/employeesStore";
+import { useEmployeesStore, type NewEmployeeInput } from "@/store/employeesStore";
 import { useSettingsStore } from "@/store/settingsStore";
 import { usePermissions } from "@/hooks/usePermissions";
 import { toast } from "sonner";
@@ -109,8 +109,7 @@ function DirectoryPage() {
       .join("")
       .slice(0, 2)
       .toUpperCase();
-    const newEmployee: Employee = {
-      id: `emp-${Date.now()}`,
+    const newEmployee: NewEmployeeInput = {
       name: form.name,
       initials,
       role: form.role,
