@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
   LayoutDashboard,
@@ -13,43 +14,165 @@ import {
   Package,
   Settings,
   Sparkles,
+  ChevronRight,
+  ChevronDown,
   X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePermissions } from "@/hooks/usePermissions";
+import type { permissionModules } from "@/data/workspace";
 
-const employeeChildren = [
-  { title: "Directory", url: "/employees" },
-  { title: "Attendance", url: "/employees/attendance" },
-  { title: "Leave Management", url: "/employees/leave" },
-  { title: "Payroll", url: "/employees/payroll" },
-  { title: "Performance", url: "/employees/performance" },
-  { title: "Documents", url: "/employees/documents" },
-  { title: "Timesheets", url: "/employees/timesheets" },
-  { title: "Employee Settings", url: "/employees/settings" },
-] as const;
+type NavChild = { title: string; url: string };
+type NavItem = {
+  title: "Dashboard" | (typeof permissionModules)[number];
+  url: string;
+  icon: typeof LayoutDashboard;
+  children?: readonly NavChild[];
+};
 
-const items = [
+const items: NavItem[] = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
   { title: "Clients", url: "/clients", icon: Building2 },
   { title: "Leads", url: "/leads", icon: Target },
   { title: "Projects", url: "/projects", icon: FolderKanban },
-  { title: "Tasks", url: "/tasks", icon: CheckSquare },
-  { title: "Operations", url: "/operations", icon: Activity },
-  { title: "Employees", url: "/employees", icon: Users, children: employeeChildren },
-  { title: "Finance", url: "/finance", icon: Wallet },
-  { title: "Reports", url: "/reports", icon: BarChart3 },
-  { title: "Inbox", url: "/inbox", icon: Inbox },
+  {
+    title: "Tasks",
+    url: "/tasks",
+    icon: CheckSquare,
+    children: [
+      { title: "Board", url: "/tasks/board" },
+      { title: "List", url: "/tasks/list" },
+      { title: "Calendar", url: "/tasks/calendar" },
+    ],
+  },
+  {
+    title: "Operations",
+    url: "/operations",
+    icon: Activity,
+    children: [
+      { title: "Overview", url: "/operations" },
+      { title: "Workload", url: "/operations/workload" },
+      { title: "Clients", url: "/operations/clients" },
+      { title: "Deliverables", url: "/operations/deliverables" },
+    ],
+  },
+  {
+    title: "Employees",
+    url: "/employees",
+    icon: Users,
+    children: [
+      { title: "Directory", url: "/employees" },
+      { title: "Attendance", url: "/employees/attendance" },
+      { title: "Leave Management", url: "/employees/leave" },
+      { title: "Payroll", url: "/employees/payroll" },
+      { title: "Performance", url: "/employees/performance" },
+      { title: "Documents", url: "/employees/documents" },
+      { title: "Timesheets", url: "/employees/timesheets" },
+      { title: "Employee Settings", url: "/employees/settings" },
+    ],
+  },
+  {
+    title: "Finance",
+    url: "/finance",
+    icon: Wallet,
+    children: [
+      { title: "Revenue", url: "/finance" },
+      { title: "Invoices", url: "/finance/invoices" },
+      { title: "Expenses", url: "/finance/expenses" },
+      { title: "Payments", url: "/finance/payments" },
+    ],
+  },
+  {
+    title: "Reports",
+    url: "/reports",
+    icon: BarChart3,
+    children: [
+      { title: "Revenue", url: "/reports" },
+      { title: "Projects", url: "/reports/projects" },
+      { title: "Employees", url: "/reports/employees" },
+      { title: "Leads", url: "/reports/leads" },
+      { title: "Finance", url: "/reports/finance" },
+    ],
+  },
+  {
+    title: "Inbox",
+    url: "/inbox",
+    icon: Inbox,
+    children: [
+      { title: "Messages", url: "/inbox" },
+      { title: "Notifications", url: "/inbox/notifications" },
+    ],
+  },
   { title: "Assets", url: "/assets", icon: Package },
-  { title: "Settings", url: "/settings", icon: Settings },
-] as const;
+  {
+    title: "Settings",
+    url: "/settings",
+    icon: Settings,
+    children: [
+      { title: "Organization", url: "/settings" },
+      { title: "Roles & Permissions", url: "/settings/roles" },
+      { title: "Client Packages", url: "/settings/client-packages" },
+      { title: "Integrations", url: "/settings/integrations" },
+      { title: "Workflows", url: "/settings/workflows" },
+      { title: "Notifications", url: "/settings/notifications" },
+    ],
+  },
+];
+
+const EXPANDED_STORAGE_KEY = "agencyos-sidebar-expanded";
+
+function loadExpanded(): Set<string> {
+  if (typeof window === "undefined") return new Set();
+  try {
+    const raw = window.localStorage.getItem(EXPANDED_STORAGE_KEY);
+    return raw ? new Set(JSON.parse(raw) as string[]) : new Set();
+  } catch {
+    return new Set();
+  }
+}
 
 export function AppSidebar({ open, onClose }: { open: boolean; onClose: () => void }) {
   const pathname = useRouterState({ select: (r) => r.location.pathname });
   const { can } = usePermissions();
+  const [expanded, setExpanded] = useState<Set<string>>(() => new Set());
+  const [hydrated, setHydrated] = useState(false);
 
   const isActive = (url: string) =>
     url === "/" ? pathname === "/" : pathname === url || pathname.startsWith(url + "/");
+
+  useEffect(() => {
+    setExpanded(loadExpanded());
+    setHydrated(true);
+  }, []);
+
+  // Auto-expand whichever module the current route belongs to, and keep it
+  // part of the persisted set (matches "remember state on refresh" without
+  // a second mechanism) — you can't be looking at a module's subpage while
+  // its group renders collapsed.
+  useEffect(() => {
+    if (!hydrated) return;
+    const activeParent = items.find((item) => item.children && isActive(item.url));
+    if (!activeParent || expanded.has(activeParent.title)) return;
+    setExpanded((prev) => {
+      const next = new Set(prev);
+      next.add(activeParent.title);
+      return next;
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname, hydrated]);
+
+  useEffect(() => {
+    if (!hydrated) return;
+    window.localStorage.setItem(EXPANDED_STORAGE_KEY, JSON.stringify([...expanded]));
+  }, [expanded, hydrated]);
+
+  const toggle = (title: string) =>
+    setExpanded((prev) => {
+      const next = new Set(prev);
+      if (next.has(title)) next.delete(title);
+      else next.add(title);
+      return next;
+    });
 
   // Dashboard has no permission module — it's the shared landing page.
   // Every other item is gated by the active role's view permission for the
@@ -95,43 +218,71 @@ export function AppSidebar({ open, onClose }: { open: boolean; onClose: () => vo
           <p className="px-3 pb-2 pt-3 text-[11px] font-semibold uppercase tracking-wider text-sidebar-muted">
             Workspace
           </p>
-          {visibleItems.map((item) => (
-            <div key={item.url}>
-              <Link
-                to={item.url}
-                onClick={onClose}
-                className={cn(
-                  "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-sidebar-muted transition-colors",
-                  isActive(item.url)
-                    ? "bg-sidebar-primary text-sidebar-primary-foreground shadow-[0_6px_18px_-6px_var(--sidebar-primary)]"
-                    : "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+          {visibleItems.map((item) => {
+            const hasChildren = !!item.children?.length;
+            const isOpen = hasChildren && expanded.has(item.title);
+            const active = isActive(item.url);
+
+            return (
+              <div key={item.url}>
+                {hasChildren ? (
+                  <button
+                    type="button"
+                    onClick={() => toggle(item.title)}
+                    aria-expanded={isOpen}
+                    className={cn(
+                      "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-semibold text-sidebar-muted transition-colors",
+                      active
+                        ? "bg-sidebar-primary text-sidebar-primary-foreground shadow-[0_6px_18px_-6px_var(--sidebar-primary)]"
+                        : "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+                    )}
+                  >
+                    <item.icon className="size-4 shrink-0" />
+                    <span className="flex-1">{item.title}</span>
+                    {isOpen ? (
+                      <ChevronDown className="size-4 shrink-0" />
+                    ) : (
+                      <ChevronRight className="size-4 shrink-0" />
+                    )}
+                  </button>
+                ) : (
+                  <Link
+                    to={item.url}
+                    onClick={onClose}
+                    className={cn(
+                      "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-semibold text-sidebar-muted transition-colors",
+                      active
+                        ? "bg-sidebar-primary text-sidebar-primary-foreground shadow-[0_6px_18px_-6px_var(--sidebar-primary)]"
+                        : "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+                    )}
+                  >
+                    <item.icon className="size-4 shrink-0" />
+                    {item.title}
+                  </Link>
                 )}
-              >
-                <item.icon className="size-4 shrink-0" />
-                {item.title}
-              </Link>
-              {"children" in item && isActive(item.url) && (
-                <div className="my-1 ml-6 space-y-0.5 border-l border-sidebar-border pl-3">
-                  {item.children.map((child) => (
-                    <Link
-                      key={child.url}
-                      to={child.url}
-                      onClick={onClose}
-                      activeOptions={{ exact: true }}
-                      className={cn(
-                        "block rounded-md px-2.5 py-1.5 text-[13px] font-medium transition-colors",
-                        pathname === child.url
-                          ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                          : "text-sidebar-muted hover:text-sidebar-accent-foreground",
-                      )}
-                    >
-                      {child.title}
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
+                {hasChildren && isOpen && (
+                  <div className="my-1 ml-6 space-y-0.5 border-l border-sidebar-border pl-3">
+                    {item.children!.map((child) => (
+                      <Link
+                        key={child.url}
+                        to={child.url}
+                        onClick={onClose}
+                        activeOptions={{ exact: true }}
+                        className={cn(
+                          "block rounded-md px-2.5 py-1.5 text-[13px] font-medium transition-colors",
+                          pathname === child.url
+                            ? "bg-sidebar-accent text-sidebar-accent-foreground"
+                            : "text-sidebar-muted hover:text-sidebar-accent-foreground",
+                        )}
+                      >
+                        {child.title}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </nav>
       </aside>
     </>
